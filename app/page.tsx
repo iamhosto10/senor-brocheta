@@ -13,6 +13,8 @@ import { cn } from "cn";
 const WHATSAPP_URL = "https://wa.me/573171361324";
 const MENU_URL = "https://vinny.vinapp.co/?company=srbrocheta";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
+const PHONE_DISPLAY = "+57 317 136 1324";
+const EMAIL = "contacto@srbrocheta.com";
 
 const favoritos = [
   {
@@ -257,28 +259,50 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-border/60">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 px-5 py-10 text-center">
-          <Image
-            src="/images/logo.jpg"
-            alt="Logo Sr. Brocheta"
-            width={48}
-            height={48}
-            className="rounded-full ring-1 ring-primary/50"
-          />
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-            <Link href={INSTAGRAM_URL} target="_blank" className="hover:text-primary">
-              Instagram
-            </Link>
-            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-primary">
-              WhatsApp
-            </Link>
-            <Link href={MENU_URL} target="_blank" className="hover:text-primary">
-              Menú completo
-            </Link>
+        <div className="mx-auto grid w-full max-w-5xl gap-8 px-5 py-12 sm:grid-cols-3">
+          <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
+            <Image
+              src="/images/logo.jpg"
+              alt="Logo Sr. Brocheta"
+              width={48}
+              height={48}
+              className="rounded-full ring-1 ring-primary/50"
+            />
+            <p className="text-xs text-muted-foreground">
+              Sr. Brocheta · Grill &amp; Burger · Valledupar
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Sr. Brocheta · Grill &amp; Burger · Valledupar
-          </p>
+
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground sm:items-start sm:text-left">
+            <h3 className="mb-1 text-xs font-semibold tracking-wide text-foreground uppercase">
+              Ubicación
+            </h3>
+            {sedes.map((sede) => (
+              <p key={sede.nombre}>
+                📍 {sede.nombre}: {sede.direccion}
+              </p>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground sm:items-start sm:text-left">
+            <h3 className="mb-1 text-xs font-semibold tracking-wide text-foreground uppercase">
+              Contacto
+            </h3>
+            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-primary">
+              📲 {PHONE_DISPLAY}
+            </Link>
+            <Link href={`mailto:${EMAIL}`} className="hover:text-primary">
+              ✉️ {EMAIL}
+            </Link>
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+              <Link href={INSTAGRAM_URL} target="_blank" className="hover:text-primary">
+                Instagram
+              </Link>
+              <Link href={MENU_URL} target="_blank" className="hover:text-primary">
+                Menú completo
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
