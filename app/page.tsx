@@ -111,8 +111,11 @@ export default function Home() {
             height={88}
             className="rounded-full ring-2 ring-primary/70"
           />
-          <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-5xl">
-            Comida Urbana <span className="text-primary">Premium</span>
+          <h1 className="text-4xl font-bold uppercase tracking-tight text-balance sm:text-5xl">
+            Comida Urbana{" "}
+            <span className="inline-block bg-[#B7201F] px-3 py-1 text-white">
+              Premium
+            </span>
           </h1>
           <p className="max-w-xl text-pretty text-muted-foreground">
             Resolvemos tu antojo al instante. Hamburguesas, salchipapas y
