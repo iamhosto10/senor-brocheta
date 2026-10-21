@@ -148,8 +148,10 @@ export default function Home() {
       {/* Favoritos */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
-            Algunos favoritos
+          <h2 className="text-2xl font-bold uppercase sm:text-3xl">
+            <span className="inline-block bg-primary px-3 py-1 text-primary-foreground">
+              Algunos favoritos
+            </span>
           </h2>
           <p className="mt-2 text-white">
             Una probadita de lo que nos hace premium. El menú completo tiene
@@ -225,17 +227,22 @@ export default function Home() {
       {/* Ubicación y contacto */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
-            Ubicación y horarios
+          <h2 className="text-2xl font-bold uppercase sm:text-3xl">
+            <span className="inline-block bg-primary px-3 py-1 text-primary-foreground">
+              Ubicación y horarios
+            </span>
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {sedes.map((sede) => (
-            <Card key={sede.nombre} className="border-border/80 bg-card">
+            <Card
+              key={sede.nombre}
+              className="h-full flex flex-col border-border/80 bg-card"
+            >
               <CardHeader>
                 <CardTitle className="text-lg">{sede.nombre}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <p className="text-sm text-white">📍 {sede.direccion}</p>
                 <p className="mt-1 text-sm text-white">
                   🕐 Todos los días, 5:00 pm - 11:00 pm
