@@ -111,13 +111,13 @@ export default function Home() {
             height={88}
             className="rounded-full ring-2 ring-primary/70"
           />
-          <h1 className="text-4xl font-bold uppercase tracking-tight text-balance sm:text-5xl">
+          <h1 className="text-4xl font-bold uppercase tracking-tight text-balance text-white sm:text-5xl">
             Comida Urbana{" "}
-            <span className="inline-block bg-[#B7201F] px-3 py-1 text-white">
+            <span className="inline-block bg-primary px-3 py-1 text-primary-foreground">
               Premium
             </span>
           </h1>
-          <p className="max-w-xl text-pretty text-muted-foreground">
+          <p className="max-w-xl text-pretty text-white">
             Resolvemos tu antojo al instante. Hamburguesas, salchipapas y
             combos en Valledupar — el sabor que nos une.
           </p>
@@ -142,8 +142,10 @@ export default function Home() {
       {/* Favoritos */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">Algunos favoritos</h2>
-          <p className="mt-2 text-muted-foreground">
+          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
+            Algunos favoritos
+          </h2>
+          <p className="mt-2 text-white">
             Una probadita de lo que nos hace premium. El menú completo tiene
             mucho más.
           </p>
@@ -160,9 +162,7 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {plato.descripcion}
-                </p>
+                <p className="text-sm text-white">{plato.descripcion}</p>
               </CardContent>
             </Card>
           ))}
@@ -181,8 +181,10 @@ export default function Home() {
       <section className="border-y border-border/60 bg-secondary/30">
         <div className="mx-auto w-full max-w-5xl px-5 py-16">
           <div className="mb-8 text-center">
-            <h2 className="text-2xl font-bold sm:text-3xl">Nosotros</h2>
-            <p className="mt-2 text-muted-foreground">
+            <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
+              Nosotros
+            </h2>
+            <p className="mt-2 text-white">
               Un equipo que crece a diario, directo desde nuestras sedes en
               Valledupar.
             </p>
@@ -217,7 +219,7 @@ export default function Home() {
       {/* Ubicación y contacto */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">
+          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
             Ubicación y horarios
           </h2>
         </div>
@@ -228,10 +230,8 @@ export default function Home() {
                 <CardTitle className="text-lg">{sede.nombre}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  📍 {sede.direccion}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-sm text-white">📍 {sede.direccion}</p>
+                <p className="mt-1 text-sm text-white">
                   🕐 Todos los días, 5:00 pm - 11:00 pm
                 </p>
               </CardContent>
@@ -262,13 +262,13 @@ export default function Home() {
               height={48}
               className="rounded-full ring-1 ring-primary/50"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white">
               Sr. Brocheta · Grill &amp; Burger · Valledupar
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground sm:items-start sm:text-left">
-            <h3 className="mb-1 text-xs font-semibold tracking-wide text-foreground uppercase">
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-white sm:items-start sm:text-left">
+            <h3 className="mb-1 text-xs font-semibold tracking-wide text-white uppercase">
               Ubicación
             </h3>
             {sedes.map((sede) => (
@@ -278,8 +278,8 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground sm:items-start sm:text-left">
-            <h3 className="mb-1 text-xs font-semibold tracking-wide text-foreground uppercase">
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-white sm:items-start sm:text-left">
+            <h3 className="mb-1 text-xs font-semibold tracking-wide text-white uppercase">
               Contacto
             </h3>
             <Link href={WHATSAPP_URL} target="_blank" className="hover:text-primary">
