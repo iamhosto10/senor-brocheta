@@ -119,26 +119,18 @@ export default function Home() {
             combos en Valledupar — el sabor que nos une.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href={MENU_URL}
-              target="_blank"
+            <button
+              type="button"
               className={cn(buttonVariants({ variant: "default", size: "lg" }))}
             >
-              Ver menú completo
-            </Link>
+              Reserva
+            </button>
             <Link
               href={WHATSAPP_URL}
               target="_blank"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
             >
               Pedir por WhatsApp
-            </Link>
-            <Link
-              href={INSTAGRAM_URL}
-              target="_blank"
-              className={cn(buttonVariants({ variant: "ghost", size: "lg" }))}
-            >
-              Síguenos @sr.brocheta
             </Link>
           </div>
         </div>
@@ -173,13 +165,12 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <Link
-            href={MENU_URL}
-            target="_blank"
+          <button
+            type="button"
             className={cn(buttonVariants({ variant: "default", size: "lg" }))}
           >
-            Ver menú completo
-          </Link>
+            Reserva
+          </button>
         </div>
       </section>
 
