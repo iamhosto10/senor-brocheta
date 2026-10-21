@@ -41,12 +41,18 @@ const favoritos = [
 
 const sedes = [
   {
-    nombre: "Sede Principal",
+    nombre: "Sede Principal Dangond",
     direccion: "Calle 16 # 19E-85, Valledupar",
   },
   {
-    nombre: "Sede Dangond",
-    direccion: "Cra 20 # 16-17, Br Dangond, Valledupar",
+    nombre: "Sede Mayales",
+    direccion:
+      "Av. Salguero # Calle 31, Centro Comercial Mayales Etapa 1 – Local 34, Valledupar",
+  },
+  {
+    nombre: "Sede Guatapurí",
+    direccion:
+      "Diagonal 10 N # 6N - 15, Centro Comercial Guatapurí, Local 2-035, Valledupar",
   },
 ];
 
@@ -223,7 +229,7 @@ export default function Home() {
             Ubicación y horarios
           </h2>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {sedes.map((sede) => (
             <Card key={sede.nombre} className="border-border/80 bg-card">
               <CardHeader>
