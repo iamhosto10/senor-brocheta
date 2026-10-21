@@ -148,9 +148,10 @@ export default function Home() {
       {/* Favoritos */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold uppercase sm:text-3xl">
+          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
+            Algunos{" "}
             <span className="inline-block bg-primary px-3 py-1 text-primary-foreground">
-              Algunos favoritos
+              favoritos
             </span>
           </h2>
           <p className="mt-2 text-white">
@@ -227,9 +228,10 @@ export default function Home() {
       {/* Ubicación y contacto */}
       <section className="mx-auto w-full max-w-5xl px-5 py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold uppercase sm:text-3xl">
+          <h2 className="text-2xl font-bold uppercase text-white sm:text-3xl">
+            Ubicación y{" "}
             <span className="inline-block bg-primary px-3 py-1 text-primary-foreground">
-              Ubicación y horarios
+              horarios
             </span>
           </h2>
         </div>
