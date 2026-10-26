@@ -128,12 +128,12 @@ export default function Home() {
             combos en Valledupar — el sabor que nos une.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <button
-              type="button"
+            <Link
+              href="/reservas"
               className={cn(buttonVariants({ variant: "default", size: "lg" }))}
             >
               Reserva
-            </button>
+            </Link>
             <Link
               href={WHATSAPP_URL}
               target="_blank"
@@ -177,12 +177,12 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <button
-            type="button"
+          <Link
+            href="/reservas"
             className={cn(buttonVariants({ variant: "default", size: "lg" }))}
           >
             Reserva
-          </button>
+          </Link>
         </div>
       </section>
 
