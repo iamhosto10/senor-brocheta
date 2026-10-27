@@ -5,6 +5,7 @@ export type Zona = {
   desc: string;
   color: string;
   textColor: string;
+  img?: string;
 } & (
   | { flexible: true; t8: number; t4: number; units?: undefined }
   | { flexible: true; units: number; t8?: undefined; t4?: undefined }
@@ -50,6 +51,7 @@ export const ZONAS: Zona[] = [
     desc: "Mesas fijas · ideal para una cena casual",
     color: "#B71C1C",
     textColor: "#FFFFFF",
+    img: "/images/reservas/zona3.jpg",
   },
   {
     id: "zona4",
@@ -61,6 +63,7 @@ export const ZONAS: Zona[] = [
     desc: "Ambiente climatizado",
     color: "#A9793D",
     textColor: "#FFFFFF",
+    img: "/images/reservas/zona4.jpg",
   },
   {
     id: "zona5",
@@ -71,6 +74,7 @@ export const ZONAS: Zona[] = [
     desc: "Climatizada · decorada para celebraciones",
     color: "#4A3728",
     textColor: "#FFFFFF",
+    img: "/images/reservas/zona5.jpg",
   },
 ];
 

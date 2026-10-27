@@ -84,6 +84,22 @@ async function ocupacionDelDia(fecha: string): Promise<ReservaExistente[]> {
   return data ?? [];
 }
 
+function zonaTieneCupo(
+  zona: Zona,
+  personas: number,
+  hora: string,
+  ocupacion: ReservaExistente[]
+): boolean {
+  const necesarias = unidadesNecesarias(zona, personas);
+  if (necesarias === null) return false;
+
+  const ocupadasEnZona = ocupacion
+    .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
+    .reduce((sum, r) => sum + (unidadesNecesarias(zona, r.personas) ?? 0), 0);
+
+  return ocupadasEnZona + necesarias <= capacidadZona(zona) / 4;
+}
+
 /** Zonas con cupo para una fecha/hora/grupo, ya validadas contra la ocupación real. */
 export async function zonasDisponibles(
   fecha: string,
@@ -91,18 +107,20 @@ export async function zonasDisponibles(
   personas: number
 ): Promise<Zona[]> {
   const ocupacion = await ocupacionDelDia(fecha);
+  return ZONAS.filter((zona) => zonaTieneCupo(zona, personas, hora, ocupacion));
+}
 
-  return ZONAS.filter((zona) => {
-    const necesarias = unidadesNecesarias(zona, personas);
-    if (necesarias === null) return false;
-
-    const ocupadasEnZona = ocupacion
-      .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
-      .reduce((sum, r) => sum + (unidadesNecesarias(zona, r.personas) ?? 0), 0);
-
-    const capacidadUnidades = capacidadZona(zona) / 4;
-    return ocupadasEnZona + necesarias <= capacidadUnidades;
-  });
+/** Todas las zonas con su estado de disponibilidad, para mostrarlas aunque esten llenas. */
+export async function zonasConEstado(
+  fecha: string,
+  hora: string,
+  personas: number
+): Promise<Array<{ zona: Zona; ok: boolean }>> {
+  const ocupacion = await ocupacionDelDia(fecha);
+  return ZONAS.map((zona) => ({
+    zona,
+    ok: zonaTieneCupo(zona, personas, hora, ocupacion),
+  }));
 }
 
 /** Horarios de un día que tienen al menos una zona con cupo para ese grupo. */

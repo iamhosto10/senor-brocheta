@@ -2,7 +2,12 @@
 
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { zonasDisponibles, horariosDisponibles, horariosDelDia } from "@/lib/reservas/disponibilidad";
+import {
+  zonasDisponibles,
+  zonasConEstado,
+  horariosDisponibles,
+  horariosDelDia,
+} from "@/lib/reservas/disponibilidad";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { construirUrlWhatsApp } from "@/lib/reservas/mensaje";
 
@@ -31,7 +36,7 @@ export async function horariosParaFecha(fecha: string, personas: number) {
 }
 
 export async function zonasParaFechaHora(fecha: string, hora: string, personas: number) {
-  return zonasDisponibles(fecha, hora, personas);
+  return zonasConEstado(fecha, hora, personas);
 }
 
 export async function crearReserva(input: ReservaInput) {

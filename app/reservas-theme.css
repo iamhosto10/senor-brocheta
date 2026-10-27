@@ -2,6 +2,7 @@
    (solo modo oscuro, sin selector de tema). Aislado bajo .reservas-theme
    para no afectar el resto del sitio (que usa su propio tema shadcn). */
 .reservas-theme {
+  isolation: isolate;
   --bg: #0d0b09;
   --surface: #171310;
   --surface-2: #231c15;
@@ -19,11 +20,30 @@
   --font-display: var(--font-rye), var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
+  position: relative;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.5;
   min-height: 100vh;
+}
+
+/* Pared de ladrillo de fondo, igual que el prototipo original. */
+.reservas-theme::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image: radial-gradient(
+      ellipse at 50% 30%,
+      rgba(13, 11, 9, 0.1) 0%,
+      rgba(13, 11, 9, 0.62) 100%
+    ),
+    url("/images/reservas/brick-wall.jpg");
+  background-size: auto, 648px 612px;
+  background-repeat: no-repeat, repeat;
 }
 
 .reservas-theme h1,
@@ -531,4 +551,256 @@
 .rt-credits strong {
   color: var(--gold);
   font-weight: 600;
+}
+
+.rt-lead {
+  margin: 6px 0 20px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.rt-link-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 4px 0 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.rt-day-strip {
+  scroll-snap-type: x proximity;
+}
+.rt-day-chip {
+  font-size: 1rem;
+  scroll-snap-align: start;
+}
+.rt-day-chip .dow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.rt-day-chip .num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+}
+.rt-day-chip .mon {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.rt-day-chip.selected .dow,
+.rt-day-chip.selected .mon {
+  color: var(--accent-ink);
+  opacity: 0.9;
+}
+.rt-day-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rt-zone-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.rt-zone-group:first-child .rt-zone-group-title {
+  margin-top: 4px;
+}
+.rt-zone-group-title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.rt-zone-card.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.rt-zone-card.disabled::after {
+  content: none;
+}
+.rt-zone-photo {
+  width: 84px;
+  height: 84px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--surface-2);
+}
+.rt-zone-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+.rt-zone-meta .full {
+  color: var(--cancelled);
+  font-weight: 600;
+}
+.rt-zone-meta .ok {
+  color: var(--confirmed);
+  font-weight: 600;
+}
+.rt-zone-foot {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 6px 0 18px;
+}
+
+.rt-invite-line {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  margin: 22px 0 20px;
+}
+
+.rt-banda-box {
+  text-align: center;
+  padding: 16px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  background: var(--surface-2);
+  margin-bottom: 18px;
+}
+.rt-banda-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.rt-banda-check input {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.rt-banda-box .hint {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rt-conditions {
+  margin: 6px 0 4px;
+  padding: 18px;
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+.rt-cond-intro {
+  margin: 6px 0 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.rt-cond-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: cond;
+  display: grid;
+  gap: 14px;
+}
+.rt-cond-list li {
+  counter-increment: cond;
+  position: relative;
+  padding-left: 36px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.rt-cond-list li::before {
+  content: counter(cond);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rt-cond-list strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.rt-cond-outro {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.rt-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(8, 6, 4, 0.75);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+@media (min-width: 540px) {
+  .rt-dialog-overlay {
+    align-items: center;
+  }
+}
+.rt-dialog {
+  box-sizing: border-box;
+  width: min(560px, 100%);
+  max-height: min(86vh, 720px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+@media (min-width: 540px) {
+  .rt-dialog {
+    border-radius: var(--radius);
+  }
+}
+.rt-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px 14px;
+}
+.rt-dialog-body {
+  overflow-y: auto;
+  padding: 0 22px 18px;
+}
+.rt-dialog-foot {
+  padding: 14px 22px 20px;
+  border-top: 1px solid var(--border);
 }
