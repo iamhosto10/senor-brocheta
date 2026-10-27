@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { ZONAS } from "@/lib/reservas/zonas";
-import { hoyISO } from "@/lib/reservas/fechas";
 import { createClient } from "@/lib/supabase/client";
 import { actualizarEstadoReserva } from "./actions";
 
@@ -79,8 +79,8 @@ function exportarCSV(reservas: Reserva[]) {
 export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[] }) {
   const router = useRouter();
   const [reservas, setReservas] = useState(reservasIniciales);
-  const [filtroDesde, setFiltroDesde] = useState(hoyISO());
-  const [filtroHasta, setFiltroHasta] = useState(hoyISO());
+  const [filtroDesde, setFiltroDesde] = useState("");
+  const [filtroHasta, setFiltroHasta] = useState("");
   const [filtroZona, setFiltroZona] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("");
   const [pending, startTransition] = useTransition();
@@ -102,7 +102,8 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
     setFiltroEstado("");
   }
 
-  function cambiarEstado(id: string, estado: string) {
+  function cambiarEstado(id: string, estado: string, e: React.SyntheticEvent) {
+    e.stopPropagation();
     setReservas((prev) => prev.map((r) => (r.id === id ? { ...r, estado } : r)));
     startTransition(async () => {
       await actualizarEstadoReserva(id, estado);
@@ -191,7 +192,7 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
       )}
 
       {filtradas.map((r) => (
-        <div key={r.id} className="rt-res-row">
+        <Link key={r.id} href={`/admin/${r.id}`} className="rt-res-row" style={{ cursor: "pointer" }}>
           <div className="rt-res-time">
             {r.hora}
             <span className="date">{r.fecha}</span>
@@ -209,7 +210,8 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
           <select
             value={r.estado}
             disabled={pending}
-            onChange={(e) => cambiarEstado(r.id, e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => cambiarEstado(r.id, e.target.value, e)}
             className={`rt-badge rt-badge-${r.estado}`}
             style={{ border: "none", cursor: "pointer" }}
           >
@@ -219,7 +221,7 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
               </option>
             ))}
           </select>
-        </div>
+        </Link>
       ))}
     </div>
   );

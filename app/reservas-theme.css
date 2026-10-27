@@ -41,8 +41,8 @@
   background-color: var(--bg);
   background-image: radial-gradient(
       ellipse at 50% 30%,
-      rgba(13, 11, 9, 0.1) 0%,
-      rgba(13, 11, 9, 0.62) 100%
+      rgba(13, 11, 9, 0.45) 0%,
+      rgba(13, 11, 9, 0.82) 100%
     ),
     url("/images/reservas/brick-wall.jpg");
   background-size: auto, 648px 612px;
@@ -526,6 +526,26 @@
   margin-top: 3px;
   font-weight: 600;
   font-size: 0.98rem;
+}
+
+.rt-detail-list {
+  border-top: 1px solid var(--border);
+}
+.rt-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.rt-detail-row .k {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.rt-detail-row .v {
+  font-weight: 600;
+  text-align: right;
 }
 
 .rt-badge {

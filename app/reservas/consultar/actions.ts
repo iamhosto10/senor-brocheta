@@ -42,3 +42,18 @@ export async function buscarReservasPorTelefono(telefono: string) {
       nombre: r.nombre,
     }));
 }
+
+/** Detalle completo de una reserva a partir de su código, para la vista pública del cliente. */
+export async function buscarReservaPorCodigo(codigo: string) {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("reservations")
+    .select(
+      "codigo, fecha, hora, personas, zona_id, estado, nombre, telefono, email, motivo, notas, cumpleanos, decoracion_id, banda_musical, created_at"
+    )
+    .eq("codigo", codigo.toUpperCase())
+    .maybeSingle();
+
+  if (error || !data) return null;
+  return data;
+}

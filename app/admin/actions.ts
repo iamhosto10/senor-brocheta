@@ -16,6 +16,18 @@ export async function listarReservas() {
   return data;
 }
 
+export async function obtenerReserva(id: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) return null;
+  return data;
+}
+
 const ESTADOS_VALIDOS = ["pendiente", "confirmada", "cancelada", "completada"];
 
 export async function actualizarEstadoReserva(id: string, estado: string) {

@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { ZONAS } from "./zonas";
 import { DECORACIONES } from "./decoraciones";
 import { RESERVAS_CONFIG } from "./config";
+import { formatearFechaLarga, fmtTime12 } from "./fechas";
 
 const SITE_URL = "https://srbrocheta.com";
 const LOGO_URL = `${SITE_URL}/images/logo.jpg`;
@@ -24,24 +25,6 @@ export type ReservaParaCorreo = {
   decoracion_id: string | null;
   banda_musical: boolean;
 };
-
-function formatearFechaLarga(fecha: string): string {
-  const [y, m, d] = fecha.split("-").map(Number);
-  const date = new Date(Date.UTC(y, m - 1, d));
-  return new Intl.DateTimeFormat("es-CO", {
-    timeZone: "UTC",
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  }).format(date);
-}
-
-function fmtTime12(t: string): string {
-  const [h, m] = t.split(":").map(Number);
-  const ampm = h >= 12 ? "pm" : "am";
-  const h12 = ((h + 11) % 12) + 1;
-  return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
-}
 
 function filaDetalle(label: string, valor: string): string {
   return `

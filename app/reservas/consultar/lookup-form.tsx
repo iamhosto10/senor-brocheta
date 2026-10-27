@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { buscarReservasPorTelefono } from "./actions";
 
@@ -82,7 +83,12 @@ export function LookupForm() {
         )}
 
         {resultados.map((r) => (
-          <div key={r.codigo} className="rt-res-row">
+          <Link
+            key={r.codigo}
+            href={`/reservas/consultar/${r.codigo}`}
+            className="rt-res-row"
+            style={{ cursor: "pointer" }}
+          >
             <div className="rt-res-time">
               {r.hora}
               <span className="date">{r.fecha}</span>
@@ -98,7 +104,7 @@ export function LookupForm() {
             <span className={`rt-badge rt-badge-${r.estado}`}>
               {ESTADO_LABEL[r.estado] ?? r.estado}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
