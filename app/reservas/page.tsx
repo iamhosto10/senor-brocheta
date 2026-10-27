@@ -9,6 +9,13 @@ export const metadata: Metadata = {
 export default function ReservasHomePage() {
   return (
     <div style={{ minHeight: "100vh" }}>
+      <div className="rt-wrap" style={{ paddingBottom: 0 }}>
+        <div className="rt-topbar">
+          <Link href="/" className="rt-icon-btn" aria-label="Volver a la página principal">
+            ←
+          </Link>
+        </div>
+      </div>
       <div className="rt-home-hero">
         <div className="rt-brand-logo" role="img" aria-label="SR. BROCHETA" />
         <p className="tagline">Reservas</p>

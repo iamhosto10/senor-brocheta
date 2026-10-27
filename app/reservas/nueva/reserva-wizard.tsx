@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ZONAS, type Zona } from "@/lib/reservas/zonas";
 import { DECORACIONES } from "@/lib/reservas/decoraciones";
 import { RESERVAS_CONFIG } from "@/lib/reservas/config";
@@ -177,6 +178,7 @@ function BirthdayDialog({
 }
 
 export function ReservaWizard() {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [pending, startTransition] = useTransition();
 
@@ -267,8 +269,32 @@ export function ReservaWizard() {
     items: (zonas ?? []).filter((r) => r.zona.type === g.type),
   })).filter((g) => g.items.length > 0);
 
+  function volverAtras() {
+    if (step === 1) {
+      router.push("/reservas");
+      return;
+    }
+    setStep((s) => (s - 1) as typeof step);
+  }
+
   return (
-    <div className="rt-wrap">
+    <div>
+      {step < 5 && (
+        <div className="rt-wrap" style={{ paddingBottom: 0 }}>
+          <div className="rt-topbar">
+            <button
+              type="button"
+              className="rt-icon-btn"
+              aria-label={step === 1 ? "Volver al inicio" : "Volver al paso anterior"}
+              onClick={volverAtras}
+            >
+              ←
+            </button>
+            <span className="rt-topbar-title">Reservar mesa</span>
+          </div>
+        </div>
+      )}
+      <div className="rt-wrap">
       {step < 5 && <Stepper step={step} />}
 
       {showBirthdayDialog && (
@@ -711,6 +737,7 @@ export function ReservaWizard() {
           </Link>
         </div>
       )}
+      </div>
     </div>
   );
 }
