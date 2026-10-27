@@ -87,9 +87,13 @@ export async function crearReserva(input: ReservaInput) {
   }
 
   // La reserva ya quedó guardada; si el correo falla no debe tumbar la confirmación.
-  enviarCorreosReserva(reserva).catch((e) =>
-    console.error("Error enviando correos de reserva:", e)
-  );
+  // Se espera (no "fire and forget") porque en funciones serverless el proceso
+  // puede congelarse apenas se devuelve la respuesta, matando envíos a medias.
+  try {
+    await enviarCorreosReserva(reserva);
+  } catch (e) {
+    console.error("Error enviando correos de reserva:", e);
+  }
 
   return {
     ok: true as const,
