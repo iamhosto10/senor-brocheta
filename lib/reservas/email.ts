@@ -8,7 +8,7 @@ import { formatearFechaLarga, fmtTime12 } from "./fechas";
 const SITE_URL = "https://srbrocheta.com";
 const LOGO_URL = `${SITE_URL}/images/logo.jpg`;
 const STAFF_EMAIL = "contacto@srbrocheta.com";
-const FROM_EMAIL = "Sr. Brocheta <contacto@srbrocheta.com>";
+const FROM_EMAIL = "Sr. Brocheta <reservas@srbrocheta.com>";
 
 export type ReservaParaCorreo = {
   codigo: string;
