@@ -3,6 +3,7 @@
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ZONAS } from "@/lib/reservas/zonas";
+import { hoyISO } from "@/lib/reservas/fechas";
 import { createClient } from "@/lib/supabase/client";
 import { actualizarEstadoReserva } from "./actions";
 
@@ -78,19 +79,28 @@ function exportarCSV(reservas: Reserva[]) {
 export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[] }) {
   const router = useRouter();
   const [reservas, setReservas] = useState(reservasIniciales);
-  const [filtroFecha, setFiltroFecha] = useState("");
+  const [filtroDesde, setFiltroDesde] = useState(hoyISO());
+  const [filtroHasta, setFiltroHasta] = useState(hoyISO());
   const [filtroZona, setFiltroZona] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("");
   const [pending, startTransition] = useTransition();
 
   const filtradas = useMemo(() => {
     return reservas.filter((r) => {
-      if (filtroFecha && r.fecha !== filtroFecha) return false;
+      if (filtroDesde && r.fecha < filtroDesde) return false;
+      if (filtroHasta && r.fecha > filtroHasta) return false;
       if (filtroZona && r.zona_id !== filtroZona) return false;
       if (filtroEstado && r.estado !== filtroEstado) return false;
       return true;
     });
-  }, [reservas, filtroFecha, filtroZona, filtroEstado]);
+  }, [reservas, filtroDesde, filtroHasta, filtroZona, filtroEstado]);
+
+  function limpiarFiltros() {
+    setFiltroDesde("");
+    setFiltroHasta("");
+    setFiltroZona("");
+    setFiltroEstado("");
+  }
 
   function cambiarEstado(id: string, estado: string) {
     setReservas((prev) => prev.map((r) => (r.id === id ? { ...r, estado } : r)));
@@ -110,11 +120,21 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
     <div>
       <div className="rt-filters">
         <div>
-          <label>Fecha</label>
+          <label>Desde</label>
           <input
             type="date"
-            value={filtroFecha}
-            onChange={(e) => setFiltroFecha(e.target.value)}
+            value={filtroDesde}
+            max={filtroHasta || undefined}
+            onChange={(e) => setFiltroDesde(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Hasta</label>
+          <input
+            type="date"
+            value={filtroHasta}
+            min={filtroDesde || undefined}
+            onChange={(e) => setFiltroHasta(e.target.value)}
           />
         </div>
         <div>
@@ -139,6 +159,13 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
             ))}
           </select>
         </div>
+        <button
+          type="button"
+          className="rt-btn rt-btn-ghost rt-btn-small"
+          onClick={limpiarFiltros}
+        >
+          Limpiar filtros
+        </button>
         <button
           type="button"
           className="rt-btn rt-btn-ghost rt-btn-small"

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ZONAS, type Zona } from "@/lib/reservas/zonas";
 import { DECORACIONES } from "@/lib/reservas/decoraciones";
 import { RESERVAS_CONFIG } from "@/lib/reservas/config";
+import { hoyISO } from "@/lib/reservas/fechas";
 import {
   horariosParaFecha,
   zonasParaFechaHora,
@@ -40,11 +41,6 @@ function IndoorIcon() {
   );
 }
 
-function hoyISO(): string {
-  const now = new Date();
-  const bogota = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-  return bogota.toISOString().slice(0, 10);
-}
 function ymd(d: Date): string {
   return d.toISOString().slice(0, 10);
 }

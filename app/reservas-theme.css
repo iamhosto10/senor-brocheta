@@ -26,6 +26,9 @@
   font-family: var(--font-body);
   line-height: 1.5;
   min-height: 100vh;
+  /* Hace que los controles nativos (date picker, selects) usen su variante
+     oscura en vez del blanco por defecto, que no combinaba con el fondo. */
+  color-scheme: dark;
 }
 
 /* Pared de ladrillo de fondo, igual que el prototipo original. */
@@ -563,6 +566,7 @@
   background: var(--surface-2);
   color: var(--text);
   font-size: 0.85rem;
+  min-width: 140px;
 }
 .rt-filters label {
   display: block;
