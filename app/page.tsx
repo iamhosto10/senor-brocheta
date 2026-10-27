@@ -43,16 +43,19 @@ const sedes = [
   {
     nombre: "Sede Principal Dangond",
     direccion: "Calle 16 # 19E-85, Valledupar",
+    mapsUrl: "https://maps.app.goo.gl/5K2epKUKThCmQAoz7",
   },
   {
     nombre: "Sede Mayales",
     direccion:
       "Av. Salguero # Calle 31, Centro Comercial Mayales Etapa 1 – Local 34, Valledupar",
+    mapsUrl: "https://maps.app.goo.gl/ep36jVT1EgLCynveA",
   },
   {
     nombre: "Sede Guatapurí",
     direccion:
       "Diagonal 10 N # 6N - 15, Centro Comercial Guatapurí, Local 2-035, Valledupar",
+    mapsUrl: "https://maps.app.goo.gl/AdnFh7SbFChKmpGz9",
   },
 ];
 
@@ -241,15 +244,23 @@ export default function Home() {
               key={sede.nombre}
               className="h-full flex flex-col border-border/80 bg-card"
             >
-              <CardHeader>
-                <CardTitle className="text-lg">{sede.nombre}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <p className="text-sm text-white">📍 {sede.direccion}</p>
-                <p className="mt-1 text-sm text-white">
-                  🕐 Todos los días, 5:00 pm - 11:00 pm
-                </p>
-              </CardContent>
+              <Link
+                href={sede.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ver ${sede.nombre} en Google Maps`}
+                className="flex-1 transition-colors hover:bg-white/5"
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg">{sede.nombre}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-white">📍 {sede.direccion}</p>
+                  <p className="mt-1 text-sm text-white">
+                    🕐 Todos los días, 5:00 pm - 11:00 pm
+                  </p>
+                </CardContent>
+              </Link>
               <CardFooter>
                 <Link
                   href={WHATSAPP_URL}
