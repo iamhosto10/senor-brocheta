@@ -18,7 +18,7 @@ export const RESERVAS_CONFIG = {
   /** Hasta cuántos días hacia adelante se puede reservar. */
   maxAdvanceDays: 60,
   /** WhatsApp del restaurante, sin "+" ni espacios. */
-  whatsappNumber: "573178853519",
+  whatsappNumber: "573171361324",
   /** Cargo opcional por banda musical. */
   bandaMusicalCobro: 50000,
 };

@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/card";
 import { cn } from "cn";
 
-const WHATSAPP_URL = "https://wa.me/573178853519";
+const WHATSAPP_URL = "https://wa.me/573171361324";
 const MENU_URL = "https://vinny.vinapp.co/?company=srbrocheta";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
-const PHONE_DISPLAY = "+57 317 885 3519";
+const PHONE_DISPLAY = "+57 317 136 1324";
 const EMAIL = "contacto@srbrocheta.com";
 
 const favoritos = [
