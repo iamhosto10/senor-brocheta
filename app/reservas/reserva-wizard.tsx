@@ -119,15 +119,31 @@ function BirthdayDialog({
         </div>
         <div className="rt-dialog-body">
           <p className="rt-cond-intro">Elige una decoración para tu mesa (opcional):</p>
-          <div className="rt-chip-row">
+          <div className="rt-deco-row">
             {DECORACIONES.map((d) => (
               <button
                 key={d.id}
                 type="button"
-                className={`rt-chip ${decoracionId === d.id ? "selected" : ""}`}
+                className={`rt-deco-card ${d.img ? "" : "no-img"} ${
+                  decoracionId === d.id ? "selected" : ""
+                }`}
                 onClick={() => onSelect(d.id)}
               >
-                {d.name} {d.price > 0 ? `— $${d.price.toLocaleString("es-CO")}` : "— Gratis"}
+                {d.img && (
+                  <Image
+                    src={d.img}
+                    alt={d.name}
+                    width={200}
+                    height={267}
+                    className="deco-img"
+                  />
+                )}
+                <span className="deco-body">
+                  <span className="deco-name">{d.name}</span>
+                  <span className="deco-price">
+                    {d.price > 0 ? `$${d.price.toLocaleString("es-CO")}` : "Gratis"}
+                  </span>
+                </span>
               </button>
             ))}
           </div>
