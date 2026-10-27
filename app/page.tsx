@@ -168,7 +168,7 @@ export default function Home() {
               <CardHeader>
                 <div className="flex items-start justify-between gap-3">
                   <CardTitle className="text-lg">{plato.nombre}</CardTitle>
-                  <span className="shrink-0 font-semibold text-primary">
+                  <span className="shrink-0 font-semibold text-white">
                     {plato.precio}
                   </span>
                 </div>
