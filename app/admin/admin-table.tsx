@@ -104,9 +104,14 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
 
   function cambiarEstado(id: string, estado: string, e: React.SyntheticEvent) {
     e.stopPropagation();
+    const anterior = reservas.find((r) => r.id === id)?.estado;
     setReservas((prev) => prev.map((r) => (r.id === id ? { ...r, estado } : r)));
     startTransition(async () => {
-      await actualizarEstadoReserva(id, estado);
+      const res = await actualizarEstadoReserva(id, estado);
+      if (!res.ok) {
+        setReservas((prev) => prev.map((r) => (r.id === id && anterior ? { ...r, estado: anterior } : r)));
+        alert(res.error ?? "No pudimos actualizar la reserva.");
+      }
     });
   }
 

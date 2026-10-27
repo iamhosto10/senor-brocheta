@@ -83,7 +83,15 @@ export async function crearReserva(input: ReservaInput) {
     .single();
 
   if (error || !reserva) {
-    return { ok: false as const, error: "No pudimos guardar la reserva. Intenta de nuevo." };
+    // P0001: el trigger de la base de datos rechazó la reserva porque, entre la
+    // validación de arriba y este insert, la zona se llenó (dos personas reservando
+    // a la vez). Es la misma garantía que zonasDisponibles() pero a nivel de base
+    // de datos, así que el mensaje es igual de claro para el cliente.
+    const mensaje =
+      error?.code === "P0001"
+        ? error.message
+        : "No pudimos guardar la reserva. Intenta de nuevo.";
+    return { ok: false as const, error: mensaje };
   }
 
   // La reserva ya quedó guardada; si el correo falla no debe tumbar la confirmación.

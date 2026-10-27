@@ -41,7 +41,13 @@ export async function actualizarEstadoReserva(id: string, estado: string) {
     .select()
     .single();
 
-  if (error) return { ok: false as const };
+  if (error) {
+    // P0001: el trigger de capacidad rechazó el cambio (p. ej. reactivar una
+    // reserva cancelada/completada cuando la zona ya se llenó para esa hora).
+    const mensaje =
+      error.code === "P0001" ? error.message : "No pudimos actualizar la reserva.";
+    return { ok: false as const, error: mensaje };
+  }
 
   // Avisa al cliente por correo solo cuando pasa a confirmada o cancelada.
   if (reserva && (estado === "confirmada" || estado === "cancelada")) {

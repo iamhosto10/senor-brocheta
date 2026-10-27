@@ -55,9 +55,14 @@ export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
   const deco = DECORACIONES.find((d) => d.id === reserva.decoracion_id);
 
   function cambiarEstado(nuevo: string) {
+    const anterior = estado;
     setEstado(nuevo);
     startTransition(async () => {
-      await actualizarEstadoReserva(reserva.id, nuevo);
+      const res = await actualizarEstadoReserva(reserva.id, nuevo);
+      if (!res.ok) {
+        setEstado(anterior);
+        alert(res.error ?? "No pudimos actualizar la reserva.");
+      }
     });
   }
 
