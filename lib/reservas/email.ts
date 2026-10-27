@@ -157,6 +157,55 @@ function emailClienteHTML(reserva: ReservaParaCorreo): string {
   });
 }
 
+function emailEstadoHTML(
+  reserva: ReservaParaCorreo,
+  estado: "confirmada" | "cancelada"
+): string {
+  const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
+  if (estado === "confirmada") {
+    return plantillaBase({
+      titulo: "¡Tu reserva está confirmada! 🎉",
+      subtitulo: `Hola ${reserva.nombre}, te esperamos en Sr. Brocheta.`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Si necesitas cancelarla o cambiar algún dato, escríbenos por WhatsApp lo antes posible.",
+      cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+    });
+  }
+  return plantillaBase({
+    titulo: "Tu reserva fue cancelada",
+    subtitulo: `Hola ${reserva.nombre}, tu reserva quedó cancelada.`,
+    filasHtml: filasReserva(reserva),
+    notaFinal:
+      "Si fue un error o quieres hacer una nueva reserva para otro día u hora, escríbenos por WhatsApp.",
+    cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+  });
+}
+
+/** Avisa al cliente cuando el staff confirma o cancela su reserva desde el panel. */
+export async function enviarCorreoCambioEstado(
+  reserva: ReservaParaCorreo,
+  estado: "confirmada" | "cancelada"
+) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !reserva.email) return;
+
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: reserva.email,
+    subject:
+      estado === "confirmada"
+        ? `¡Confirmada! Tu reserva en Sr. Brocheta · ${reserva.codigo}`
+        : `Tu reserva en Sr. Brocheta fue cancelada · ${reserva.codigo}`,
+    html: emailEstadoHTML(reserva, estado),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando correo de cambio de estado:", resultado.error);
+  }
+}
+
 export async function enviarCorreosReserva(reserva: ReservaParaCorreo) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
