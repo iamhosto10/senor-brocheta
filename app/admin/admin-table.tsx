@@ -2,8 +2,6 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { cn } from "cn";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { createClient } from "@/lib/supabase/client";
 import { actualizarEstadoReserva } from "./actions";
@@ -109,24 +107,19 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-white">Fecha</label>
+    <div>
+      <div className="rt-filters">
+        <div>
+          <label>Fecha</label>
           <input
             type="date"
             value={filtroFecha}
             onChange={(e) => setFiltroFecha(e.target.value)}
-            className="rounded-md border border-border bg-background px-2 py-1.5 text-sm text-white"
           />
         </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-white">Zona</label>
-          <select
-            value={filtroZona}
-            onChange={(e) => setFiltroZona(e.target.value)}
-            className="rounded-md border border-border bg-background px-2 py-1.5 text-sm text-white"
-          >
+        <div>
+          <label>Zona</label>
+          <select value={filtroZona} onChange={(e) => setFiltroZona(e.target.value)}>
             <option value="">Todas</option>
             {ZONAS.map((z) => (
               <option key={z.id} value={z.id}>
@@ -135,13 +128,9 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-white">Estado</label>
-          <select
-            value={filtroEstado}
-            onChange={(e) => setFiltroEstado(e.target.value)}
-            className="rounded-md border border-border bg-background px-2 py-1.5 text-sm text-white"
-          >
+        <div>
+          <label>Estado</label>
+          <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
             <option value="">Todos</option>
             {ESTADOS.map((e) => (
               <option key={e} value={e}>
@@ -150,81 +139,61 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
             ))}
           </select>
         </div>
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="sm"
+          className="rt-btn rt-btn-ghost rt-btn-small"
           onClick={() => exportarCSV(filtradas)}
         >
           Exportar CSV
-        </Button>
-        <Button
+        </button>
+        <button
           type="button"
-          variant="ghost"
-          size="sm"
-          className="ml-auto"
+          className="rt-btn rt-btn-ghost rt-btn-small"
+          style={{ marginLeft: "auto" }}
           onClick={cerrarSesion}
         >
           Cerrar sesión
-        </Button>
+        </button>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-border/80">
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="border-b border-border/80 text-white">
-              <th className="px-3 py-2">Código</th>
-              <th className="px-3 py-2">Fecha</th>
-              <th className="px-3 py-2">Hora</th>
-              <th className="px-3 py-2">Personas</th>
-              <th className="px-3 py-2">Zona</th>
-              <th className="px-3 py-2">Nombre</th>
-              <th className="px-3 py-2">Teléfono</th>
-              <th className="px-3 py-2">Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtradas.map((r) => (
-              <tr key={r.id} className="border-b border-border/40 text-white">
-                <td className="px-3 py-2 font-mono text-primary">{r.codigo}</td>
-                <td className="px-3 py-2">{r.fecha}</td>
-                <td className="px-3 py-2">{r.hora}</td>
-                <td className="px-3 py-2">{r.personas}</td>
-                <td className="px-3 py-2">{zonaName(r.zona_id)}</td>
-                <td className="px-3 py-2">
-                  {r.nombre}
-                  {r.cumpleanos && " 🎉"}
-                  {r.banda_musical && " 🎵"}
-                </td>
-                <td className="px-3 py-2">{r.telefono}</td>
-                <td className="px-3 py-2">
-                  <select
-                    value={r.estado}
-                    disabled={pending}
-                    onChange={(e) => cambiarEstado(r.id, e.target.value)}
-                    className={cn(
-                      "rounded-md border border-border bg-background px-2 py-1 text-xs"
-                    )}
-                  >
-                    {ESTADOS.map((e) => (
-                      <option key={e} value={e}>
-                        {ESTADO_LABEL[e]}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
+      {filtradas.length === 0 && (
+        <div className="rt-empty">
+          <h3>No hay reservas</h3>
+          <p>No hay reservas que coincidan con esos filtros.</p>
+        </div>
+      )}
+
+      {filtradas.map((r) => (
+        <div key={r.id} className="rt-res-row">
+          <div className="rt-res-time">
+            {r.hora}
+            <span className="date">{r.fecha}</span>
+          </div>
+          <div className="rt-res-main">
+            <div className="name">
+              {r.nombre}
+              {r.cumpleanos && " 🎉"}
+              {r.banda_musical && " 🎵"}
+            </div>
+            <div className="meta">
+              {zonaName(r.zona_id)} · {r.personas} personas · {r.telefono} · {r.codigo}
+            </div>
+          </div>
+          <select
+            value={r.estado}
+            disabled={pending}
+            onChange={(e) => cambiarEstado(r.id, e.target.value)}
+            className={`rt-badge rt-badge-${r.estado}`}
+            style={{ border: "none", cursor: "pointer" }}
+          >
+            {ESTADOS.map((e) => (
+              <option key={e} value={e}>
+                {ESTADO_LABEL[e]}
+              </option>
             ))}
-            {filtradas.length === 0 && (
-              <tr>
-                <td colSpan={8} className="px-3 py-6 text-center text-white">
-                  No hay reservas con esos filtros.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          </select>
+        </div>
+      ))}
     </div>
   );
 }
