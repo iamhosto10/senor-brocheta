@@ -242,26 +242,25 @@ export default function Home() {
           {sedes.map((sede) => (
             <Card
               key={sede.nombre}
-              className="h-full flex flex-col border-border/80 bg-card"
+              className="relative h-full flex flex-col border-border/80 bg-card transition-colors hover:bg-white/5"
             >
               <Link
                 href={sede.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Ver ${sede.nombre} en Google Maps`}
-                className="flex-1 transition-colors hover:bg-white/5"
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg">{sede.nombre}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-white">📍 {sede.direccion}</p>
-                  <p className="mt-1 text-sm text-white">
-                    🕐 Todos los días, 5:00 pm - 11:00 pm
-                  </p>
-                </CardContent>
-              </Link>
-              <CardFooter>
+                className="absolute inset-0 z-0 rounded-[inherit]"
+              />
+              <CardHeader className="pointer-events-none relative z-10">
+                <CardTitle className="text-lg">{sede.nombre}</CardTitle>
+              </CardHeader>
+              <CardContent className="pointer-events-none relative z-10 flex-1">
+                <p className="text-sm text-white">📍 {sede.direccion}</p>
+                <p className="mt-1 text-sm text-white">
+                  🕐 Todos los días, 5:00 pm - 11:00 pm
+                </p>
+              </CardContent>
+              <CardFooter className="relative z-10">
                 <Link
                   href={WHATSAPP_URL}
                   target="_blank"
