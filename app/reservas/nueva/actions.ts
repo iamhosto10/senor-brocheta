@@ -10,6 +10,7 @@ import {
 } from "@/lib/reservas/disponibilidad";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { construirUrlWhatsApp } from "@/lib/reservas/mensaje";
+import { enviarCorreosReserva } from "@/lib/reservas/email";
 
 const ZONA_IDS = ZONAS.map((z) => z.id) as [string, ...string[]];
 
@@ -84,6 +85,11 @@ export async function crearReserva(input: ReservaInput) {
   if (error || !reserva) {
     return { ok: false as const, error: "No pudimos guardar la reserva. Intenta de nuevo." };
   }
+
+  // La reserva ya quedó guardada; si el correo falla no debe tumbar la confirmación.
+  enviarCorreosReserva(reserva).catch((e) =>
+    console.error("Error enviando correos de reserva:", e)
+  );
 
   return {
     ok: true as const,
