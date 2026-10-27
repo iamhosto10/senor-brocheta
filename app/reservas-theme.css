@@ -884,3 +884,43 @@
   padding: 14px 22px 20px;
   border-top: 1px solid var(--border);
 }
+
+/* ---------- Inicio (Reservar mesa / Consultar mi reserva) ---------- */
+.rt-home-hero {
+  text-align: center;
+  padding: 56px 20px 40px;
+}
+.rt-brand-logo {
+  width: min(260px, 70vw);
+  aspect-ratio: 465 / 246;
+  background-color: var(--text);
+  -webkit-mask-image: url("/images/reservas/brand-logo.png");
+  mask-image: url("/images/reservas/brand-logo.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  margin: 0 auto;
+}
+.rt-home-hero .tagline {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.rt-home-actions {
+  max-width: 380px;
+  margin: 36px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px 60px;
+}
+.rt-home-actions .rt-btn-ghost {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-color: transparent;
+}

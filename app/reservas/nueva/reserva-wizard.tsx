@@ -703,7 +703,7 @@ export function ReservaWizard() {
             Escribir al restaurante por WhatsApp
           </a>
           <Link
-            href="/"
+            href="/reservas"
             className="rt-btn rt-btn-ghost"
             style={{ marginTop: 10, textDecoration: "none" }}
           >

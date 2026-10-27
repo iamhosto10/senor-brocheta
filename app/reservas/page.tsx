@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ReservaWizard } from "./reserva-wizard";
 
 export const metadata: Metadata = {
-  title: "Reserva | Sr. Brocheta",
+  title: "Reservas | Sr. Brocheta",
   description: "Reserva tu mesa en Sr. Brocheta, Valledupar.",
 };
 
-export default function ReservasPage() {
+export default function ReservasHomePage() {
   return (
     <div style={{ minHeight: "100vh" }}>
-      <div className="rt-wrap" style={{ paddingBottom: 0 }}>
-        <div className="rt-topbar">
-          <Link href="/" className="rt-icon-btn" aria-label="Volver al inicio">
-            ←
-          </Link>
-          <span className="rt-topbar-title">SR. BROCHETA</span>
-        </div>
+      <div className="rt-home-hero">
+        <div className="rt-brand-logo" role="img" aria-label="SR. BROCHETA" />
+        <p className="tagline">Reservas</p>
       </div>
-      <ReservaWizard />
+      <div className="rt-home-actions">
+        <Link href="/reservas/nueva" className="rt-btn rt-btn-primary">
+          Reservar mesa
+        </Link>
+        <Link href="/reservas/consultar" className="rt-btn rt-btn-ghost">
+          Consultar mi reserva
+        </Link>
+      </div>
     </div>
   );
 }

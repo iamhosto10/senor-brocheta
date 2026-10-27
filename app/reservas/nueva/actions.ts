@@ -91,21 +91,3 @@ export async function crearReserva(input: ReservaInput) {
     whatsappUrl: construirUrlWhatsApp(reserva),
   };
 }
-
-const telefonoSchema = z.string().trim().min(7).max(20);
-
-export async function buscarReservasPorTelefono(telefono: string) {
-  const parsed = telefonoSchema.safeParse(telefono);
-  if (!parsed.success) return [];
-
-  const admin = createAdminClient();
-  const { data, error } = await admin
-    .from("reservations")
-    .select("codigo, fecha, hora, personas, zona_id, estado, nombre")
-    .eq("telefono", parsed.data)
-    .order("fecha", { ascending: false })
-    .limit(20);
-
-  if (error) return [];
-  return data;
-}
