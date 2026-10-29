@@ -29,6 +29,7 @@ export const ZONAS: Zona[] = [
     desc: "Se adecua a tu grupo · ideal para celebraciones",
     color: "#5B7A3A",
     textColor: "#FFFFFF",
+    img: "/images/reservas/zona1.jpg",
   },
   {
     id: "zona2",
@@ -40,6 +41,7 @@ export const ZONAS: Zona[] = [
     desc: "Amplia · se adecua a tu grupo",
     color: "#DEBF64",
     textColor: "#241A0E",
+    img: "/images/reservas/zona2.jpg",
   },
   {
     id: "zona3",
