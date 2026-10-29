@@ -10,7 +10,7 @@ export const RESERVAS_CONFIG = {
   /** Días de la semana sin reservas (0=domingo … 6=sábado). Vacío = todos los días. */
   closedWeekdays: [] as number[],
   /** Cuánto tiempo ocupa una reserva su mesa (minutos). */
-  tableMinutes: 120,
+  tableMinutes: 90,
   /** Margen de limpieza antes de reasignar una mesa (minutos). */
   turnoverMinutes: 0,
   /** Antelación mínima para reservar (minutos). */
