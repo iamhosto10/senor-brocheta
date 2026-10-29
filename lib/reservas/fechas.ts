@@ -1,8 +1,13 @@
-/** Fecha de hoy en Bogotá (UTC-5), como string "YYYY-MM-DD". */
+/** Fecha de hoy en Bogotá (UTC-5), como string "YYYY-MM-DD", sin depender del huso horario local. */
 export function hoyISO(): string {
-  const now = new Date();
-  const bogota = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-  return bogota.toISOString().slice(0, 10);
+  const fmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Bogota",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const parts = Object.fromEntries(fmt.formatToParts(new Date()).map((p) => [p.type, p.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 /** "2026-10-28" -> "miércoles, 28 de octubre". */

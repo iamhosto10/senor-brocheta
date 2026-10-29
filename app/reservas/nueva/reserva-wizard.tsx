@@ -184,6 +184,7 @@ export function ReservaWizard() {
 
   const [fecha, setFecha] = useState(hoyISO());
   const [personas, setPersonas] = useState(2);
+  const [personasTexto, setPersonasTexto] = useState("2");
   const [horarios, setHorarios] = useState<string[]>([]);
   const [hora, setHora] = useState<string | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -376,19 +377,47 @@ export function ReservaWizard() {
           <div className="rt-field">
             <label>Personas</label>
             <div className="rt-qty">
-              <button type="button" onClick={() => setPersonas((p) => Math.max(1, p - 1))}>
+              <button
+                type="button"
+                onClick={() =>
+                  setPersonas((p) => {
+                    const siguiente = Math.max(1, p - 1);
+                    setPersonasTexto(String(siguiente));
+                    return siguiente;
+                  })
+                }
+              >
                 −
               </button>
               <input
                 type="number"
                 min={1}
                 max={48}
-                value={personas}
-                onChange={(e) =>
-                  setPersonas(Math.min(48, Math.max(1, Number(e.target.value) || 1)))
-                }
+                value={personasTexto}
+                onChange={(e) => {
+                  const raw = e.target.value;
+                  setPersonasTexto(raw);
+                  const n = Number(raw);
+                  if (raw !== "" && !Number.isNaN(n)) {
+                    setPersonas(Math.min(48, Math.max(1, n)));
+                  }
+                }}
+                onBlur={() => {
+                  const limitado = Math.min(48, Math.max(1, Number(personasTexto) || 1));
+                  setPersonas(limitado);
+                  setPersonasTexto(String(limitado));
+                }}
               />
-              <button type="button" onClick={() => setPersonas((p) => Math.min(48, p + 1))}>
+              <button
+                type="button"
+                onClick={() =>
+                  setPersonas((p) => {
+                    const siguiente = Math.min(48, p + 1);
+                    setPersonasTexto(String(siguiente));
+                    return siguiente;
+                  })
+                }
+              >
                 +
               </button>
             </div>
@@ -640,9 +669,8 @@ export function ReservaWizard() {
                 Se aceptan decoraciones pequeñas: bouquets de globos y flores.
               </li>
               <li>
-                <strong>Número de personas</strong>Favor respetar el número de personas en la
-                reserva. Por temas de disponibilidad y comodidad de todos nuestros clientes, no
-                podremos sentar más comensales de los confirmados.
+                <strong>Número de personas</strong>Si llegan más comensales de los confirmados
+                en la reserva, serán ubicados según la disponibilidad del momento.
               </li>
             </ol>
             <p className="rt-cond-outro">
@@ -726,7 +754,7 @@ export function ReservaWizard() {
             className="rt-btn rt-btn-primary"
             style={{ marginTop: 18, textDecoration: "none" }}
           >
-            Escribir al restaurante por WhatsApp
+            Confirma tu reserva al WhatsApp
           </a>
           <Link
             href="/reservas"
