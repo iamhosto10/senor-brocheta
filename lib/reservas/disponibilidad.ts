@@ -54,13 +54,14 @@ export function horariosDelDia(fecha: string): string[] {
   return slots;
 }
 
-/** Unidades de 4 puestos que ocupa un grupo en una zona concreta. */
-function unidadesNecesarias(zona: Zona, personas: number): number | null {
-  if (zona.flexible) return Math.ceil(personas / 4);
-  // Zona de mesas fijas: 1-4 personas usa una mesa de 4, 5-8 una mesa de 8.
-  if (personas <= 4) return 1;
-  if (personas <= 8) return 2;
-  return null; // no cabe en una sola mesa fija
+/**
+ * Unidades de 4 puestos que ocupa un grupo en una zona concreta.
+ * Tanto en zonas flexibles como de mesas fijas, el personal puede juntar varias
+ * mesas para un grupo grande, así que el límite real es la capacidad total de la
+ * zona (validada aparte en zonaTieneCupo), no el tamaño de una sola mesa.
+ */
+function unidadesNecesarias(personas: number): number | null {
+  return Math.ceil(personas / 4);
 }
 
 type ReservaExistente = { hora: string; personas: number; zona_id: string };
@@ -90,12 +91,12 @@ function zonaTieneCupo(
   hora: string,
   ocupacion: ReservaExistente[]
 ): boolean {
-  const necesarias = unidadesNecesarias(zona, personas);
+  const necesarias = unidadesNecesarias(personas);
   if (necesarias === null) return false;
 
   const ocupadasEnZona = ocupacion
     .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
-    .reduce((sum, r) => sum + (unidadesNecesarias(zona, r.personas) ?? 0), 0);
+    .reduce((sum, r) => sum + (unidadesNecesarias(r.personas) ?? 0), 0);
 
   return ocupadasEnZona + necesarias <= capacidadZona(zona) / 4;
 }
@@ -135,11 +136,11 @@ export async function horariosDisponibles(
 
   return slots.filter((hora) =>
     ZONAS.some((zona) => {
-      const necesarias = unidadesNecesarias(zona, personas);
+      const necesarias = unidadesNecesarias(personas);
       if (necesarias === null) return false;
       const ocupadasEnZona = ocupacion
         .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
-        .reduce((sum, r) => sum + (unidadesNecesarias(zona, r.personas) ?? 0), 0);
+        .reduce((sum, r) => sum + (unidadesNecesarias(r.personas) ?? 0), 0);
       return ocupadasEnZona + necesarias <= capacidadZona(zona) / 4;
     })
   );
