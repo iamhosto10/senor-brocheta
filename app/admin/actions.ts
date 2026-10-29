@@ -34,19 +34,28 @@ export async function actualizarEstadoReserva(id: string, estado: string) {
   if (!ESTADOS_VALIDOS.includes(estado)) return { ok: false as const };
 
   const supabase = await createClient();
+  // Una reserva completada o cancelada es un estado final: no se puede reabrir.
   const { data: reserva, error } = await supabase
     .from("reservations")
     .update({ estado })
     .eq("id", id)
+    .in("estado", ["pendiente", "confirmada"])
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
-    // P0001: el trigger de capacidad rechazó el cambio (p. ej. reactivar una
-    // reserva cancelada/completada cuando la zona ya se llenó para esa hora).
+    // P0001: el trigger de capacidad rechazó el cambio (p. ej. la zona ya se
+    // llenó para esa hora).
     const mensaje =
       error.code === "P0001" ? error.message : "No pudimos actualizar la reserva.";
     return { ok: false as const, error: mensaje };
+  }
+
+  if (!reserva) {
+    return {
+      ok: false as const,
+      error: "Esta reserva ya está completada o cancelada y no se puede modificar.",
+    };
   }
 
   // Avisa al cliente por correo cuando pasa a confirmada, cancelada o completada.

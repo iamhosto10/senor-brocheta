@@ -53,6 +53,7 @@ export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
   const [pending, startTransition] = useTransition();
 
   const deco = DECORACIONES.find((d) => d.id === reserva.decoracion_id);
+  const bloqueada = estado === "completada" || estado === "cancelada";
 
   function cambiarEstado(nuevo: string) {
     const anterior = estado;
@@ -71,19 +72,23 @@ export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
       <div className="rt-card">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
           <div className="rt-ticket-code">{reserva.codigo}</div>
-          <select
-            value={estado}
-            disabled={pending}
-            onChange={(e) => cambiarEstado(e.target.value)}
-            className={`rt-badge rt-badge-${estado}`}
-            style={{ border: "none", cursor: "pointer" }}
-          >
-            {ESTADOS.map((e) => (
-              <option key={e} value={e}>
-                {ESTADO_LABEL[e]}
-              </option>
-            ))}
-          </select>
+          {bloqueada ? (
+            <span className={`rt-badge rt-badge-${estado}`}>{ESTADO_LABEL[estado]}</span>
+          ) : (
+            <select
+              value={estado}
+              disabled={pending}
+              onChange={(e) => cambiarEstado(e.target.value)}
+              className={`rt-badge rt-badge-${estado}`}
+              style={{ border: "none", cursor: "pointer" }}
+            >
+              {ESTADOS.map((e) => (
+                <option key={e} value={e}>
+                  {ESTADO_LABEL[e]}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         <div className="rt-detail-list">
