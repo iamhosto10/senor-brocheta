@@ -651,8 +651,8 @@ export function ReservaWizard() {
                 reserva se cancela y la mesa será asignada según disponibilidad.
               </li>
               <li>
-                <strong>Tiempo en mesa</strong>El tiempo aproximado de uso de la mesa es de 1
-                hora y media.
+                <strong>Tiempo en mesa</strong>El tiempo aproximado de uso de la mesa es de 2
+                horas.
               </li>
               <li>
                 <strong>Cancelaciones y cambios</strong>Cualquier cancelación o modificación de
