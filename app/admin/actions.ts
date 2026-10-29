@@ -49,8 +49,11 @@ export async function actualizarEstadoReserva(id: string, estado: string) {
     return { ok: false as const, error: mensaje };
   }
 
-  // Avisa al cliente por correo solo cuando pasa a confirmada o cancelada.
-  if (reserva && (estado === "confirmada" || estado === "cancelada")) {
+  // Avisa al cliente por correo cuando pasa a confirmada, cancelada o completada.
+  if (
+    reserva &&
+    (estado === "confirmada" || estado === "cancelada" || estado === "completada")
+  ) {
     try {
       await enviarCorreoCambioEstado(reserva, estado);
     } catch (e) {

@@ -7,6 +7,9 @@ import { formatearFechaLarga, fmtTime12 } from "./fechas";
 
 const SITE_URL = "https://srbrocheta.com";
 const LOGO_URL = `${SITE_URL}/images/logo.jpg`;
+const ENCUESTA_QR_URL = `${SITE_URL}/images/reservas/encuesta-qr.png`;
+const ENCUESTA_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSee94W9gAC8Q5d8JxN87s9cXp_B1IUsiwJUAeZGgo00LIG6tw/viewform";
 const STAFF_EMAIL = "contacto@srbrocheta.com";
 const FROM_EMAIL = "Sr. Brocheta <reservas@srbrocheta.com>";
 
@@ -39,9 +42,10 @@ function plantillaBase(opts: {
   subtitulo: string;
   filasHtml: string;
   notaFinal: string;
+  extraHtml?: string;
   cta?: { texto: string; url: string };
 }): string {
-  const { titulo, subtitulo, filasHtml, notaFinal, cta } = opts;
+  const { titulo, subtitulo, filasHtml, notaFinal, extraHtml, cta } = opts;
   return `<!doctype html>
 <html lang="es">
   <body style="margin:0;padding:0;background:#f5efe2;font-family:Arial,Helvetica,sans-serif;">
@@ -67,6 +71,7 @@ function plantillaBase(opts: {
             <tr>
               <td style="padding:20px 24px 28px;">
                 <p style="margin:0;font-size:13px;color:#7a6a4e;line-height:1.5;">${notaFinal}</p>
+                ${extraHtml ?? ""}
                 ${
                   cta
                     ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;">
@@ -142,7 +147,7 @@ function emailClienteHTML(reserva: ReservaParaCorreo): string {
 
 function emailEstadoHTML(
   reserva: ReservaParaCorreo,
-  estado: "confirmada" | "cancelada"
+  estado: "confirmada" | "cancelada" | "completada"
 ): string {
   const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
   if (estado === "confirmada") {
@@ -155,6 +160,19 @@ function emailEstadoHTML(
       cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
     });
   }
+  if (estado === "completada") {
+    return plantillaBase({
+      titulo: "¡Gracias por visitarnos! 🙌",
+      subtitulo: `Hola ${reserva.nombre}, esperamos que hayas disfrutado tu experiencia en Sr. Brocheta.`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Tu opinión nos ayuda a mejorar cada día. Escanea el código para contarnos cómo te fue.",
+      extraHtml: `
+        <img src="${ENCUESTA_QR_URL}" width="180" height="180" alt="Código QR para la encuesta" style="display:block;margin:18px auto 14px;" />
+        <p style="margin:0 0 14px;font-size:13px;color:#b8a67e;font-weight:700;text-align:center;">o</p>`,
+      cta: { texto: "Compartir mi experiencia", url: ENCUESTA_FORM_URL },
+    });
+  }
   return plantillaBase({
     titulo: "Tu reserva fue cancelada",
     subtitulo: `Hola ${reserva.nombre}, tu reserva quedó cancelada.`,
@@ -165,22 +183,25 @@ function emailEstadoHTML(
   });
 }
 
-/** Avisa al cliente cuando el staff confirma o cancela su reserva desde el panel. */
+/** Avisa al cliente cuando el staff confirma, cancela o completa su reserva desde el panel. */
 export async function enviarCorreoCambioEstado(
   reserva: ReservaParaCorreo,
-  estado: "confirmada" | "cancelada"
+  estado: "confirmada" | "cancelada" | "completada"
 ) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || !reserva.email) return;
+
+  const asuntos: Record<typeof estado, string> = {
+    confirmada: `¡Confirmada! Tu reserva en Sr. Brocheta · ${reserva.codigo}`,
+    cancelada: `Tu reserva en Sr. Brocheta fue cancelada · ${reserva.codigo}`,
+    completada: `¡Gracias por visitarnos! · Sr. Brocheta`,
+  };
 
   const resend = new Resend(apiKey);
   const resultado = await resend.emails.send({
     from: FROM_EMAIL,
     to: reserva.email,
-    subject:
-      estado === "confirmada"
-        ? `¡Confirmada! Tu reserva en Sr. Brocheta · ${reserva.codigo}`
-        : `Tu reserva en Sr. Brocheta fue cancelada · ${reserva.codigo}`,
+    subject: asuntos[estado],
     html: emailEstadoHTML(reserva, estado),
   });
 
