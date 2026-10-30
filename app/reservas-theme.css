@@ -654,7 +654,7 @@
 }
 
 .rt-lead {
-  margin: 6px 0 20px;
+  margin: 10px 0 22px;
   font-size: 0.9rem;
   color: var(--text-muted);
 }
@@ -711,7 +711,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 20px 0 10px;
+  margin: 28px 0 14px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -719,7 +719,7 @@
   color: var(--text-muted);
 }
 .rt-zone-group:first-child .rt-zone-group-title {
-  margin-top: 4px;
+  margin-top: 10px;
 }
 .rt-zone-group-title svg {
   width: 18px;
