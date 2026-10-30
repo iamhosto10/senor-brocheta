@@ -115,6 +115,9 @@
   padding: 26px;
   box-shadow: var(--shadow);
 }
+.rt-card h2 {
+  margin: 0 0 4px;
+}
 
 .rt-btn {
   display: inline-flex;
@@ -654,7 +657,7 @@
 }
 
 .rt-lead {
-  margin: 10px 0 22px;
+  margin: 14px 0 28px;
   font-size: 0.9rem;
   color: var(--text-muted);
 }
@@ -711,7 +714,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 28px 0 14px;
+  margin: 36px 0 18px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -719,7 +722,7 @@
   color: var(--text-muted);
 }
 .rt-zone-group:first-child .rt-zone-group-title {
-  margin-top: 10px;
+  margin-top: 16px;
 }
 .rt-zone-group-title svg {
   width: 18px;
