@@ -38,12 +38,20 @@ function ahoraBogota() {
   };
 }
 
+/** Día de la semana (0=domingo … 6=sábado) de una fecha "YYYY-MM-DD", sin depender del huso horario del servidor. */
+function diaSemana(fecha: string): number {
+  const [y, m, d] = fecha.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+}
+
 /** Todos los horarios de inicio posibles para una fecha, respetando la antelación mínima. */
 export function horariosDelDia(fecha: string): string[] {
   const { fecha: hoy, minutos: ahoraMin } = ahoraBogota();
   const slots: string[] = [];
+  const ventanas =
+    RESERVAS_CONFIG.serviceWindowsPorDia[diaSemana(fecha)] ?? RESERVAS_CONFIG.serviceWindows;
 
-  for (const [inicio, fin] of RESERVAS_CONFIG.serviceWindows) {
+  for (const [inicio, fin] of ventanas) {
     const inicioMin = parseHora(inicio);
     const finMin = parseHora(fin);
     for (let m = inicioMin; m < finMin; m += 30) {
