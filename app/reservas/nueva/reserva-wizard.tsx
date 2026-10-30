@@ -748,9 +748,10 @@ export function ReservaWizard() {
                 <ol className="rt-cond-list">
                   <li>
                     <strong>Confirmación</strong>Este formulario es una
-                    solicitud: por favor no confirme su reserva por este medio.
-                    La confirmación oficial será realizada directamente por el
-                    restaurante.
+                    solicitud, no una reserva confirmada. Es muy importante
+                    que al finalizar hagas clic en el botón para escribirnos
+                    por WhatsApp: así el restaurante confirma tu reserva
+                    directamente contigo.
                   </li>
                   <li>
                     <strong>Anticipación</strong>Las reservas se solicitan con
