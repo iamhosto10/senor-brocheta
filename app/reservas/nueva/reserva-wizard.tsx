@@ -740,55 +740,57 @@ export function ReservaWizard() {
 
             <section className="rt-conditions">
               <h3>Condiciones de la reserva</h3>
-              <p className="rt-cond-intro">
+              <p className="rt-cond-intro ">
                 A continuación, le compartimos nuestras condiciones para
                 reservas. Por favor léalas antes de continuar.
               </p>
-              <ol className="rt-cond-list">
-                <li>
-                  <strong>Confirmación</strong>Este formulario es una solicitud:
-                  por favor no confirme su reserva por este medio. La
-                  confirmación oficial será realizada directamente por el
-                  restaurante.
-                </li>
-                <li>
-                  <strong>Anticipación</strong>Las reservas se solicitan con un
-                  mínimo de 3 horas de anticipación.
-                </li>
-                <li>
-                  <strong>Tiempo de espera</strong>La reserva se mantiene por 15
-                  minutos después de la hora acordada (por motivo de las
-                  festividades). Pasado este tiempo, la reserva se cancela y la
-                  mesa será asignada según disponibilidad.
-                </li>
-                <li>
-                  <strong>Tiempo en mesa</strong>El tiempo aproximado de uso de
-                  la mesa es de 2 horas.
-                </li>
-                <li>
-                  <strong>Cancelaciones y cambios</strong>Cualquier cancelación
-                  o modificación de la reserva debe informarse al restaurante
-                  por WhatsApp.
-                </li>
-                <li>
-                  <strong>Música para celebraciones</strong>Si desea traer
-                  música en vivo (mariachi, grupo vallenato, etc.) se debe pagar
-                  un valor de $
-                  {RESERVAS_CONFIG.bandaMusicalCobro.toLocaleString("es-CO")}{" "}
-                  para permitir su ingreso, y debe solicitar autorización previa
-                  al restaurante.
-                </li>
-                <li>
-                  <strong>Decoraciones</strong>Las decoraciones voluminosas no
-                  están permitidas. Se aceptan decoraciones pequeñas: bouquets
-                  de globos y flores.
-                </li>
-                <li>
-                  <strong>Número de personas</strong>Si llegan más comensales de
-                  los confirmados en la reserva, serán ubicados según la
-                  disponibilidad del momento.
-                </li>
-              </ol>
+              <div className="my-2.5">
+                <ol className="rt-cond-list">
+                  <li>
+                    <strong>Confirmación</strong>Este formulario es una
+                    solicitud: por favor no confirme su reserva por este medio.
+                    La confirmación oficial será realizada directamente por el
+                    restaurante.
+                  </li>
+                  <li>
+                    <strong>Anticipación</strong>Las reservas se solicitan con
+                    un mínimo de 3 horas de anticipación.
+                  </li>
+                  <li>
+                    <strong>Tiempo de espera</strong>La reserva se mantiene por
+                    15 minutos después de la hora acordada (por motivo de las
+                    festividades). Pasado este tiempo, la reserva se cancela y
+                    la mesa será asignada según disponibilidad.
+                  </li>
+                  <li>
+                    <strong>Tiempo en mesa</strong>El tiempo aproximado de uso
+                    de la mesa es de 2 horas.
+                  </li>
+                  <li>
+                    <strong>Cancelaciones y cambios</strong>Cualquier
+                    cancelación o modificación de la reserva debe informarse al
+                    restaurante por WhatsApp.
+                  </li>
+                  <li>
+                    <strong>Música para celebraciones</strong>Si desea traer
+                    música en vivo (mariachi, grupo vallenato, etc.) se debe
+                    pagar un valor de $
+                    {RESERVAS_CONFIG.bandaMusicalCobro.toLocaleString("es-CO")}{" "}
+                    para permitir su ingreso, y debe solicitar autorización
+                    previa al restaurante.
+                  </li>
+                  <li>
+                    <strong>Decoraciones</strong>Las decoraciones voluminosas no
+                    están permitidas. Se aceptan decoraciones pequeñas: bouquets
+                    de globos y flores.
+                  </li>
+                  <li>
+                    <strong>Número de personas</strong>Si llegan más comensales
+                    de los confirmados en la reserva, serán ubicados según la
+                    disponibilidad del momento.
+                  </li>
+                </ol>
+              </div>
               <p className="rt-cond-outro">
                 Agradecemos su comprensión y quedamos atentos para confirmar su
                 solicitud. ¡Será un placer atenderle!
