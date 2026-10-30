@@ -714,7 +714,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 36px 0 18px;
+  margin: 40px 0 22px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -722,7 +722,7 @@
   color: var(--text-muted);
 }
 .rt-zone-group:first-child .rt-zone-group-title {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 .rt-zone-group-title svg {
   width: 18px;

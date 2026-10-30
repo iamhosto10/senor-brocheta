@@ -515,7 +515,7 @@ export function ReservaWizard() {
 
             {grupos.map(({ title, items }) => (
               <section key={title} className="rt-zone-group">
-                <h3 className="rt-zone-group-title my-3">
+                <h3 className="rt-zone-group-title py-2">
                   {title === "Sin climatización" ? <SunIcon /> : <IndoorIcon />}
                   <span>{title.toUpperCase()}</span>
                 </h3>
