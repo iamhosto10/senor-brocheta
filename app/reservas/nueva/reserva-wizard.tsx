@@ -210,10 +210,15 @@ export function ReservaWizard() {
 
   useEffect(() => {
     startTransition(async () => {
-      setHora(null);
       setHorarios(await horariosParaFecha(fecha, personas));
     });
   }, [fecha, personas]);
+
+  // Al cambiar la fecha, la hora elegida pudo quedar fuera de los horarios del nuevo día.
+  useEffect(() => {
+    setHora(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fecha]);
 
   const diasEstrip = Array.from({ length: 7 }, (_, i) => {
     const d = parseYmd(hoyISO());
