@@ -140,7 +140,7 @@ function emailClienteHTML(reserva: ReservaParaCorreo): string {
     subtitulo: `Hola ${reserva.nombre}, esta es la información de tu reserva.`,
     filasHtml: filasReserva(reserva),
     notaFinal:
-      "Tu reserva queda <b>pendiente</b>: nuestro equipo la confirmará directamente contigo por WhatsApp. Si necesitas cancelarla o modificarla, escríbenos.",
+      "Tu reserva queda <b>pendiente</b>: ahora es importante que confirmes tu reserva dando clic al botón de abajo. De esta forma nuestro equipo se contactará directamente contigo al confirmar tu solicitud. Si necesitas cancelar o modificarla, nos avisas por el WhatsApp en donde se comunicaron contigo al confirmar dicha reserva.",
     cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
   });
 }
