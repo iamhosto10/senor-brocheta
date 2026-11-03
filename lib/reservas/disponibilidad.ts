@@ -1,6 +1,7 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { RESERVAS_CONFIG } from "./config";
+import { esFestivoColombia } from "./festivos";
 import { ZONAS, capacidadZona, type Zona } from "./zonas";
 
 const ESTADOS_ACTIVOS = ["pendiente", "confirmada"];
@@ -48,8 +49,9 @@ function diaSemana(fecha: string): number {
 export function horariosDelDia(fecha: string): string[] {
   const { fecha: hoy, minutos: ahoraMin } = ahoraBogota();
   const slots: string[] = [];
-  const ventanas =
-    RESERVAS_CONFIG.serviceWindowsPorDia[diaSemana(fecha)] ?? RESERVAS_CONFIG.serviceWindows;
+  const ventanas = esFestivoColombia(fecha)
+    ? RESERVAS_CONFIG.serviceWindowsFestivos
+    : RESERVAS_CONFIG.serviceWindowsPorDia[diaSemana(fecha)] ?? RESERVAS_CONFIG.serviceWindows;
 
   for (const [inicio, fin] of ventanas) {
     const inicioMin = parseHora(inicio);

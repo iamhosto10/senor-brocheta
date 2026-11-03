@@ -4,6 +4,14 @@
  * - abierto todos los días (no solo lunes a viernes)
  * - número de WhatsApp actualizado
  */
+/**
+ * Horario reducido de 5pm a 7pm: se usa tanto para los días de mayor volumen (viernes,
+ * sábado, domingo) como para los festivos colombianos (ver lib/reservas/festivos.ts).
+ * Un solo valor para los dos casos a propósito — hoy son el mismo horario; si alguna vez
+ * el negocio quiere separarlos, se desdobla en dos constantes en este archivo.
+ */
+const HORARIO_REDUCIDO: [string, string][] = [["17:00", "19:00"]];
+
 export const RESERVAS_CONFIG = {
   /** Horario de atención: de qué hora a qué hora se reciben reservas. */
   serviceWindows: [["17:00", "23:00"]] as [string, string][],
@@ -13,10 +21,14 @@ export const RESERVAS_CONFIG = {
    * Días de la semana: 0=domingo … 6=sábado.
    */
   serviceWindowsPorDia: {
-    0: [["17:00", "19:00"]],
-    5: [["17:00", "19:00"]],
-    6: [["17:00", "19:00"]],
+    0: HORARIO_REDUCIDO,
+    5: HORARIO_REDUCIDO,
+    6: HORARIO_REDUCIDO,
   } as Record<number, [string, string][]>,
+  /** Mismo horario reducido, pero disparado por un festivo colombiano en vez del día de la
+   * semana. Un festivo entre semana (p. ej. un martes) queda restringido igual que un
+   * viernes/sábado/domingo normal. */
+  serviceWindowsFestivos: HORARIO_REDUCIDO,
   /** Días de la semana sin reservas (0=domingo … 6=sábado). Vacío = todos los días. */
   closedWeekdays: [] as number[],
   /** Cuánto tiempo ocupa una reserva su mesa (minutos). */
