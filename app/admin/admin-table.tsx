@@ -83,23 +83,27 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
   const [filtroHasta, setFiltroHasta] = useState("");
   const [filtroZona, setFiltroZona] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("");
+  const [filtroCodigo, setFiltroCodigo] = useState("");
   const [pending, startTransition] = useTransition();
 
   const filtradas = useMemo(() => {
+    const codigoBuscado = filtroCodigo.trim().toLowerCase();
     return reservas.filter((r) => {
       if (filtroDesde && r.fecha < filtroDesde) return false;
       if (filtroHasta && r.fecha > filtroHasta) return false;
       if (filtroZona && r.zona_id !== filtroZona) return false;
       if (filtroEstado && r.estado !== filtroEstado) return false;
+      if (codigoBuscado && !r.codigo.toLowerCase().includes(codigoBuscado)) return false;
       return true;
     });
-  }, [reservas, filtroDesde, filtroHasta, filtroZona, filtroEstado]);
+  }, [reservas, filtroDesde, filtroHasta, filtroZona, filtroEstado, filtroCodigo]);
 
   function limpiarFiltros() {
     setFiltroDesde("");
     setFiltroHasta("");
     setFiltroZona("");
     setFiltroEstado("");
+    setFiltroCodigo("");
   }
 
   function cambiarEstado(id: string, estado: string, e: React.SyntheticEvent) {
@@ -125,6 +129,15 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
   return (
     <div>
       <div className="rt-filters">
+        <div>
+          <label>Código</label>
+          <input
+            type="text"
+            placeholder="Buscar por código"
+            value={filtroCodigo}
+            onChange={(e) => setFiltroCodigo(e.target.value)}
+          />
+        </div>
         <div>
           <label>Desde</label>
           <input
