@@ -750,9 +750,9 @@ export function ReservaWizard() {
                 <ol className="rt-cond-list">
                   <li>
                     <strong>Confirmación</strong>Este formulario es una
-                    solicitud, no una reserva confirmada. Es muy importante
-                    que al finalizar hagas clic en el botón para escribirnos
-                    por WhatsApp: así el restaurante confirma tu reserva
+                    solicitud, no una reserva confirmada. Es muy importante que
+                    al finalizar hagas clic en el botón para escribirnos por
+                    WhatsApp: así el restaurante confirma tu reserva
                     directamente contigo.
                   </li>
                   <li>
@@ -878,9 +878,12 @@ export function ReservaWizard() {
                 fontSize: "0.9rem",
               }}
             >
-              Tu reserva queda <b>pendiente</b>: el restaurante la confirmará
-              directamente contigo. Si necesitas cancelarla o modificarla,
-              avísanos por WhatsApp.
+              Tu reserva queda <b>pendiente</b>: ahora es importante que
+              confirmes tu reserva dando clic al botón de abajo. De esta forma
+              nuestro equipo se contactará directamente contigo al confirmar tu
+              solicitud. Si necesitas cancelar o modificarla, nos avisas por el
+              WhatsApp en donde se comunicaron contigo al confirmar dicha
+              reserva.
             </p>
             <p style={{ color: "var(--text-muted)", marginTop: 14 }}>
               Tu código de reserva es{" "}
