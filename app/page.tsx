@@ -23,7 +23,7 @@ const favoritos = [
     precio: "$32.000",
   },
   {
-    nombre: "Burguer Sr. Broche",
+    nombre: "Burger Sr.Broche",
     descripcion: "Hamburguesa de la casa, receta propia Sr. Brocheta.",
     precio: "$29.000",
   },
