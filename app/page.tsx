@@ -58,26 +58,32 @@ const galeria = [
   {
     src: "/images/reservas/zona1.jpg",
     alt: "Salón principal de Sr. Brocheta",
+    href: INSTAGRAM_URL,
   },
   {
     src: "/images/equipo-celebracion.jpg",
     alt: "Equipo de Sr. Brocheta celebrando en el local",
+    href: "https://www.instagram.com/sr.brocheta/reel/DYVmrX8Ref-/",
   },
   {
     src: "/images/reservas/zona4.jpg",
     alt: "Mural y aviso de Sr. Brocheta en el local",
+    href: INSTAGRAM_URL,
   },
   {
     src: "/images/equipo-cocina.jpg",
     alt: "Equipo de cocina de Sr. Brocheta preparando los pedidos",
+    href: "https://www.instagram.com/sr.brocheta/p/DY-3tGLkaiJ/",
   },
   {
     src: "/images/reservas/zona2.jpg",
     alt: "Zona amplia del restaurante",
+    href: INSTAGRAM_URL,
   },
   {
     src: "/images/bolsa-marca.jpg",
     alt: "Pedido empacado con el logo de Sr. Brocheta",
+    href: INSTAGRAM_URL,
   },
 ];
 
@@ -317,7 +323,7 @@ export default function Home() {
             {galeria.map((img) => (
               <Link
                 key={img.src}
-                href={INSTAGRAM_URL}
+                href={img.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Ver en Instagram"
