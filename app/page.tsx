@@ -56,6 +56,33 @@ const sedes = [
 
 const galeria = [
   {
+    src: "/images/reservas/zona1.jpg",
+    alt: "Salón principal de Sr. Brocheta",
+  },
+  {
+    src: "/images/equipo-celebracion.jpg",
+    alt: "Equipo de Sr. Brocheta celebrando en el local",
+  },
+  {
+    src: "/images/reservas/zona4.jpg",
+    alt: "Mural y aviso de Sr. Brocheta en el local",
+  },
+  {
+    src: "/images/equipo-cocina.jpg",
+    alt: "Equipo de cocina de Sr. Brocheta preparando los pedidos",
+  },
+  {
+    src: "/images/reservas/zona2.jpg",
+    alt: "Zona amplia del restaurante",
+  },
+  {
+    src: "/images/bolsa-marca.jpg",
+    alt: "Pedido empacado con el logo de Sr. Brocheta",
+  },
+];
+
+const platosGaleria = [
+  {
     src: "/images/platos/burger-sr-broche.jpg",
     alt: "Burger Sr.Broche",
   },
@@ -217,8 +244,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Nosotros / Galería */}
-      <section id="nosotros" className="scroll-mt-16 border-y border-gold/15 bg-secondary/20">
+      {/* Galería de platos */}
+      <section id="galeria" className="scroll-mt-16 border-y border-gold/15 bg-secondary/20">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SectionHeading
+            eyebrow="Para antojarte"
+            title="Galería"
+            description="Una muestra de lo que sale de nuestra cocina. Pide el tuyo por WhatsApp o reserva tu mesa."
+          />
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {platosGaleria.map((img) => (
+              <div
+                key={img.src}
+                className="group relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              href={MENU_URL}
+              target="_blank"
+              className={cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85")}
+            >
+              Ver el menú completo
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Nosotros */}
+      <section id="nosotros" className="scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
           <SectionHeading
             eyebrow="Así somos"

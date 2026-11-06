@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 const NAV_LINKS = [
   { href: "#inicio", label: "Inicio" },
   { href: "#favoritos", label: "Menú" },
+  { href: "#galeria", label: "Galería" },
   { href: "/reservas/nueva", label: "Reservas" },
   { href: "#nosotros", label: "Nosotros" },
   { href: "#ubicacion", label: "Ubicación" },
