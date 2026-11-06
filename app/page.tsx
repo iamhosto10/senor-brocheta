@@ -231,14 +231,13 @@ export default function Home() {
           </div>
           <div className="mt-10 text-center">
             <Link
-              href={MENU_URL}
-              target="_blank"
+              href="/reservas/nueva"
               className={cn(
                 heroButton,
                 "bg-primary text-primary-foreground hover:bg-primary/85"
               )}
             >
-              Ver el menú completo
+              Reserva tu mesa
             </Link>
           </div>
         </div>
