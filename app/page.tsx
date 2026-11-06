@@ -81,6 +81,33 @@ const galeria = [
   },
 ];
 
+const zonasGaleria = [
+  {
+    src: "/images/reservas/zona1.jpg",
+    alt: "Salón principal de Sr. Brocheta",
+  },
+  {
+    src: "/images/reservas/zona3.jpg",
+    alt: "Entrada del local Sr. Brocheta",
+  },
+  {
+    src: "/images/reservas/zona4.jpg",
+    alt: "Mural y aviso de Sr. Brocheta en el local",
+  },
+  {
+    src: "/images/reservas/zona5.jpg",
+    alt: "Aviso dorado de Sr. Brocheta",
+  },
+  {
+    src: "/images/reservas/decoraciones/medio-arco.jpg",
+    alt: "Decoración de celebración en Sr. Brocheta",
+  },
+  {
+    src: "/images/reservas/decoraciones/buquet.jpg",
+    alt: "Mesa decorada para celebración en Sr. Brocheta",
+  },
+];
+
 const platosGaleria = [
   {
     src: "/images/platos/burger-sr-broche.jpg",
@@ -171,35 +198,34 @@ export default function Home() {
 
       {/* Bienvenida */}
       <section className="border-y border-gold/15 bg-secondary/20">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-20 md:grid-cols-2">
-          <div className="relative order-2 aspect-[4/3] overflow-hidden rounded-md ring-1 ring-gold/20 md:order-1">
-            <Image
-              src="/images/reservas/zona4.jpg"
-              alt="Aviso de Sr. Brocheta en el local"
-              fill
-              className="object-cover"
-            />
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SectionHeading
+            eyebrow="Desde Valledupar"
+            title="Bienvenidos a Sr. Brocheta"
+            description="Nacimos de una receta de familia y un chuzo que no tardó en hacerse conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a diario y un mismo compromiso: comida urbana premium, servida rápido y sin perder el sabor de casa."
+          />
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {zonasGaleria.map((img) => (
+              <div
+                key={img.src}
+                className="group relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            ))}
           </div>
-          <div className="order-1 flex flex-col items-start text-left md:order-2">
-            <span className="text-xs font-semibold tracking-[0.25em] text-gold uppercase">
-              Desde Valledupar
-            </span>
-            <h2 className="mt-2 font-display text-3xl tracking-wide text-foreground uppercase sm:text-4xl">
-              Bienvenidos a Sr. Brocheta
-            </h2>
-            <span className="mt-3 h-[3px] w-14 rounded-full bg-primary" aria-hidden />
-            <p className="mt-5 text-pretty text-foreground/80">
-              Nacimos de una receta de familia y un chuzo que no tardó en
-              hacerse conocido en la ciudad. Hoy somos tres sedes, un equipo
-              que crece a diario y un mismo compromiso: comida urbana
-              premium, servida rápido y sin perder el sabor de casa.
-            </p>
+          <div className="mt-10 text-center">
             <Link
               href={MENU_URL}
               target="_blank"
               className={cn(
                 heroButton,
-                "mt-6 bg-primary text-primary-foreground hover:bg-primary/85"
+                "bg-primary text-primary-foreground hover:bg-primary/85"
               )}
             >
               Ver el menú completo
