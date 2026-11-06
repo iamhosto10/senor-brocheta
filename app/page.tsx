@@ -196,7 +196,7 @@ export default function Home() {
                   <h3 className="font-display text-lg tracking-wide text-foreground">
                     {plato.nombre}
                   </h3>
-                  <span className="shrink-0 font-semibold text-primary">
+                  <span className="shrink-0 font-semibold text-white">
                     {plato.precio}
                   </span>
                 </div>
