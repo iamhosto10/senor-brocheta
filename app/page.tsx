@@ -16,21 +16,25 @@ const favoritos = [
     nombre: "La Salchipapa de Ana",
     descripcion: "Nuestro plato insignia, el que nos hizo conocidos.",
     precio: "$32.000",
+    imagen: "/images/platos/salchipapa.jpg",
   },
   {
     nombre: "Burger Sr.Broche",
     descripcion: "Hamburguesa de la casa, receta propia Sr. Brocheta.",
     precio: "$29.000",
+    imagen: "/images/platos/burger-sr-broche.jpg",
   },
   {
     nombre: "Chuzopan de la Casa",
     descripcion: "Chuzo desgranado en pan, al estilo de la casa.",
     precio: "$30.000",
+    imagen: "/images/platos/chuzopan.jpg",
   },
   {
     nombre: "Picada Sr. Brocheta Para Dos",
     descripcion: "Para compartir: carnes, pollo y acompañantes.",
     precio: "$50.000",
+    imagen: "/images/platos/picada-para-dos.jpg",
   },
 ];
 
@@ -242,7 +246,7 @@ export default function Home() {
 
       {/* Favoritos */}
       <section id="favoritos" className="scroll-mt-16">
-        <div className="mx-auto w-full max-w-4xl px-5 py-20">
+        <div className="mx-auto w-full max-w-5xl px-5 py-20">
           <SectionHeading
             eyebrow="Algunos"
             title="Favoritos"
@@ -250,18 +254,31 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-x-10 gap-y-7 sm:grid-cols-2">
             {favoritos.map((plato) => (
-              <div key={plato.nombre} className="border-b border-gold/20 pb-4">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="font-display text-lg tracking-wide text-foreground">
-                    {plato.nombre}
-                  </h3>
-                  <span className="shrink-0 font-semibold text-white">
-                    {plato.precio}
-                  </span>
+              <div
+                key={plato.nombre}
+                className="flex items-center gap-4 border-b border-gold/20 pb-4"
+              >
+                <div className="relative size-20 shrink-0 overflow-hidden rounded-md ring-1 ring-gold/20 sm:size-24">
+                  <Image
+                    src={plato.imagen}
+                    alt={plato.nombre}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <p className="mt-1.5 text-sm text-foreground/70">
-                  {plato.descripcion}
-                </p>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h3 className="font-display text-lg tracking-wide text-foreground">
+                      {plato.nombre}
+                    </h3>
+                    <span className="shrink-0 font-semibold text-white">
+                      {plato.precio}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-sm text-foreground/70">
+                    {plato.descripcion}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
