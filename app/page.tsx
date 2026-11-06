@@ -56,28 +56,28 @@ const sedes = [
 
 const galeria = [
   {
-    src: "/images/reservas/zona1.jpg",
-    alt: "Salón principal de Sr. Brocheta",
+    src: "/images/platos/burger-sr-broche.jpg",
+    alt: "Burger Sr.Broche",
   },
   {
-    src: "/images/equipo-celebracion.jpg",
-    alt: "Equipo de Sr. Brocheta celebrando en el local",
+    src: "/images/platos/chuzopan.jpg",
+    alt: "Chuzopán a la parrilla",
   },
   {
-    src: "/images/reservas/zona4.jpg",
-    alt: "Mural y aviso de Sr. Brocheta en el local",
+    src: "/images/platos/triple-carne.jpeg",
+    alt: "Hamburguesa triple carne",
   },
   {
-    src: "/images/equipo-cocina.jpg",
-    alt: "Equipo de cocina de Sr. Brocheta preparando los pedidos",
+    src: "/images/platos/chicken-criss.jpg",
+    alt: "Burger Chicken Criss",
   },
   {
-    src: "/images/reservas/zona2.jpg",
-    alt: "Zona amplia del restaurante",
+    src: "/images/platos/mazorca-desgranada.jpg",
+    alt: "Mazorca desgranada Sr.Brocheta",
   },
   {
-    src: "/images/bolsa-marca.jpg",
-    alt: "Pedido empacado con el logo de Sr. Brocheta",
+    src: "/images/platos/combo-bacon.jpeg",
+    alt: "Combo hamburguesa bacon y bebida",
   },
 ];
 
