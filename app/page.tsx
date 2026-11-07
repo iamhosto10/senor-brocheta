@@ -141,7 +141,7 @@ export default function Home() {
             {favoritos.map((plato) => (
               <div key={plato.nombre} className="flex items-baseline justify-between gap-4 py-3.5">
                 <div className="text-left">
-                  <h3 className="font-display text-base tracking-wide text-foreground">
+                  <h3 className="font-sans text-base font-bold tracking-wide text-foreground">
                     {plato.nombre}
                   </h3>
                   <p className="mt-0.5 text-sm text-foreground/60">{plato.descripcion}</p>
@@ -236,7 +236,7 @@ export default function Home() {
                   aria-label={`Ver ${sede.nombre} en Google Maps`}
                   className="absolute inset-0 z-0 rounded-[inherit]"
                 />
-                <h3 className="pointer-events-none relative z-10 font-display text-lg tracking-wide text-foreground">
+                <h3 className="pointer-events-none relative z-10 font-sans text-lg font-bold tracking-wide text-foreground">
                   {sede.nombre}
                 </h3>
                 <span className="pointer-events-none relative z-10 mt-2 h-[2px] w-8 bg-primary" aria-hidden />
@@ -259,7 +259,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-background">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-2 px-5 pt-16 pb-10 text-center">
-          <span className="font-display text-3xl tracking-wide text-foreground/15 uppercase sm:text-4xl">
+          <span className="font-sans text-3xl font-bold tracking-wide text-foreground/15 uppercase sm:text-4xl">
             Sr. Brocheta
           </span>
           <span className="text-xs tracking-[0.3em] text-foreground/20 uppercase">

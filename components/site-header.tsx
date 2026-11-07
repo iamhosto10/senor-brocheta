@@ -92,7 +92,7 @@ export function SiteHeader({ whatsappUrl, instagramUrl }: { whatsappUrl: string;
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="font-display text-xl tracking-wide text-foreground uppercase transition-colors hover:text-gold sm:text-2xl"
+              className="font-sans text-xl font-bold tracking-wide text-foreground uppercase transition-colors hover:text-gold sm:text-2xl"
             >
               {link.label}
             </Link>
