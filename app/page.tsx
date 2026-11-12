@@ -1,6 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
+import {
+  InstagramIcon,
+  MailIcon,
+  SiteHeader,
+  WhatsAppIcon,
+  socialButton,
+} from "@/components/site-header";
 import { cn } from "cn";
 
 const WHATSAPP_URL = "https://wa.me/573171361324";
@@ -14,14 +20,6 @@ const favoritos = [
   { nombre: "Burger Sr.Broche", precio: "$29.000" },
   { nombre: "Chuzopan de la Casa", precio: "$30.000" },
   { nombre: "Picada Sr. Brocheta Para Dos", precio: "$50.000" },
-];
-
-const horarios = [
-  { dias: "Todos los días:", horas: "5:00 p.m - 11:00 p.m" },
-  {
-    dias: "Viernes, sábado, domingo y festivos:",
-    horas: "Reservas en línea de 5:00 p.m a 7:00 p.m",
-  },
 ];
 
 const sedes = [
@@ -44,54 +42,52 @@ const sedes = [
   },
 ];
 
-const zonas = [
-  { src: "/images/reservas/zona2.jpg", alt: "Zona amplia del restaurante" },
-  { src: "/images/reservas/zona3.jpg", alt: "Entrada del local Sr. Brocheta" },
-  { src: "/images/reservas/zona4.jpg", alt: "Mural y aviso de Sr. Brocheta en el local" },
-  { src: "/images/reservas/zona5.jpg", alt: "Aviso dorado de Sr. Brocheta" },
-  { src: "/images/reservas/decoraciones/medio-arco.jpg", alt: "Decoración de celebración en Sr. Brocheta" },
-  { src: "/images/reservas/decoraciones/buquet.jpg", alt: "Mesa decorada para celebración en Sr. Brocheta" },
-];
-
-const platos = [
-  { src: "/images/platos/burger-sr-broche.jpg", alt: "Burger Sr.Broche" },
-  { src: "/images/platos/chuzopan.jpg", alt: "Chuzopán a la parrilla" },
-  { src: "/images/platos/triple-carne.jpeg", alt: "Hamburguesa triple carne" },
-  { src: "/images/platos/chicken-criss.jpg", alt: "Burger Chicken Criss" },
-  { src: "/images/platos/mazorca-desgranada.jpg", alt: "Mazorca desgranada Sr.Brocheta" },
-  { src: "/images/platos/combo-bacon.jpeg", alt: "Combo hamburguesa bacon y bebida" },
+const instagramPosts = [
+  {
+    src: "/images/equipo-celebracion.jpg",
+    alt: "Equipo de Sr. Brocheta celebrando en el local",
+    href: "https://www.instagram.com/sr.brocheta/reel/DYVmrX8Ref-/",
+  },
+  {
+    src: "/images/equipo-cocina.jpg",
+    alt: "Equipo de cocina de Sr. Brocheta preparando los pedidos",
+    href: "https://www.instagram.com/sr.brocheta/p/DY-3tGLkaiJ/",
+  },
 ];
 
 const button =
-  "inline-flex h-11 items-center justify-center rounded-[3px] bg-primary px-8 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85";
+  "inline-flex h-12 items-center justify-center bg-primary px-8 text-sm font-bold tracking-[0.12em] text-primary-foreground uppercase transition-colors hover:bg-primary/85";
 
-const sectionTitle = "text-center font-serif text-3xl font-semibold text-foreground sm:text-4xl";
+const title = "text-center text-3xl font-bold tracking-wide text-foreground uppercase sm:text-4xl";
 
-function PhotoGrid({ images }: { images: { src: string; alt: string }[] }) {
+const paragraph = "mx-auto max-w-3xl text-center font-serif text-xl leading-relaxed text-foreground/85";
+
+function PhotoBand({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="mx-auto grid max-w-3xl grid-cols-3">
-      {images.map((img) => (
-        <div key={img.src} className="relative aspect-square overflow-hidden">
-          <Image
-            src={img.src}
-            alt={img.alt}
-            fill
-            sizes="(min-width: 768px) 256px, 33vw"
-            className="object-cover"
-          />
-        </div>
-      ))}
+    <div className="px-5 sm:px-6">
+      <div className="relative aspect-[16/7] w-full overflow-hidden">
+        <Image src={src} alt={alt} fill sizes="100vw" className="object-cover" />
+      </div>
     </div>
   );
+}
+
+function GoldRule() {
+  return <span className="mx-auto mt-6 block h-px w-36 bg-gold" aria-hidden />;
 }
 
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <SiteHeader menuUrl={MENU_URL} />
+      <SiteHeader
+        menuUrl={MENU_URL}
+        whatsappUrl={WHATSAPP_URL}
+        instagramUrl={INSTAGRAM_URL}
+        email={EMAIL}
+      />
 
       {/* Hero */}
-      <section id="inicio" className="relative flex h-[88vh] min-h-[480px] items-center justify-center">
+      <section id="inicio" className="relative h-[88vh] min-h-[480px]">
         <Image
           src="/images/reservas/zona1.jpg"
           alt="Salón principal de Sr. Brocheta"
@@ -100,117 +96,73 @@ export default function Home() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
-        <Link href={MENU_URL} target="_blank" className={cn(button, "relative")}>
-          Menú
-        </Link>
       </section>
 
-      {/* Filosofía */}
-      <section id="nosotros" className="scroll-mt-8 px-6 pt-20 pb-14">
-        <h2 className={sectionTitle}>Nuestra Historia</h2>
-        <p className="mx-auto mt-10 max-w-3xl text-center leading-relaxed text-foreground/85">
+      {/* Bienvenida */}
+      <section id="nosotros" className="scroll-mt-20 px-6 py-24">
+        <h1 className={title}>Bienvenidos a Sr. Brocheta</h1>
+        <p className={cn(paragraph, "mt-8")}>
           Nacimos de una receta de familia y un chuzo que no tardó en hacerse
-          conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
-          diario y un mismo compromiso: comida urbana premium, servida rápido y
-          sin perder el sabor de casa. ¡El sabor que nos une!
+          conocido en la ciudad.
         </p>
-        <svg viewBox="0 0 48 36" fill="currentColor" aria-hidden className="mx-auto mt-4 h-8 text-gold">
-          <path d="M0 36V22C0 9 6 2 19 0v7c-6 2-9 6-9 11h9v18H0Zm27 0V22C27 9 33 2 46 0v7c-6 2-9 6-9 11h9v18H27Z" />
-        </svg>
-      </section>
-
-      {/* Collage */}
-      <section className="px-6 pb-20">
-        <div className="relative mx-auto max-w-3xl pr-[10%] pb-[22%]">
-          <div className="relative aspect-[4/5] w-full overflow-hidden">
-            <Image
-              src="/images/platos/salchipapa.jpg"
-              alt="La Salchipapa de Ana"
-              fill
-              sizes="(min-width: 768px) 690px, 90vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="absolute right-0 bottom-0 aspect-[5/6] w-[44%] overflow-hidden border-8 border-background">
-            <Image
-              src="/images/platos/picada-para-dos.jpg"
-              alt="Picada Sr. Brocheta Para Dos"
-              fill
-              sizes="(min-width: 768px) 340px, 44vw"
-              className="object-cover"
-            />
-          </div>
+        <p className={cn(paragraph, "mt-5")}>
+          Hoy somos tres sedes, un equipo que crece a diario y un mismo
+          compromiso: comida urbana premium, servida rápido y sin perder el
+          sabor de casa.
+        </p>
+        <div className="mt-10 text-center">
+          <Link href="/reservas/nueva" className={button}>
+            Reserva tu mesa
+          </Link>
         </div>
       </section>
 
-      {/* Recomendados */}
-      <section id="favoritos" className="scroll-mt-8 px-6 pb-20">
-        <p className="text-center font-script text-2xl text-gold">Nuestros</p>
-        <h2 className={cn(sectionTitle, "uppercase")}>Recomendados</h2>
-        <ul className="mx-auto mt-10 flex max-w-3xl flex-col gap-2 font-serif text-xl">
+      <PhotoBand src="/images/platos/burger-sr-broche.jpg" alt="Burger Sr.Broche" />
+
+      {/* Menú */}
+      <section id="menu" className="scroll-mt-20 px-6 py-24">
+        <h2 className={title}>Nuestro Menú</h2>
+        <GoldRule />
+        <p className={cn(paragraph, "mt-8")}>
+          Hamburguesas, salchipapas y combos. Una probadita de lo que nos hace
+          premium; el menú completo tiene mucho más.
+        </p>
+        <ul className="mx-auto mt-8 flex max-w-xl flex-col gap-2 font-serif text-xl">
           {favoritos.map((plato) => (
-            <li key={plato.nombre} className="flex items-baseline justify-between gap-6">
+            <li key={plato.nombre} className="flex items-baseline gap-4">
               <span className="text-foreground">{plato.nombre}</span>
+              <span className="min-w-6 flex-1 border-b border-dotted border-foreground/30" aria-hidden />
               <span className="shrink-0 text-gold">{plato.precio}</span>
             </li>
           ))}
         </ul>
-        <div className="mt-8 text-center">
-          <Link href={WHATSAPP_URL} target="_blank" className={button}>
-            Hacer Pedido
+        <div className="mt-10 text-center">
+          <Link href={MENU_URL} target="_blank" className={button}>
+            Explora el menú
           </Link>
         </div>
       </section>
 
-      {/* Horarios */}
-      <section className="px-6 pb-20">
-        <h2 className={sectionTitle}>Horarios de Atención:</h2>
-        <div className="mx-auto mt-10 flex max-w-3xl flex-col gap-4 text-sm sm:text-base">
-          {horarios.map((h) => (
-            <div key={h.dias} className="flex items-baseline gap-4">
-              <span className="text-foreground/65">{h.dias}</span>
-              <span className="min-w-6 flex-1 border-b border-dotted border-foreground/30" aria-hidden />
-              <span className="text-right font-semibold text-gold">{h.horas}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <PhotoBand src="/images/reservas/zona2.jpg" alt="Zona amplia del restaurante" />
 
-      {/* Celebra con nosotros */}
-      <section className="px-6 pb-20">
-        <h2 className={cn(sectionTitle, "uppercase")}>Celebra con nosotros</h2>
-        <div className="mt-10">
-          <PhotoGrid images={zonas} />
-        </div>
-        <div className="mt-8 text-center">
-          <Link href="/reservas/nueva" className={button}>
-            Reservas
-          </Link>
-        </div>
-      </section>
-
-      {/* Galería */}
-      <section id="galeria" className="scroll-mt-8 px-6 pb-20">
-        <h2 className={sectionTitle}>Galería</h2>
-        <div className="mt-10">
-          <PhotoGrid images={platos} />
-        </div>
-        <div className="mt-8 text-center">
-          <Link href={INSTAGRAM_URL} target="_blank" className={button}>
-            Ver Más
-          </Link>
-        </div>
-      </section>
-
-      {/* Sedes y contacto */}
-      <section id="contacto" className="scroll-mt-8 px-6 pb-20">
-        <h2 className={sectionTitle}>Nuestras Sedes</h2>
-        <div className="mx-auto mt-10 grid max-w-4xl gap-10 text-center sm:grid-cols-3">
+      {/* Sedes y horarios */}
+      <section id="ubicacion" className="scroll-mt-20 px-6 py-24">
+        <h2 className={title}>Horarios y Ubicación</h2>
+        <GoldRule />
+        <p className={cn(paragraph, "mt-8")}>
+          Abrimos todos los días de 5:00 pm a 11:00 pm.
+        </p>
+        <p className={cn(paragraph, "mt-3")}>
+          Viernes, sábado, domingo y festivos: reservas en línea de 5:00 pm a
+          7:00 pm.
+        </p>
+        <div className="mx-auto mt-12 grid max-w-4xl gap-10 text-center sm:grid-cols-3">
           {sedes.map((sede) => (
             <div key={sede.nombre} className="flex flex-col items-center">
-              <h3 className="font-serif text-xl font-semibold text-gold">{sede.nombre}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground/75">
+              <h3 className="text-sm font-bold tracking-[0.1em] text-gold uppercase">
+                {sede.nombre}
+              </h3>
+              <p className="mt-3 flex-1 font-serif text-lg leading-snug text-foreground/85">
                 {sede.direccion}
               </p>
               <Link
@@ -224,29 +176,84 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-foreground/85">
-          <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
-            WhatsApp: <span className="font-semibold">{PHONE_DISPLAY}</span>
+        <p className={cn(paragraph, "mt-12")}>
+          Pedidos y domicilios por WhatsApp:{" "}
+          <Link href={WHATSAPP_URL} target="_blank" className="underline decoration-gold underline-offset-4 hover:text-gold">
+            {PHONE_DISPLAY}
           </Link>
-          <Link href={`mailto:${EMAIL}`} className="hover:text-gold">
-            {EMAIL}
-          </Link>
-          <Link href={INSTAGRAM_URL} target="_blank" className="hover:text-gold">
-            @sr.brocheta
+        </p>
+        <div className="mt-10 text-center">
+          <Link href={WHATSAPP_URL} target="_blank" className={button}>
+            Pedir por WhatsApp
           </Link>
         </div>
       </section>
 
+      {/* Instagram */}
+      <section id="instagram" className="scroll-mt-20 px-5 pb-20 sm:px-6">
+        <div className="grid grid-cols-2 gap-3">
+          {instagramPosts.map((post) => (
+            <Link
+              key={post.href}
+              href={post.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver publicación en Instagram"
+              className="group relative aspect-square overflow-hidden"
+            >
+              <Image
+                src={post.src}
+                alt={post.alt}
+                fill
+                sizes="50vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="flex flex-col items-center px-6 pt-6 pb-16">
-        <Image
-          src="/images/reservas/brand-logo.png"
-          alt="Sr. Brocheta"
-          width={465}
-          height={246}
-          className="h-32 w-auto sm:h-40"
-        />
-        <p className="mt-4 text-sm tracking-wide text-foreground/70">Gracias por elegirnos</p>
+      <footer>
+        <div className="flex justify-center px-6 pb-10">
+          <Image
+            src="/images/reservas/brand-logo.png"
+            alt="Sr. Brocheta"
+            width={465}
+            height={246}
+            className="h-32 w-auto opacity-60 sm:h-36"
+          />
+        </div>
+        <div className="bg-secondary px-6 py-10">
+          <div className="flex items-center justify-center gap-3">
+            <Link href={WHATSAPP_URL} target="_blank" aria-label="WhatsApp" className={socialButton}>
+              <WhatsAppIcon />
+            </Link>
+            <Link href={INSTAGRAM_URL} target="_blank" aria-label="Instagram" className={socialButton}>
+              <InstagramIcon />
+            </Link>
+            <Link href={`mailto:${EMAIL}`} aria-label="Correo" className={socialButton}>
+              <MailIcon />
+            </Link>
+          </div>
+          <nav className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm font-bold tracking-[0.1em] text-foreground uppercase">
+            <Link href={MENU_URL} target="_blank" className="hover:text-gold">
+              Menú
+            </Link>
+            <Link href="/reservas/nueva" className="hover:text-gold">
+              Reservas
+            </Link>
+            <Link href="#ubicacion" className="hover:text-gold">
+              Ubicación
+            </Link>
+            <Link href={`mailto:${EMAIL}`} className="hover:text-gold">
+              Contacto
+            </Link>
+          </nav>
+        </div>
+        <div className="bg-black py-3 text-center text-xs tracking-wide text-foreground/60">
+          © {new Date().getFullYear()} Sr. Brocheta · Valledupar
+        </div>
       </footer>
     </div>
   );
