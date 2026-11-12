@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { DECORACIONES } from "@/lib/reservas/decoraciones";
 import { RESERVAS_CONFIG } from "@/lib/reservas/config";
-import { formatearFechaLarga, fmtTime12 } from "@/lib/reservas/fechas";
+import { formatearFechaLarga, fmtTime12, hoyISO } from "@/lib/reservas/fechas";
 import { buscarReservaPorCodigo } from "../actions";
+import { CancelarReserva } from "./cancelar-reserva";
 
 export const metadata: Metadata = {
   title: "Detalle de mi reserva | Sr. Brocheta",
@@ -91,6 +92,9 @@ export default async function DetalleReservaClientePage({
           >
             Escribirnos por WhatsApp
           </a>
+
+          {(reserva.estado === "pendiente" || reserva.estado === "confirmada") &&
+            reserva.fecha >= hoyISO() && <CancelarReserva codigo={reserva.codigo} />}
         </div>
       </div>
     </div>

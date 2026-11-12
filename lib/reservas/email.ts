@@ -242,3 +242,26 @@ export async function enviarCorreosReserva(reserva: ReservaParaCorreo) {
     if (r.status === "rejected") console.error("Error enviando correo de reserva:", r.reason);
   });
 }
+
+/** Avisa al personal que un cliente canceló su reserva desde la página. */
+export async function enviarAvisoCancelacionStaff(reserva: ReservaParaCorreo) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: STAFF_EMAIL,
+    subject: `Reserva cancelada por el cliente · ${reserva.nombre} · ${reserva.fecha} ${fmtTime12(reserva.hora)}`,
+    html: plantillaBase({
+      titulo: "Un cliente canceló su reserva",
+      subtitulo: "La cancelación se hizo desde la página. El cupo ya quedó libre.",
+      filasHtml: filasReserva(reserva),
+      notaFinal: "No tienes que hacer nada en el panel: la reserva ya figura como cancelada.",
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando aviso de cancelación al staff:", resultado.error);
+  }
+}

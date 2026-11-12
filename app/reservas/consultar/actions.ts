@@ -2,6 +2,11 @@
 
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { hoyISO } from "@/lib/reservas/fechas";
+import {
+  enviarCorreoCambioEstado,
+  enviarAvisoCancelacionStaff,
+} from "@/lib/reservas/email";
 
 const telefonoSchema = z.string().trim().min(7).max(20);
 
@@ -41,6 +46,52 @@ export async function buscarReservasPorTelefono(telefono: string) {
       estado: r.estado,
       nombre: r.nombre,
     }));
+}
+
+export async function cancelarReservaCliente(codigo: string, telefono: string) {
+  const ultimos10 = soloDigitos(telefono).slice(-10);
+  if (!/^[A-Za-z0-9]{6}$/.test(codigo) || ultimos10.length < 7) {
+    return { ok: false as const, error: "Revisa el teléfono e intenta de nuevo." };
+  }
+
+  const admin = createAdminClient();
+  const { data: reserva } = await admin
+    .from("reservations")
+    .select("id, telefono, fecha, estado")
+    .eq("codigo", codigo.toUpperCase())
+    .maybeSingle();
+
+  // Mismo mensaje si no existe o si el teléfono no coincide, para no dar pistas.
+  if (!reserva || soloDigitos(reserva.telefono).slice(-10) !== ultimos10) {
+    return { ok: false as const, error: "El teléfono no coincide con el de la reserva." };
+  }
+  if (reserva.estado !== "pendiente" && reserva.estado !== "confirmada") {
+    return { ok: false as const, error: "Esta reserva ya no se puede cancelar." };
+  }
+  if (reserva.fecha < hoyISO()) {
+    return { ok: false as const, error: "Esta reserva ya pasó." };
+  }
+
+  const { data: cancelada, error } = await admin
+    .from("reservations")
+    .update({ estado: "cancelada" })
+    .eq("id", reserva.id)
+    .in("estado", ["pendiente", "confirmada"])
+    .select()
+    .maybeSingle();
+
+  if (error || !cancelada) {
+    return { ok: false as const, error: "No pudimos cancelar la reserva. Escríbenos por WhatsApp." };
+  }
+
+  try {
+    await enviarCorreoCambioEstado(cancelada, "cancelada");
+    await enviarAvisoCancelacionStaff(cancelada);
+  } catch (e) {
+    console.error("Error enviando correos de cancelación:", e);
+  }
+
+  return { ok: true as const };
 }
 
 /** Detalle completo de una reserva a partir de su código, para la vista pública del cliente. */
