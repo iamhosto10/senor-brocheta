@@ -1,6 +1,5 @@
 "use server";
 
-import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hoyISO } from "@/lib/reservas/fechas";
 import {
@@ -8,70 +7,75 @@ import {
   enviarAvisoCancelacionStaff,
 } from "@/lib/reservas/email";
 
-const telefonoSchema = z.string().trim().min(7).max(20);
+const ERROR_NO_COINCIDE =
+  "No encontramos una reserva con ese código y ese teléfono. Revisa los datos.";
 
 function soloDigitos(s: string): string {
   return s.replace(/\D/g, "");
 }
 
 /**
- * Busca reservas por teléfono comparando los últimos 10 dígitos, así da
- * igual si el usuario escribe con o sin +57, espacios, etc.
+ * Devuelve la reserva solo si el código existe Y el teléfono coincide
+ * (últimos 10 dígitos). Si falla cualquiera de los dos devuelve null, sin
+ * distinguir cuál, para no dar pistas.
  */
-export async function buscarReservasPorTelefono(telefono: string) {
-  const parsed = telefonoSchema.safeParse(telefono);
-  if (!parsed.success) return [];
-
-  const ultimos10 = soloDigitos(parsed.data).slice(-10);
-  if (ultimos10.length < 7) return [];
+async function reservaVerificada(codigo: string, telefono: string) {
+  const ultimos10 = soloDigitos(telefono).slice(-10);
+  if (!/^[A-Za-z0-9]{6}$/.test(codigo.trim()) || ultimos10.length < 7) return null;
 
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("reservations")
-    .select("codigo, fecha, hora, personas, zona_id, estado, nombre, telefono")
-    .order("fecha", { ascending: false })
-    .limit(200);
+    .select("*")
+    .eq("codigo", codigo.trim().toUpperCase())
+    .maybeSingle();
 
-  if (error || !data) return [];
-
-  return data
-    .filter((r) => soloDigitos(r.telefono).slice(-10) === ultimos10)
-    .slice(0, 20)
-    .map((r) => ({
-      codigo: r.codigo,
-      fecha: r.fecha,
-      hora: r.hora,
-      personas: r.personas,
-      zona_id: r.zona_id,
-      estado: r.estado,
-      nombre: r.nombre,
-    }));
+  if (error || !data) return null;
+  if (soloDigitos(data.telefono).slice(-10) !== ultimos10) return null;
+  return data;
 }
 
+function esCancelable(reserva: { estado: string; fecha: string }): boolean {
+  return (
+    (reserva.estado === "pendiente" || reserva.estado === "confirmada") &&
+    reserva.fecha >= hoyISO()
+  );
+}
+
+/** Consulta pública: exige código y teléfono. */
+export async function consultarReserva(codigo: string, telefono: string) {
+  const reserva = await reservaVerificada(codigo, telefono);
+  if (!reserva) return { ok: false as const, error: ERROR_NO_COINCIDE };
+
+  return {
+    ok: true as const,
+    cancelable: esCancelable(reserva),
+    reserva: {
+      codigo: reserva.codigo as string,
+      fecha: reserva.fecha as string,
+      hora: reserva.hora as string,
+      personas: reserva.personas as number,
+      zona_id: reserva.zona_id as string,
+      estado: reserva.estado as string,
+      nombre: reserva.nombre as string,
+      motivo: reserva.motivo as string | null,
+      notas: reserva.notas as string | null,
+      cumpleanos: reserva.cumpleanos as boolean,
+      decoracion_id: reserva.decoracion_id as string | null,
+      banda_musical: reserva.banda_musical as boolean,
+    },
+  };
+}
+
+/** Cancelación por el cliente: exige código y teléfono. */
 export async function cancelarReservaCliente(codigo: string, telefono: string) {
-  const ultimos10 = soloDigitos(telefono).slice(-10);
-  if (!/^[A-Za-z0-9]{6}$/.test(codigo) || ultimos10.length < 7) {
-    return { ok: false as const, error: "Revisa el teléfono e intenta de nuevo." };
+  const reserva = await reservaVerificada(codigo, telefono);
+  if (!reserva) return { ok: false as const, error: ERROR_NO_COINCIDE };
+  if (!esCancelable(reserva)) {
+    return { ok: false as const, error: "Esta reserva ya no se puede cancelar." };
   }
 
   const admin = createAdminClient();
-  const { data: reserva } = await admin
-    .from("reservations")
-    .select("id, telefono, fecha, estado")
-    .eq("codigo", codigo.toUpperCase())
-    .maybeSingle();
-
-  // Mismo mensaje si no existe o si el teléfono no coincide, para no dar pistas.
-  if (!reserva || soloDigitos(reserva.telefono).slice(-10) !== ultimos10) {
-    return { ok: false as const, error: "El teléfono no coincide con el de la reserva." };
-  }
-  if (reserva.estado !== "pendiente" && reserva.estado !== "confirmada") {
-    return { ok: false as const, error: "Esta reserva ya no se puede cancelar." };
-  }
-  if (reserva.fecha < hoyISO()) {
-    return { ok: false as const, error: "Esta reserva ya pasó." };
-  }
-
   const { data: cancelada, error } = await admin
     .from("reservations")
     .update({ estado: "cancelada" })
@@ -81,7 +85,10 @@ export async function cancelarReservaCliente(codigo: string, telefono: string) {
     .maybeSingle();
 
   if (error || !cancelada) {
-    return { ok: false as const, error: "No pudimos cancelar la reserva. Escríbenos por WhatsApp." };
+    return {
+      ok: false as const,
+      error: "No pudimos cancelar la reserva. Escríbenos por WhatsApp.",
+    };
   }
 
   try {
@@ -92,19 +99,4 @@ export async function cancelarReservaCliente(codigo: string, telefono: string) {
   }
 
   return { ok: true as const };
-}
-
-/** Detalle completo de una reserva a partir de su código, para la vista pública del cliente. */
-export async function buscarReservaPorCodigo(codigo: string) {
-  const admin = createAdminClient();
-  const { data, error } = await admin
-    .from("reservations")
-    .select(
-      "codigo, fecha, hora, personas, zona_id, estado, nombre, telefono, email, motivo, notas, cumpleanos, decoracion_id, banda_musical, created_at"
-    )
-    .eq("codigo", codigo.toUpperCase())
-    .maybeSingle();
-
-  if (error || !data) return null;
-  return data;
 }
