@@ -16,6 +16,20 @@ export async function listarReservas() {
   return data;
 }
 
+export async function listarReservasDelDia(fecha: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("id, codigo, hora, personas, zona_id, nombre, estado")
+    .eq("fecha", fecha)
+    .in("estado", ["pendiente", "confirmada"])
+    .order("hora", { ascending: true });
+
+  if (error) return [];
+  return data;
+}
+
 export async function obtenerReserva(id: string) {
   const supabase = await createClient();
   const { data, error } = await supabase

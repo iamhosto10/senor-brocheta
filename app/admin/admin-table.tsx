@@ -226,6 +226,9 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
         >
           Limpiar filtros
         </button>
+        <Link href="/admin/dia" className="rt-btn rt-btn-ghost rt-btn-small" style={{ textDecoration: "none" }}>
+          Ocupación del día
+        </Link>
         <button
           type="button"
           className="rt-btn rt-btn-ghost rt-btn-small"
