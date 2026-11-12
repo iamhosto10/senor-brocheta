@@ -229,6 +229,9 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
         <Link href="/admin/dia" className="rt-btn rt-btn-ghost rt-btn-small" style={{ textDecoration: "none" }}>
           Ocupación del día
         </Link>
+        <Link href="/admin/nueva" className="rt-btn rt-btn-primary rt-btn-small" style={{ textDecoration: "none" }}>
+          Nueva reserva
+        </Link>
         <button
           type="button"
           className="rt-btn rt-btn-ghost rt-btn-small"
