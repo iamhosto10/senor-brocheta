@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { DECORACIONES } from "@/lib/reservas/decoraciones";
+import { fmtTime12, formatearFechaLarga, hoyISO } from "@/lib/reservas/fechas";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { createClient } from "@/lib/supabase/client";
 import { actualizarEstadoReserva } from "./actions";
@@ -20,6 +22,7 @@ type Reserva = {
   motivo: string | null;
   notas: string | null;
   cumpleanos: boolean;
+  decoracion_id: string | null;
   banda_musical: boolean;
   estado: string;
 };
@@ -37,6 +40,11 @@ function zonaName(id: string) {
   return ZONAS.find((z) => z.id === id)?.name ?? id;
 }
 
+function nombreDecoracion(decoracionId: string | null) {
+  if (!decoracionId || decoracionId === "ninguna") return "";
+  return DECORACIONES.find((d) => d.id === decoracionId)?.name ?? "";
+}
+
 function exportarCSV(reservas: Reserva[]) {
   const headers = [
     "codigo",
@@ -48,6 +56,10 @@ function exportarCSV(reservas: Reserva[]) {
     "telefono",
     "email",
     "motivo",
+    "cumpleanos",
+    "decoracion",
+    "banda_musical",
+    "notas",
     "estado",
   ];
   const filas = reservas.map((r) =>
@@ -61,63 +73,92 @@ function exportarCSV(reservas: Reserva[]) {
       r.telefono,
       r.email ?? "",
       r.motivo ?? "",
+      r.cumpleanos ? "Sí" : "No",
+      nombreDecoracion(r.decoracion_id),
+      r.banda_musical ? "Sí" : "No",
+      r.notas ?? "",
       r.estado,
     ]
-      .map((v) => `"${String(v).replace(/"/g, '""')}"`)
+      .map((v) => `"${String(v).replace(/\r?\n/g, " ").replace(/"/g, '""')}"`)
       .join(",")
   );
   const csv = [headers.join(","), ...filas].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `reservas-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `reservas-${hoyISO()}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
 
 export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[] }) {
   const router = useRouter();
-  const [reservas, setReservas] = useState(reservasIniciales);
-  const [filtroDesde, setFiltroDesde] = useState("");
+  const [estadosLocales, setEstadosLocales] = useState<Record<string, string>>({});
+  const reservas = useMemo(
+    () =>
+      reservasIniciales.map((r) =>
+        estadosLocales[r.id] ? { ...r, estado: estadosLocales[r.id] } : r
+      ),
+    [reservasIniciales, estadosLocales]
+  );
+  const [filtroDesde, setFiltroDesde] = useState(() => hoyISO());
   const [filtroHasta, setFiltroHasta] = useState("");
   const [filtroZona, setFiltroZona] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("");
-  const [filtroCodigo, setFiltroCodigo] = useState("");
+  const [filtroTexto, setFiltroTexto] = useState("");
   const [pending, startTransition] = useTransition();
 
   const filtradas = useMemo(() => {
-    const codigoBuscado = filtroCodigo.trim().toLowerCase();
+    const texto = filtroTexto.trim().toLowerCase();
+    const digitos = filtroTexto.replace(/\D/g, "");
     return reservas.filter((r) => {
       if (filtroDesde && r.fecha < filtroDesde) return false;
       if (filtroHasta && r.fecha > filtroHasta) return false;
       if (filtroZona && r.zona_id !== filtroZona) return false;
       if (filtroEstado && r.estado !== filtroEstado) return false;
-      if (codigoBuscado && !r.codigo.toLowerCase().includes(codigoBuscado)) return false;
+      if (texto) {
+        const coincide =
+          r.codigo.toLowerCase().includes(texto) ||
+          r.nombre.toLowerCase().includes(texto) ||
+          (digitos.length >= 3 && r.telefono.replace(/\D/g, "").includes(digitos));
+        if (!coincide) return false;
+      }
       return true;
     });
-  }, [reservas, filtroDesde, filtroHasta, filtroZona, filtroEstado, filtroCodigo]);
+  }, [reservas, filtroDesde, filtroHasta, filtroZona, filtroEstado, filtroTexto]);
 
   function limpiarFiltros() {
     setFiltroDesde("");
     setFiltroHasta("");
     setFiltroZona("");
     setFiltroEstado("");
-    setFiltroCodigo("");
+    setFiltroTexto("");
   }
 
   function cambiarEstado(id: string, estado: string, e: React.SyntheticEvent) {
     e.stopPropagation();
-    const anterior = reservas.find((r) => r.id === id)?.estado;
-    setReservas((prev) => prev.map((r) => (r.id === id ? { ...r, estado } : r)));
+    setEstadosLocales((prev) => ({ ...prev, [id]: estado }));
     startTransition(async () => {
       const res = await actualizarEstadoReserva(id, estado);
+      setEstadosLocales((prev) => {
+        const copia = { ...prev };
+        delete copia[id];
+        return copia;
+      });
       if (!res.ok) {
-        setReservas((prev) => prev.map((r) => (r.id === id && anterior ? { ...r, estado: anterior } : r)));
         alert(res.error ?? "No pudimos actualizar la reserva.");
       }
+      router.refresh();
     });
   }
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (document.visibilityState === "visible") router.refresh();
+    }, 30000);
+    return () => clearInterval(id);
+  }, [router]);
 
   async function cerrarSesion() {
     const supabase = createClient();
@@ -130,12 +171,12 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
     <div>
       <div className="rt-filters">
         <div>
-          <label>Código</label>
+          <label>Buscar</label>
           <input
             type="text"
-            placeholder="Buscar por código"
-            value={filtroCodigo}
-            onChange={(e) => setFiltroCodigo(e.target.value)}
+            placeholder="Código, nombre o teléfono"
+            value={filtroTexto}
+            onChange={(e) => setFiltroTexto(e.target.value)}
           />
         </div>
         <div>
@@ -212,8 +253,8 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
       {filtradas.map((r) => (
         <Link key={r.id} href={`/admin/${r.id}`} className="rt-res-row" style={{ cursor: "pointer" }}>
           <div className="rt-res-time">
-            {r.hora}
-            <span className="date">{r.fecha}</span>
+            {fmtTime12(r.hora)}
+            <span className="date">{formatearFechaLarga(r.fecha)}</span>
           </div>
           <div className="rt-res-main">
             <div className="name">
@@ -225,20 +266,24 @@ export function AdminTable({ reservasIniciales }: { reservasIniciales: Reserva[]
               {zonaName(r.zona_id)} · {r.personas} personas · {r.telefono} · {r.codigo}
             </div>
           </div>
-          <select
-            value={r.estado}
-            disabled={pending}
-            onClick={(e) => e.stopPropagation()}
-            onChange={(e) => cambiarEstado(r.id, e.target.value, e)}
-            className={`rt-badge rt-badge-${r.estado}`}
-            style={{ border: "none", cursor: "pointer" }}
-          >
-            {ESTADOS.map((e) => (
-              <option key={e} value={e}>
-                {ESTADO_LABEL[e]}
-              </option>
-            ))}
-          </select>
+          {r.estado === "cancelada" || r.estado === "completada" ? (
+            <span className={`rt-badge rt-badge-${r.estado}`}>{ESTADO_LABEL[r.estado]}</span>
+          ) : (
+            <select
+              value={r.estado}
+              disabled={pending}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => cambiarEstado(r.id, e.target.value, e)}
+              className={`rt-badge rt-badge-${r.estado}`}
+              style={{ border: "none", cursor: "pointer" }}
+            >
+              {ESTADOS.map((e) => (
+                <option key={e} value={e}>
+                  {ESTADO_LABEL[e]}
+                </option>
+              ))}
+            </select>
+          )}
         </Link>
       ))}
     </div>
