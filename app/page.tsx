@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
-import { SectionHeading } from "@/components/section-heading";
 import { cn } from "cn";
 
 const WHATSAPP_URL = "https://wa.me/573171361324";
@@ -10,25 +10,17 @@ const PHONE_DISPLAY = "+57 317 136 1324";
 const EMAIL = "contacto@srbrocheta.com";
 
 const favoritos = [
+  { nombre: "La Salchipapa de Ana", precio: "$32.000" },
+  { nombre: "Burger Sr.Broche", precio: "$29.000" },
+  { nombre: "Chuzopan de la Casa", precio: "$30.000" },
+  { nombre: "Picada Sr. Brocheta Para Dos", precio: "$50.000" },
+];
+
+const horarios = [
+  { dias: "Todos los días:", horas: "5:00 p.m - 11:00 p.m" },
   {
-    nombre: "La Salchipapa de Ana",
-    descripcion: "Nuestro plato insignia, el que nos hizo conocidos.",
-    precio: "$32.000",
-  },
-  {
-    nombre: "Burger Sr.Broche",
-    descripcion: "Hamburguesa de la casa, receta propia Sr. Brocheta.",
-    precio: "$29.000",
-  },
-  {
-    nombre: "Chuzopan de la Casa",
-    descripcion: "Chuzo desgranado en pan, al estilo de la casa.",
-    precio: "$30.000",
-  },
-  {
-    nombre: "Picada Sr. Brocheta Para Dos",
-    descripcion: "Para compartir: carnes, pollo y acompañantes.",
-    precio: "$50.000",
+    dias: "Viernes, sábado, domingo y festivos:",
+    horas: "Reservas en línea de 5:00 p.m a 7:00 p.m",
   },
 ];
 
@@ -52,47 +44,43 @@ const sedes = [
   },
 ];
 
-const heroButton =
-  "inline-flex h-11 items-center justify-center rounded-sm px-7 text-xs font-semibold tracking-[0.18em] uppercase transition-colors";
+const zonas = [
+  { src: "/images/reservas/zona2.jpg", alt: "Zona amplia del restaurante" },
+  { src: "/images/reservas/zona3.jpg", alt: "Entrada del local Sr. Brocheta" },
+  { src: "/images/reservas/zona4.jpg", alt: "Mural y aviso de Sr. Brocheta en el local" },
+  { src: "/images/reservas/zona5.jpg", alt: "Aviso dorado de Sr. Brocheta" },
+  { src: "/images/reservas/decoraciones/medio-arco.jpg", alt: "Decoración de celebración en Sr. Brocheta" },
+  { src: "/images/reservas/decoraciones/buquet.jpg", alt: "Mesa decorada para celebración en Sr. Brocheta" },
+];
 
-function CameraIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      className={className}
-      aria-hidden
-    >
-      <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1-2h7l1 2h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z" />
-      <circle cx="12" cy="13" r="3.5" />
-    </svg>
-  );
-}
+const platos = [
+  { src: "/images/platos/burger-sr-broche.jpg", alt: "Burger Sr.Broche" },
+  { src: "/images/platos/chuzopan.jpg", alt: "Chuzopán a la parrilla" },
+  { src: "/images/platos/triple-carne.jpeg", alt: "Hamburguesa triple carne" },
+  { src: "/images/platos/chicken-criss.jpg", alt: "Burger Chicken Criss" },
+  { src: "/images/platos/mazorca-desgranada.jpg", alt: "Mazorca desgranada Sr.Brocheta" },
+  { src: "/images/platos/combo-bacon.jpeg", alt: "Combo hamburguesa bacon y bebida" },
+];
 
-function PhotoPlaceholder({
-  label,
-  className,
-}: {
-  label?: string;
-  className?: string;
-}) {
+const button =
+  "inline-flex h-11 items-center justify-center rounded-[3px] bg-primary px-8 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85";
+
+const sectionTitle = "text-center font-serif text-3xl font-semibold text-foreground sm:text-4xl";
+
+function PhotoGrid({ images }: { images: { src: string; alt: string }[] }) {
   return (
-    <div
-      className={cn(
-        "relative flex items-center justify-center overflow-hidden border border-dashed border-gold/35 bg-secondary/60",
-        className
-      )}
-    >
-      <div className="flex flex-col items-center gap-2 px-4 text-center">
-        <CameraIcon className="size-6 text-gold/70 sm:size-7" />
-        {label && (
-          <span className="text-[0.65rem] font-semibold tracking-[0.15em] text-foreground/40 uppercase sm:text-xs">
-            {label}
-          </span>
-        )}
-      </div>
+    <div className="mx-auto grid max-w-3xl grid-cols-3">
+      {images.map((img) => (
+        <div key={img.src} className="relative aspect-square overflow-hidden">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            sizes="(min-width: 768px) 256px, 33vw"
+            className="object-cover"
+          />
+        </div>
+      ))}
     </div>
   );
 }
@@ -100,230 +88,165 @@ function PhotoPlaceholder({
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <SiteHeader whatsappUrl={WHATSAPP_URL} instagramUrl={INSTAGRAM_URL} />
+      <SiteHeader menuUrl={MENU_URL} />
 
       {/* Hero */}
-      <section id="inicio" className="scroll-mt-16">
-        <PhotoPlaceholder
-          label="Fotografía de portada"
-          className="h-[70vh] w-full sm:h-[82vh]"
+      <section id="inicio" className="relative flex h-[88vh] min-h-[480px] items-center justify-center">
+        <Image
+          src="/images/reservas/zona1.jpg"
+          alt="Salón principal de Sr. Brocheta"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
+        <Link href={MENU_URL} target="_blank" className={cn(button, "relative")}>
+          Menú
+        </Link>
       </section>
 
-      {/* Bienvenida */}
-      <section className="bg-background">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-5 py-20 text-center">
-          <SectionHeading
-            eyebrow="Desde Valledupar"
-            title="Bienvenidos a Sr. Brocheta"
-            description="Nacimos de una receta de familia y un chuzo que no tardó en hacerse conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a diario y un mismo compromiso: comida urbana premium, servida rápido y sin perder el sabor de casa."
-          />
-          <Link
-            href="/reservas/nueva"
-            className={cn(heroButton, "mt-8 bg-primary text-primary-foreground hover:bg-primary/85")}
-          >
-            Reserva tu mesa
-          </Link>
-        </div>
+      {/* Filosofía */}
+      <section id="nosotros" className="scroll-mt-8 px-6 pt-20 pb-14">
+        <h2 className={sectionTitle}>Nuestra Historia</h2>
+        <p className="mx-auto mt-10 max-w-3xl text-center leading-relaxed text-foreground/85">
+          Nacimos de una receta de familia y un chuzo que no tardó en hacerse
+          conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
+          diario y un mismo compromiso: comida urbana premium, servida rápido y
+          sin perder el sabor de casa. ¡El sabor que nos une!
+        </p>
+        <svg viewBox="0 0 48 36" fill="currentColor" aria-hidden className="mx-auto mt-4 h-8 text-gold">
+          <path d="M0 36V22C0 9 6 2 19 0v7c-6 2-9 6-9 11h9v18H0Zm27 0V22C27 9 33 2 46 0v7c-6 2-9 6-9 11h9v18H27Z" />
+        </svg>
       </section>
 
-      <PhotoPlaceholder label="Fotografía del local" className="aspect-[16/7] w-full" />
-
-      {/* Favoritos */}
-      <section id="favoritos" className="scroll-mt-16 bg-background">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-5 py-20 text-center">
-          <SectionHeading
-            eyebrow="Algunos"
-            title="Favoritos"
-            description="Una probadita de lo que nos hace premium. El menú completo tiene mucho más."
-          />
-          <div className="mt-10 flex w-full max-w-md flex-col divide-y divide-gold/20">
-            {favoritos.map((plato) => (
-              <div key={plato.nombre} className="flex items-baseline justify-between gap-4 py-3.5">
-                <div className="text-left">
-                  <h3 className="font-sans text-base font-bold tracking-wide text-foreground">
-                    {plato.nombre}
-                  </h3>
-                  <p className="mt-0.5 text-sm text-foreground/60">{plato.descripcion}</p>
-                </div>
-                <span className="shrink-0 font-semibold text-foreground">{plato.precio}</span>
-              </div>
-            ))}
+      {/* Collage */}
+      <section className="px-6 pb-20">
+        <div className="relative mx-auto max-w-3xl pr-[10%] pb-[22%]">
+          <div className="relative aspect-[4/5] w-full overflow-hidden">
+            <Image
+              src="/images/platos/salchipapa.jpg"
+              alt="La Salchipapa de Ana"
+              fill
+              sizes="(min-width: 768px) 690px, 90vw"
+              className="object-cover"
+            />
           </div>
-          <Link
-            href={MENU_URL}
-            target="_blank"
-            className={cn(heroButton, "mt-8 bg-primary text-primary-foreground hover:bg-primary/85")}
-          >
-            Ver el menú completo
+          <div className="absolute right-0 bottom-0 aspect-[5/6] w-[44%] overflow-hidden border-8 border-background">
+            <Image
+              src="/images/platos/picada-para-dos.jpg"
+              alt="Picada Sr. Brocheta Para Dos"
+              fill
+              sizes="(min-width: 768px) 340px, 44vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Recomendados */}
+      <section id="favoritos" className="scroll-mt-8 px-6 pb-20">
+        <p className="text-center font-script text-2xl text-gold">Nuestros</p>
+        <h2 className={cn(sectionTitle, "uppercase")}>Recomendados</h2>
+        <ul className="mx-auto mt-10 flex max-w-3xl flex-col gap-2 font-serif text-xl">
+          {favoritos.map((plato) => (
+            <li key={plato.nombre} className="flex items-baseline justify-between gap-6">
+              <span className="text-foreground">{plato.nombre}</span>
+              <span className="shrink-0 text-gold">{plato.precio}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-8 text-center">
+          <Link href={WHATSAPP_URL} target="_blank" className={button}>
+            Hacer Pedido
           </Link>
         </div>
       </section>
 
-      <PhotoPlaceholder label="Fotografía de un plato" className="aspect-[16/7] w-full" />
+      {/* Horarios */}
+      <section className="px-6 pb-20">
+        <h2 className={sectionTitle}>Horarios de Atención:</h2>
+        <div className="mx-auto mt-10 flex max-w-3xl flex-col gap-4 text-sm sm:text-base">
+          {horarios.map((h) => (
+            <div key={h.dias} className="flex items-baseline gap-4">
+              <span className="text-foreground/65">{h.dias}</span>
+              <span className="min-w-6 flex-1 border-b border-dotted border-foreground/30" aria-hidden />
+              <span className="text-right font-semibold text-gold">{h.horas}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Celebra con nosotros */}
+      <section className="px-6 pb-20">
+        <h2 className={cn(sectionTitle, "uppercase")}>Celebra con nosotros</h2>
+        <div className="mt-10">
+          <PhotoGrid images={zonas} />
+        </div>
+        <div className="mt-8 text-center">
+          <Link href="/reservas/nueva" className={button}>
+            Reservas
+          </Link>
+        </div>
+      </section>
 
       {/* Galería */}
-      <section id="galeria" className="scroll-mt-16 bg-background">
-        <div className="mx-auto w-full max-w-5xl px-5 py-20">
-          <SectionHeading
-            eyebrow="Para antojarte"
-            title="Galería"
-            description="Aquí irán las fotos del local, las zonas y los platos de Sr. Brocheta."
-          />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <PhotoPlaceholder key={i} className="aspect-square w-full" />
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href={MENU_URL}
-              target="_blank"
-              className={cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85")}
-            >
-              Ver el menú completo
-            </Link>
-          </div>
+      <section id="galeria" className="scroll-mt-8 px-6 pb-20">
+        <h2 className={sectionTitle}>Galería</h2>
+        <div className="mt-10">
+          <PhotoGrid images={platos} />
         </div>
-      </section>
-
-      {/* Nosotros */}
-      <section id="nosotros" className="scroll-mt-16 bg-background">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-5 py-20 text-center">
-          <SectionHeading
-            eyebrow="Así somos"
-            title="Nosotros"
-            description="Un equipo que crece a diario, directo desde nuestras sedes en Valledupar. Síguenos en Instagram para ver el día a día."
-          />
-          <Link
-            href={INSTAGRAM_URL}
-            target="_blank"
-            className={cn(heroButton, "mt-8 border border-gold/50 text-foreground hover:bg-gold/10")}
-          >
-            Ver más en Instagram
+        <div className="mt-8 text-center">
+          <Link href={INSTAGRAM_URL} target="_blank" className={button}>
+            Ver Más
           </Link>
         </div>
       </section>
 
-      <PhotoPlaceholder label="Fotografía del equipo" className="aspect-[16/7] w-full" />
-
-      {/* Ubicación y horarios */}
-      <section id="ubicacion" className="scroll-mt-16 bg-secondary/40">
-        <div className="mx-auto w-full max-w-5xl px-5 py-20">
-          <SectionHeading eyebrow="Visítanos" title="Ubicación y horarios" />
-
-          <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:flex-row">
-            <div className="flex flex-1 items-center justify-between gap-3 rounded-sm border border-gold/25 bg-background px-5 py-4">
-              <span className="text-sm text-foreground/70">Todos los días</span>
-              <span className="h-px flex-1 border-t border-dashed border-gold/40" aria-hidden />
-              <span className="text-sm font-semibold text-foreground">5:00 pm – 11:00 pm</span>
-            </div>
-          </div>
-          <p className="mt-2 text-center text-xs text-foreground/55">
-            Viernes, sábado, domingo y festivos: reservas en línea de 5:00 pm a 7:00 pm.
-          </p>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {sedes.map((sede) => (
-              <div
-                key={sede.nombre}
-                className="group relative flex h-full flex-col rounded-sm border border-gold/25 bg-background p-6 transition-colors hover:border-gold"
+      {/* Sedes y contacto */}
+      <section id="contacto" className="scroll-mt-8 px-6 pb-20">
+        <h2 className={sectionTitle}>Nuestras Sedes</h2>
+        <div className="mx-auto mt-10 grid max-w-4xl gap-10 text-center sm:grid-cols-3">
+          {sedes.map((sede) => (
+            <div key={sede.nombre} className="flex flex-col items-center">
+              <h3 className="font-serif text-xl font-semibold text-gold">{sede.nombre}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground/75">
+                {sede.direccion}
+              </p>
+              <Link
+                href={sede.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 text-sm font-semibold text-foreground underline decoration-gold underline-offset-4 hover:text-gold"
               >
-                <Link
-                  href={sede.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Ver ${sede.nombre} en Google Maps`}
-                  className="absolute inset-0 z-0 rounded-[inherit]"
-                />
-                <h3 className="pointer-events-none relative z-10 font-sans text-lg font-bold tracking-wide text-foreground">
-                  {sede.nombre}
-                </h3>
-                <span className="pointer-events-none relative z-10 mt-2 h-[2px] w-8 bg-primary" aria-hidden />
-                <p className="pointer-events-none relative z-10 mt-3 flex-1 text-sm text-foreground/70">
-                  {sede.direccion}
-                </p>
-                <Link
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  className="relative z-10 mt-4 w-fit text-sm font-semibold text-foreground underline decoration-gold/50 underline-offset-4 hover:text-primary"
-                >
-                  📲 {PHONE_DISPLAY}
-                </Link>
-              </div>
-            ))}
-          </div>
+                Cómo llegar
+              </Link>
+            </div>
+          ))}
+        </div>
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-foreground/85">
+          <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
+            WhatsApp: <span className="font-semibold">{PHONE_DISPLAY}</span>
+          </Link>
+          <Link href={`mailto:${EMAIL}`} className="hover:text-gold">
+            {EMAIL}
+          </Link>
+          <Link href={INSTAGRAM_URL} target="_blank" className="hover:text-gold">
+            @sr.brocheta
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-background">
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-2 px-5 pt-16 pb-10 text-center">
-          <span className="font-sans text-3xl font-bold tracking-wide text-foreground/15 uppercase sm:text-4xl">
-            Sr. Brocheta
-          </span>
-          <span className="text-xs tracking-[0.3em] text-foreground/20 uppercase">
-            Comida Urbana Premium
-          </span>
-        </div>
-
-        <div className="bg-[var(--color-ink)]">
-          <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-5 py-12">
-            <div className="flex items-center gap-4">
-              <Link
-                href={WHATSAPP_URL}
-                target="_blank"
-                aria-label="WhatsApp"
-                className="flex size-10 items-center justify-center rounded-full bg-background text-[var(--color-ink)] transition-colors hover:bg-gold hover:text-background"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="size-4">
-                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.33 4.92L2.05 22l5.3-1.39a9.9 9.9 0 0 0 4.69 1.19h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.44 17.51 2 12.04 2Zm5.81 14.02c-.24.68-1.41 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.89-1.25-4.78-4.15-4.92-4.34-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.59-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.33.02.52-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.17.29.75 1.24 1.62 2 1.11.99 2.04 1.3 2.34 1.44.29.14.46.12.63-.07.17-.19.73-.85.92-1.14.19-.29.38-.24.64-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.68-.17 1.35Z" />
-                </svg>
-              </Link>
-              <Link
-                href={INSTAGRAM_URL}
-                target="_blank"
-                aria-label="Instagram"
-                className="flex size-10 items-center justify-center rounded-full bg-background text-[var(--color-ink)] transition-colors hover:bg-gold hover:text-background"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="size-4">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </Link>
-            </div>
-
-            <span className="h-px w-16 bg-background/15" aria-hidden />
-
-            <div className="flex flex-col items-center gap-1.5 text-xs text-background/70">
-              {sedes.map((sede) => (
-                <p key={sede.nombre}>
-                  {sede.nombre} · {sede.direccion}
-                </p>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-background/70">
-              <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
-                {PHONE_DISPLAY}
-              </Link>
-              <Link href={`mailto:${EMAIL}`} className="hover:text-gold">
-                {EMAIL}
-              </Link>
-              <Link href={MENU_URL} target="_blank" className="hover:text-gold">
-                Menú completo
-              </Link>
-              <Link href="/reservas/nueva" className="hover:text-gold">
-                Reservas
-              </Link>
-            </div>
-          </div>
-
-          <div className="border-t border-background/10 py-4 text-center text-[0.65rem] tracking-[0.2em] text-background/40 uppercase">
-            © {new Date().getFullYear()} Sr. Brocheta
-          </div>
-        </div>
+      <footer className="flex flex-col items-center px-6 pt-6 pb-16">
+        <Image
+          src="/images/reservas/brand-logo.png"
+          alt="Sr. Brocheta"
+          width={465}
+          height={246}
+          className="h-32 w-auto sm:h-40"
+        />
+        <p className="mt-4 text-sm tracking-wide text-foreground/70">Gracias por elegirnos</p>
       </footer>
     </div>
   );
