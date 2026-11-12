@@ -265,3 +265,31 @@ export async function enviarAvisoCancelacionStaff(reserva: ReservaParaCorreo) {
     console.error("Error enviando aviso de cancelación al staff:", resultado.error);
   }
 }
+
+/** Recordatorio al cliente el mismo día de su reserva. Devuelve true si se envió. */
+export async function enviarCorreoRecordatorio(reserva: ReservaParaCorreo): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !reserva.email) return false;
+
+  const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: reserva.email,
+    subject: `Hoy te esperamos en Sr. Brocheta · ${fmtTime12(reserva.hora)}`,
+    html: plantillaBase({
+      titulo: "¡Hoy es tu reserva!",
+      subtitulo: `Hola ${reserva.nombre}, te esperamos hoy a las ${fmtTime12(reserva.hora)} en la Sede Principal Dangond (Calle 16 # 19E-85, Valledupar).`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Recuerda que la mesa se mantiene por 15 minutos después de la hora acordada. Si no puedes asistir, avísanos por WhatsApp para liberar tu mesa.",
+      cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando recordatorio:", resultado.error);
+    return false;
+  }
+  return true;
+}
