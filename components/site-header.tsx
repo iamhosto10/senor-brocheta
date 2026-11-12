@@ -49,11 +49,12 @@ export function SiteHeader({
   const [scrolled, setScrolled] = useState(false);
 
   const links = [
-    { href: "#ubicacion", label: "Horarios y ubicación" },
-    { href: menuUrl, label: "Menú", external: true },
-    { href: "#nosotros", label: "Nosotros" },
-    { href: "#instagram", label: "Galería" },
-    { href: whatsappUrl, label: "Contacto", external: true },
+    { href: "#nosotros", label: "Nuestra historia" },
+    { href: "#recomendados", label: "Recomendados" },
+    { href: menuUrl, label: "Menú completo", external: true },
+    { href: "#celebra", label: "Celebraciones" },
+    { href: "#galeria", label: "Galería" },
+    { href: "#ubicacion", label: "Horarios y sedes" },
     { href: "/reservas/nueva", label: "Reservas" },
   ];
 
@@ -90,6 +91,13 @@ export function SiteHeader({
               priority
             />
           </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/reservas/nueva"
+              className="hidden h-10 items-center border border-gold px-5 text-xs font-bold tracking-[0.14em] text-gold uppercase transition-colors hover:bg-gold hover:text-background sm:inline-flex"
+            >
+              Reservar
+            </Link>
           <button
             type="button"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
@@ -113,6 +121,7 @@ export function SiteHeader({
               )}
             />
           </button>
+          </div>
         </div>
       </header>
 
@@ -123,7 +132,7 @@ export function SiteHeader({
           open ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       >
-        <nav className="flex flex-1 flex-col items-center justify-center gap-7 px-5 pt-28 pb-10 text-center">
+        <nav className="flex flex-1 flex-col items-center justify-center gap-6 px-5 pt-28 pb-10 text-center">
           {links.map((link) => (
             <Link
               key={link.label}
