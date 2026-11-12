@@ -13,7 +13,10 @@ export function NuevaReservaForm() {
       mostrarConfirmar
       onSubmit={async (datos, confirmar) => {
         const res = await crearReservaManual(datos, confirmar);
-        if (res.ok) router.push(`/admin/${res.id}`);
+        if (res.ok) {
+          if (res.aviso) alert(res.aviso);
+          router.push(`/admin/${res.id}`);
+        }
         return res;
       }}
     />

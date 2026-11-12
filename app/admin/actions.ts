@@ -103,14 +103,20 @@ export async function crearReservaManual(input: ReservaAdminInput, confirmar: bo
     return { ok: false as const, error: mensaje };
   }
 
+  let aviso: string | undefined;
+
   if (confirmar) {
-    const { data: reservaConfirmada } = await admin
+    const { data: reservaConfirmada, error: errorConfirmar } = await admin
       .from("reservations")
       .update({ estado: "confirmada" })
       .eq("id", reserva.id)
       .select()
       .single();
-    if (reservaConfirmada) {
+
+    if (errorConfirmar || !reservaConfirmada) {
+      aviso =
+        "La reserva se creó pero quedó PENDIENTE: no pudimos confirmarla. Confírmala desde su detalle.";
+    } else {
       try {
         await enviarCorreoCambioEstado(reservaConfirmada, "confirmada");
       } catch (e) {
@@ -120,7 +126,7 @@ export async function crearReservaManual(input: ReservaAdminInput, confirmar: bo
   }
 
   revalidatePath("/admin");
-  return { ok: true as const, id: reserva.id as string };
+  return { ok: true as const, id: reserva.id as string, aviso };
 }
 
 export async function editarReserva(id: string, input: ReservaAdminInput) {
