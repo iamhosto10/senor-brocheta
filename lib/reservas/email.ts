@@ -293,3 +293,29 @@ export async function enviarCorreoRecordatorio(reserva: ReservaParaCorreo): Prom
   }
   return true;
 }
+
+/** Avisa al cliente que el restaurante cambió fecha, hora, zona o personas de su reserva. */
+export async function enviarCorreoReservaModificada(reserva: ReservaParaCorreo) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !reserva.email) return;
+
+  const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: reserva.email,
+    subject: `Actualizamos tu reserva en Sr. Brocheta · ${reserva.codigo}`,
+    html: plantillaBase({
+      titulo: "Actualizamos tu reserva",
+      subtitulo: `Hola ${reserva.nombre}, estos son los datos actualizados de tu reserva.`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Si no solicitaste este cambio o algo no está bien, escríbenos por WhatsApp.",
+      cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando correo de reserva modificada:", resultado.error);
+  }
+}

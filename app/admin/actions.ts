@@ -4,7 +4,10 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { enviarCorreoCambioEstado } from "@/lib/reservas/email";
+import {
+  enviarCorreoCambioEstado,
+  enviarCorreoReservaModificada,
+} from "@/lib/reservas/email";
 import { slotsServicio } from "@/lib/reservas/capacidad";
 import { ZONAS } from "@/lib/reservas/zonas";
 
@@ -128,6 +131,19 @@ export async function editarReserva(id: string, input: ReservaAdminInput) {
   const data = parsed.data;
 
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { ok: false as const, error: "Tu sesión expiró. Vuelve a entrar." };
+  }
+
+  const { data: anterior } = await supabase
+    .from("reservations")
+    .select("fecha, hora, personas, zona_id")
+    .eq("id", id)
+    .maybeSingle();
+
   const { data: actualizada, error } = await supabase
     .from("reservations")
     .update({
@@ -157,6 +173,21 @@ export async function editarReserva(id: string, input: ReservaAdminInput) {
       ok: false as const,
       error: "Esta reserva ya está completada o cancelada y no se puede modificar.",
     };
+  }
+
+  const cambioLoImportante =
+    !!anterior &&
+    (anterior.fecha !== actualizada.fecha ||
+      anterior.hora !== actualizada.hora ||
+      anterior.personas !== actualizada.personas ||
+      anterior.zona_id !== actualizada.zona_id);
+
+  if (cambioLoImportante) {
+    try {
+      await enviarCorreoReservaModificada(actualizada);
+    } catch (e) {
+      console.error("Error enviando correo de reserva modificada:", e);
+    }
   }
 
   revalidatePath("/admin");
