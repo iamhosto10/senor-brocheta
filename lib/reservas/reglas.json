@@ -1,0 +1,11 @@
+{
+  "tableMinutes": 120,
+  "turnoverMinutes": 0,
+  "zonas": {
+    "zona1": { "t8": 4, "t4": 4 },
+    "zona2": { "t8": 6, "t4": 3 },
+    "zona3": { "t8": 1, "t4": 8 },
+    "zona4": { "t8": 1, "t4": 7 },
+    "zona5": { "units": 12 }
+  }
+}

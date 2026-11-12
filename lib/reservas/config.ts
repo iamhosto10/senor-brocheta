@@ -10,6 +10,8 @@
  * Un solo valor para los dos casos a propósito — hoy son el mismo horario; si alguna vez
  * el negocio quiere separarlos, se desdobla en dos constantes en este archivo.
  */
+import REGLAS from "./reglas.json";
+
 const HORARIO_REDUCIDO: [string, string][] = [["17:00", "19:00"]];
 
 export const RESERVAS_CONFIG = {
@@ -32,9 +34,9 @@ export const RESERVAS_CONFIG = {
   /** Días de la semana sin reservas (0=domingo … 6=sábado). Vacío = todos los días. */
   closedWeekdays: [] as number[],
   /** Cuánto tiempo ocupa una reserva su mesa (minutos). */
-  tableMinutes: 120,
+  tableMinutes: REGLAS.tableMinutes,
   /** Margen de limpieza antes de reasignar una mesa (minutos). */
-  turnoverMinutes: 0,
+  turnoverMinutes: REGLAS.turnoverMinutes,
   /** Antelación mínima para reservar (minutos). */
   minLeadMinutes: 180,
   /** Hasta cuántos días hacia adelante se puede reservar. */
