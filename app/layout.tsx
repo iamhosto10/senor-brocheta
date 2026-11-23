@@ -16,18 +16,44 @@ const triumph = localFont({
   display: "swap",
 });
 
-const TITLE = "Sr. Brocheta | Comida Urbana Premium en Valledupar";
+const TITLE = "Señor Brocheta | Salchipapas y Hamburguesas en Valledupar";
 const DESCRIPTION =
-  "Hamburguesas, salchipapas y combos en Valledupar. El sabor que nos une. Pide a domicilio o visítanos en nuestras sedes.";
+  "Las mejores salchipapas de Valledupar. Hamburguesas, arepas y brochetas en Sede Dangond, Mayales Plaza y Guatapurí. Reserva o pide a domicilio.";
+
+const KEYWORDS = [
+  "comida rápida en Valledupar",
+  "restaurantes en Valledupar",
+  "dónde comer en Valledupar",
+  "salchipapas en Valledupar",
+  "restaurantes cerca de mí",
+  "comida rápida cerca de mí",
+  "hamburguesas en Valledupar",
+  "domicilios de comida rápida en Valledupar",
+  "mejor salchipapa de Valledupar",
+  "restaurantes de comida rápida en Valledupar",
+  "salchipapas a domicilio Valledupar",
+  "dónde comer hamburguesas en Valledupar",
+  "perros calientes en Valledupar",
+  "restaurantes para cenar en Valledupar",
+  "comida para compartir en Valledupar",
+  "restaurante cerca de mí",
+  "menú de comida rápida Valledupar",
+  "brochetas en Valledupar",
+  "Señor Brocheta Valledupar",
+  "Master Pro Señor Brocheta",
+];
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://srbrocheta.com"),
   title: TITLE,
   description: DESCRIPTION,
+  keywords: KEYWORDS,
+  alternates: { canonical: "/" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "Sr. Brocheta",
+    url: "/",
+    siteName: "Señor Brocheta",
     locale: "es_CO",
     type: "website",
     images: [
@@ -35,7 +61,7 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sr. Brocheta - Comida Urbana Premium",
+        alt: "Señor Brocheta - Comida urbana premium en Valledupar",
       },
     ],
   },

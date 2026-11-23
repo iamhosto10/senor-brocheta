@@ -176,6 +176,8 @@ const reels = [
 
 type Sede = {
   nombre: string;
+  calle: string;
+  horas?: { abre: string; cierra: string };
   lugar?: string;
   direccion: string;
   horario: string;
@@ -188,6 +190,8 @@ type Sede = {
 const sedes: Sede[] = [
   {
     nombre: "Sede Dangond",
+    calle: "Calle 16 #19E-85",
+    horas: { abre: "17:00", cierra: "23:00" },
     direccion: "Calle 16 #19E-85, Valledupar",
     horario: "5:00 p. m. a 11:00 p. m.",
     foto: "/images/sitio/sedes/dangond.jpg",
@@ -201,6 +205,7 @@ const sedes: Sede[] = [
   },
   {
     nombre: "Sede Mayales Plaza",
+    calle: "Centro Comercial Mayales, Etapa 1, Local 34",
     lugar: "Centro Comercial Mayales · Etapa 1 · Local 34",
     direccion: "Centro Comercial Mayales, Etapa 1, Local 34, Valledupar",
     horario: "12:00 m. a 8:30 p. m.",
@@ -211,6 +216,7 @@ const sedes: Sede[] = [
   },
   {
     nombre: "Sede Guatapurí Plaza",
+    calle: "Centro Comercial Guatapurí, Local 2035",
     lugar: "Centro Comercial Guatapurí · Local 2035",
     direccion: "Centro Comercial Guatapurí, Local 2035, Valledupar",
     horario: "12:00 m. a 8:30 p. m.",
@@ -220,6 +226,57 @@ const sedes: Sede[] = [
     pedido: { texto: "Pedir por Rappi", href: RAPPI_URL, externo: true },
   },
 ];
+
+const SITE_URL = "https://srbrocheta.com";
+const DIAS_SEMANA = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+const restauranteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": `${SITE_URL}/#restaurante`,
+  name: "Señor Brocheta",
+  description:
+    "Las mejores salchipapas de Valledupar. Hamburguesas, arepas y brochetas con calidad, sabor y buenos precios.",
+  url: SITE_URL,
+  image: [`${SITE_URL}/images/og-image.jpg`, `${SITE_URL}/images/sitio/hero-zona-5.jpg`],
+  logo: `${SITE_URL}/images/reservas/brand-logo.png`,
+  telephone: "+57 317 885 3519",
+  servesCuisine: ["Comida rápida", "Salchipapas", "Hamburguesas", "Brochetas"],
+  menu: MENU_URL,
+  acceptsReservations: `${SITE_URL}/reservas/nueva`,
+  sameAs: [INSTAGRAM_URL],
+  areaServed: { "@type": "City", name: "Valledupar" },
+  department: sedes.map((sede) => ({
+    "@type": "Restaurant",
+    name: `Señor Brocheta - ${sede.nombre}`,
+    url: SITE_URL,
+    image: `${SITE_URL}${sede.foto}`,
+    hasMap: sede.mapsUrl,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: sede.calle,
+      addressLocality: "Valledupar",
+      addressRegion: "Cesar",
+      addressCountry: "CO",
+    },
+    ...(sede.horas && {
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: DIAS_SEMANA,
+        opens: sede.horas.abre,
+        closes: sede.horas.cierra,
+      },
+    }),
+  })),
+};
 
 const heroButton =
   "inline-flex h-12 items-center justify-center rounded-full px-8 text-sm font-bold tracking-wide transition-colors";
@@ -254,6 +311,12 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export default function Home() {
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(restauranteJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <SiteHeader />
 
       {/* Hero */}
