@@ -129,7 +129,7 @@ function BirthdayDialog({
     <div className="rt-dialog-overlay" onClick={onClose}>
       <div className="rt-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="rt-dialog-head">
-          <h2 style={{ fontSize: "1.1rem" }}>🎉 Reserva de cumpleaños</h2>
+          <h2>🎉 Reserva de cumpleaños</h2>
           <button
             type="button"
             className="rt-icon-btn"
@@ -824,7 +824,7 @@ export function ReservaWizard() {
             {error && (
               <p
                 style={{
-                  color: "var(--accent)",
+                  color: "var(--error)",
                   fontSize: "0.9rem",
                   marginBottom: 14,
                 }}
@@ -887,7 +887,7 @@ export function ReservaWizard() {
             </p>
             <p style={{ color: "var(--text-muted)", marginTop: 14 }}>
               Tu código de reserva es{" "}
-              <span style={{ color: "var(--accent)", fontWeight: 700 }}>
+              <span style={{ color: "var(--accent-text)", fontWeight: 700 }}>
                 {resultado.codigo}
               </span>
             </p>

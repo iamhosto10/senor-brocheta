@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
             />
           </div>
           {error && (
-            <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginBottom: 14 }}>
+            <p style={{ color: "var(--error)", fontSize: "0.85rem", marginBottom: 14 }}>
               {error}
             </p>
           )}

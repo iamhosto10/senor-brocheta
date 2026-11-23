@@ -98,7 +98,7 @@ export default async function OcupacionDelDiaPage({
                     ocupados === 0
                       ? "var(--text-muted)"
                       : ocupados === capacidad
-                        ? "var(--accent)"
+                        ? "var(--error)"
                         : undefined;
                   return (
                     <td

@@ -114,7 +114,7 @@ export function ReservaForm({ inicial, textoBoton, mostrarConfirmar = false, onS
           Dejarla confirmada de una vez
         </label>
       )}
-      {error && <p style={{ color: "var(--accent)", fontSize: "0.9rem" }}>{error}</p>}
+      {error && <p style={{ color: "var(--error)", fontSize: "0.9rem" }}>{error}</p>}
       <button
         type="submit"
         className="rt-btn rt-btn-primary"

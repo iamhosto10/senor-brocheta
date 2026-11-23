@@ -3,22 +3,24 @@
    para no afectar el resto del sitio (que usa su propio tema shadcn). */
 .reservas-theme {
   isolation: isolate;
-  --bg: #0d0b09;
-  --surface: #171310;
-  --surface-2: #231c15;
-  --text: #f5eedf;
-  --text-muted: #b8a67e;
-  --accent: #e23b3b;
+  --bg: #000000;
+  --surface: #0d0d0d;
+  --surface-2: #1a1a1a;
+  --text: #ffffff;
+  --text-muted: #b8b8b8;
+  --accent: #b71c1c;
   --accent-ink: #ffffff;
-  --gold: #e6c36b;
-  --pending: #e6c36b;
+  --accent-text: #debf64;
+  --error: #ef5a52;
+  --gold: #debf64;
+  --pending: #debf64;
   --confirmed: #8fb35c;
-  --cancelled: #c97a6e;
-  --border: #33281c;
+  --cancelled: #e0706a;
+  --border: #2e2e2e;
   --shadow: 0 16px 34px -14px rgba(0, 0, 0, 0.6);
   --radius: 14px;
-  --font-display: var(--font-rye), var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-triumph), var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   position: relative;
   background: var(--bg);
@@ -31,7 +33,7 @@
   color-scheme: dark;
 }
 
-/* Pared de ladrillo de fondo, igual que el prototipo original. */
+/* Fondo negro liso de la marca. */
 .reservas-theme::before {
   content: "";
   position: fixed;
@@ -39,14 +41,6 @@
   z-index: -1;
   pointer-events: none;
   background-color: var(--bg);
-  background-image: radial-gradient(
-      ellipse at 50% 30%,
-      rgba(13, 11, 9, 0.45) 0%,
-      rgba(13, 11, 9, 0.82) 100%
-    ),
-    url("/images/reservas/brick-wall.jpg");
-  background-size: auto, 648px 612px;
-  background-repeat: no-repeat, repeat;
 }
 
 .reservas-theme h1,
@@ -54,8 +48,8 @@
 .reservas-theme h3 {
   font-family: var(--font-display);
   margin: 0;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 .reservas-theme p {
   margin: 0;
@@ -117,6 +111,20 @@
 }
 .rt-card h2 {
   margin: 0 0 4px;
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+.reservas-theme h1 {
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+.reservas-theme h3 {
+  font-size: 1.4rem;
+  line-height: 1.15;
+}
+.rt-dialog-head h2 {
+  font-size: 1.6rem;
+  line-height: 1.1;
 }
 
 .rt-btn {
@@ -125,9 +133,9 @@
   justify-content: center;
   gap: 8px;
   padding: 14px 20px;
-  border-radius: 10px;
+  border-radius: 999px;
   border: 1px solid transparent;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   width: 100%;
   transition: transform 0.12s ease, opacity 0.15s ease;
@@ -144,18 +152,25 @@
   background: var(--accent);
   color: var(--accent-ink);
 }
+.rt-btn-primary:hover:not(:disabled) {
+  background: #9e1717;
+}
 .rt-btn-ghost {
   background: transparent;
   color: var(--text);
-  border-color: var(--border);
+  border: 2px solid var(--gold);
+  padding: 12px 20px;
 }
 .rt-btn-ghost:hover {
-  background: var(--surface-2);
+  background: rgba(222, 191, 100, 0.1);
 }
 .rt-btn-small {
   width: auto;
-  padding: 9px 14px;
+  padding: 9px 16px;
   font-size: 0.875rem;
+}
+.rt-btn-ghost.rt-btn-small {
+  padding: 7px 16px;
 }
 
 .rt-field {
@@ -216,8 +231,8 @@
 .rt-stepper .label {
   font-size: 0.78rem;
   color: var(--text-muted);
-  font-family: var(--font-display);
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
 }
 .rt-stepper .line {
   flex: 1;
@@ -232,7 +247,7 @@
 }
 .rt-stepper .node.current .dot {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .rt-stepper .node.current .label {
   color: var(--text);
@@ -391,7 +406,7 @@
   box-shadow: 0 0 0 2px var(--accent);
 }
 .rt-deco-card.selected .deco-price {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .rt-deco-card.no-img {
   flex-direction: row;
@@ -456,9 +471,9 @@
 .rt-zone-name {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -500,11 +515,11 @@
 }
 .rt-ticket-code {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.9rem;
   line-height: 1.2;
   margin-top: 2px;
   letter-spacing: 0.05em;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .rt-ticket-facts {
   display: grid;
@@ -669,7 +684,7 @@
   background: none;
   border: none;
   padding: 4px 0 0;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -692,7 +707,7 @@
 }
 .rt-day-chip .num {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.7rem;
   line-height: 1.15;
   letter-spacing: 0.05em;
 }
@@ -710,18 +725,20 @@
   cursor: not-allowed;
 }
 
-.rt-zone-group-title {
+.reservas-theme .rt-zone-group-title {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 40px 0 22px;
+  font-family: var(--font-body);
+  line-height: 1.5;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
 }
-.rt-zone-group:first-child .rt-zone-group-title {
+.reservas-theme .rt-zone-group:first-child .rt-zone-group-title {
   margin-top: 20px;
 }
 .rt-zone-group-title svg {
@@ -930,8 +947,8 @@
 .rt-home-hero .tagline {
   margin-top: 10px;
   font-family: var(--font-display);
-  font-size: 1.4rem;
-  letter-spacing: 0.05em;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
   color: var(--text-muted);
 }
 .rt-home-actions {

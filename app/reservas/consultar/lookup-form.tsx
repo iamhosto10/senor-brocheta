@@ -94,7 +94,7 @@ export function LookupForm() {
   return (
     <div className="rt-wrap">
       <div className="rt-card">
-        <h2 style={{ marginBottom: 16, fontSize: "1.1rem" }}>Busca tu reserva</h2>
+        <h2 style={{ marginBottom: 16 }}>Busca tu reserva</h2>
         <div className="rt-field">
           <label htmlFor="c-codigo">Código de reserva</label>
           <input
@@ -122,7 +122,7 @@ export function LookupForm() {
           </div>
         </div>
         {error && (
-          <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginBottom: 14 }}>
+          <p style={{ color: "var(--error)", fontSize: "0.85rem", marginBottom: 14 }}>
             {error}
           </p>
         )}
@@ -211,7 +211,7 @@ export function LookupForm() {
                 ¿Seguro que quieres cancelar esta reserva? No se puede deshacer.
               </p>
               {errorCancelar && (
-                <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginBottom: 10 }}>
+                <p style={{ color: "var(--error)", fontSize: "0.85rem", marginBottom: 10 }}>
                   {errorCancelar}
                 </p>
               )}
