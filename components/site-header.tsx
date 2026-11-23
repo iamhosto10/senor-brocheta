@@ -52,7 +52,7 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
           <Link
             href={whatsappUrl}
             target="_blank"
-            className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+            className={cn(buttonVariants({ variant: "default", size: "sm" }), "h-9 rounded-full px-5 text-sm font-bold")}
           >
             Pedir ahora
           </Link>
@@ -98,7 +98,7 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
             onClick={() => setOpen(false)}
             className={cn(
               buttonVariants({ variant: "default", size: "sm" }),
-              "mt-2 w-full"
+              "mt-2 h-10 w-full rounded-full text-sm font-bold"
             )}
           >
             Pedir ahora

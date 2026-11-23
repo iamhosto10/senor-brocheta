@@ -146,7 +146,7 @@ const platosGaleria = [
 ];
 
 const heroButton =
-  "inline-flex h-11 items-center justify-center rounded-sm px-7 text-xs font-semibold tracking-[0.18em] uppercase transition-colors";
+  "inline-flex h-12 items-center justify-center rounded-full px-8 text-sm font-bold tracking-wide transition-colors";
 
 export default function Home() {
   return (
@@ -177,7 +177,7 @@ export default function Home() {
           <span className="text-xs font-semibold tracking-[0.3em] text-gold uppercase">
             Valledupar · Comida urbana premium
           </span>
-          <h1 className="font-display text-4xl leading-tight tracking-wide text-foreground uppercase sm:text-5xl">
+          <h1 className="font-display text-5xl leading-tight text-foreground sm:text-6xl">
             El sabor que nos une
           </h1>
           <span className="h-[3px] w-16 rounded-full bg-primary" aria-hidden />
@@ -197,7 +197,7 @@ export default function Home() {
               target="_blank"
               className={cn(
                 heroButton,
-                "border border-gold/50 text-foreground hover:bg-gold/10"
+                "border-2 border-gold text-foreground hover:bg-gold/10"
               )}
             >
               Pedir por WhatsApp
@@ -267,7 +267,7 @@ export default function Home() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-display text-lg tracking-wide text-foreground">
+                    <h3 className="text-lg font-bold text-foreground">
                       {plato.nombre}
                     </h3>
                     <span className="shrink-0 font-semibold text-white">
@@ -374,7 +374,7 @@ export default function Home() {
               target="_blank"
               className={cn(
                 heroButton,
-                "border border-gold/50 text-foreground hover:bg-gold/10"
+                "border-2 border-gold text-foreground hover:bg-gold/10"
               )}
             >
               Ver más en Instagram
@@ -412,7 +412,7 @@ export default function Home() {
                   aria-label={`Ver ${sede.nombre} en Google Maps`}
                   className="absolute inset-0 z-0 rounded-[inherit]"
                 />
-                <h3 className="pointer-events-none relative z-10 font-display text-lg tracking-wide text-foreground">
+                <h3 className="pointer-events-none relative z-10 text-lg font-bold text-foreground">
                   {sede.nombre}
                 </h3>
                 <span className="pointer-events-none relative z-10 mt-2 h-[2px] w-8 bg-primary" aria-hidden />
@@ -424,6 +424,7 @@ export default function Home() {
                   target="_blank"
                   className={cn(
                     buttonVariants({ variant: "secondary", size: "sm" }),
+                    "h-9 rounded-full px-4 font-bold",
                     "relative z-10 mt-4 w-fit"
                   )}
                 >

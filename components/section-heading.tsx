@@ -26,10 +26,10 @@ export function SectionHeading({
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-2 font-display text-3xl tracking-wide text-foreground uppercase sm:text-4xl">
+      <h2 className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl">
         {title}
       </h2>
-      <span className="mt-3 h-[3px] w-14 rounded-full bg-primary" aria-hidden />
+      <span className="mt-4 h-[3px] w-14 rounded-full bg-gold" aria-hidden />
       {description && (
         <p className="mt-4 max-w-xl text-pretty text-foreground/75">
           {description}
