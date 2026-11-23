@@ -1,3 +1,5 @@
+import REGLAS from "./reglas.json";
+
 export type Zona = {
   id: string;
   name: string;
@@ -24,8 +26,8 @@ export const ZONAS: Zona[] = [
     name: "Zona 1",
     type: "abierta",
     flexible: true,
-    t8: 4,
-    t4: 4,
+    t8: REGLAS.zonas.zona1.t8,
+    t4: REGLAS.zonas.zona1.t4,
     desc: "Se adecua a tu grupo · ideal para celebraciones",
     color: "#5B7A3A",
     textColor: "#FFFFFF",
@@ -36,8 +38,8 @@ export const ZONAS: Zona[] = [
     name: "Zona 2",
     type: "abierta",
     flexible: true,
-    t8: 6,
-    t4: 3,
+    t8: REGLAS.zonas.zona2.t8,
+    t4: REGLAS.zonas.zona2.t4,
     desc: "Amplia · se adecua a tu grupo",
     color: "#DEBF64",
     textColor: "#241A0E",
@@ -48,8 +50,8 @@ export const ZONAS: Zona[] = [
     name: "Zona 3",
     type: "abierta",
     flexible: false,
-    t8: 1,
-    t4: 8,
+    t8: REGLAS.zonas.zona3.t8,
+    t4: REGLAS.zonas.zona3.t4,
     desc: "Mesas fijas · ideal para una cena casual",
     color: "#B71C1C",
     textColor: "#FFFFFF",
@@ -60,8 +62,8 @@ export const ZONAS: Zona[] = [
     name: "Zona 4",
     type: "climatizada",
     flexible: true,
-    t8: 1,
-    t4: 7,
+    t8: REGLAS.zonas.zona4.t8,
+    t4: REGLAS.zonas.zona4.t4,
     desc: "Ambiente climatizado",
     color: "#A9793D",
     textColor: "#FFFFFF",
@@ -72,7 +74,7 @@ export const ZONAS: Zona[] = [
     name: "Zona 5",
     type: "climatizada",
     flexible: true,
-    units: 12,
+    units: REGLAS.zonas.zona5.units,
     desc: "Climatizada · decorada para celebraciones",
     color: "#4A3728",
     textColor: "#FFFFFF",

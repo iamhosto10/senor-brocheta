@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { ZONAS } from "@/lib/reservas/zonas";
 import { DECORACIONES } from "@/lib/reservas/decoraciones";
 import { RESERVAS_CONFIG } from "@/lib/reservas/config";
 import { formatearFechaLarga, fmtTime12 } from "@/lib/reservas/fechas";
-import { actualizarEstadoReserva } from "../actions";
+import { actualizarEstadoReserva, editarReserva } from "../actions";
+import { ReservaForm } from "../reserva-form";
 
 type Reserva = {
   id: string;
@@ -49,11 +51,15 @@ function Fila({ k, v }: { k: string; v: React.ReactNode }) {
 }
 
 export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
+  const router = useRouter();
   const [estado, setEstado] = useState(reserva.estado);
+  const [editando, setEditando] = useState(false);
   const [pending, startTransition] = useTransition();
 
   const deco = DECORACIONES.find((d) => d.id === reserva.decoracion_id);
   const bloqueada = estado === "completada" || estado === "cancelada";
+  const digitosTel = reserva.telefono.replace(/\D/g, "");
+  const telWhatsApp = digitosTel.length === 10 ? `57${digitosTel}` : digitosTel;
 
   function cambiarEstado(nuevo: string) {
     const anterior = estado;
@@ -91,6 +97,41 @@ export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
           )}
         </div>
 
+        {editando ? (
+          <>
+            <ReservaForm
+              inicial={{
+                fecha: reserva.fecha,
+                hora: reserva.hora,
+                personas: reserva.personas,
+                zonaId: reserva.zona_id,
+                nombre: reserva.nombre,
+                telefono: reserva.telefono,
+                email: reserva.email ?? "",
+                motivo: reserva.motivo ?? "",
+                notas: reserva.notas ?? "",
+              }}
+              textoBoton="Guardar cambios"
+              onSubmit={async (datos) => {
+                const res = await editarReserva(reserva.id, datos);
+                if (res.ok) {
+                  setEditando(false);
+                  router.refresh();
+                }
+                return res;
+              }}
+            />
+            <button
+              type="button"
+              className="rt-btn rt-btn-ghost"
+              style={{ marginTop: 10, width: "100%" }}
+              onClick={() => setEditando(false)}
+            >
+              Cancelar edición
+            </button>
+          </>
+        ) : (
+        <>
         <div className="rt-detail-list">
           <Fila k="Fecha" v={formatearFechaLarga(reserva.fecha)} />
           <Fila k="Hora" v={fmtTime12(reserva.hora)} />
@@ -125,8 +166,21 @@ export function ReservaDetailView({ reserva }: { reserva: Reserva }) {
           )}
         </div>
 
+        {!bloqueada && (
+          <button
+            type="button"
+            className="rt-btn rt-btn-ghost"
+            style={{ marginTop: 16, width: "100%" }}
+            onClick={() => setEditando(true)}
+          >
+            Editar reserva
+          </button>
+        )}
+        </>
+        )}
+
         <a
-          href={`https://wa.me/${reserva.telefono.replace(/\D/g, "")}`}
+          href={`https://wa.me/${telWhatsApp}`}
           target="_blank"
           rel="noreferrer"
           className="rt-btn rt-btn-primary"

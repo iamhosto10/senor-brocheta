@@ -1,23 +1,17 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  ESTADOS_ACTIVOS,
+  parseHora,
+  formatHora,
+  unidadesNecesarias,
+  unidadesOcupadas,
+  unidadesZona,
+  type ReservaOcupacion,
+} from "./capacidad";
 import { RESERVAS_CONFIG } from "./config";
 import { esFestivoColombia } from "./festivos";
-import { ZONAS, capacidadZona, type Zona } from "./zonas";
-
-const ESTADOS_ACTIVOS = ["pendiente", "confirmada"];
-
-function parseHora(hhmm: string): number {
-  const [h, m] = hhmm.split(":").map(Number);
-  return h * 60 + m;
-}
-
-function formatHora(minutos: number): string {
-  const h = Math.floor(minutos / 60)
-    .toString()
-    .padStart(2, "0");
-  const m = (minutos % 60).toString().padStart(2, "0");
-  return `${h}:${m}`;
-}
+import { ZONAS, type Zona } from "./zonas";
 
 /** Fecha y hora actuales en Bogotá (UTC-5), sin depender del huso horario del servidor. */
 function ahoraBogota() {
@@ -64,26 +58,7 @@ export function horariosDelDia(fecha: string): string[] {
   return slots;
 }
 
-/**
- * Unidades de 4 puestos que ocupa un grupo en una zona concreta.
- * Tanto en zonas flexibles como de mesas fijas, el personal puede juntar varias
- * mesas para un grupo grande, así que el límite real es la capacidad total de la
- * zona (validada aparte en zonaTieneCupo), no el tamaño de una sola mesa.
- */
-function unidadesNecesarias(personas: number): number | null {
-  return Math.ceil(personas / 4);
-}
-
-type ReservaExistente = { hora: string; personas: number; zona_id: string };
-
-function seSolapan(horaA: string, horaB: string): boolean {
-  const duracion = RESERVAS_CONFIG.tableMinutes + RESERVAS_CONFIG.turnoverMinutes;
-  const inicioA = parseHora(horaA);
-  const inicioB = parseHora(horaB);
-  return inicioA < inicioB + duracion && inicioB < inicioA + duracion;
-}
-
-async function ocupacionDelDia(fecha: string): Promise<ReservaExistente[]> {
+async function ocupacionDelDia(fecha: string): Promise<ReservaOcupacion[]> {
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("reservations")
@@ -99,16 +74,12 @@ function zonaTieneCupo(
   zona: Zona,
   personas: number,
   hora: string,
-  ocupacion: ReservaExistente[]
+  ocupacion: ReservaOcupacion[]
 ): boolean {
-  const necesarias = unidadesNecesarias(personas);
-  if (necesarias === null) return false;
-
-  const ocupadasEnZona = ocupacion
-    .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
-    .reduce((sum, r) => sum + (unidadesNecesarias(r.personas) ?? 0), 0);
-
-  return ocupadasEnZona + necesarias <= capacidadZona(zona) / 4;
+  return (
+    unidadesOcupadas(zona, hora, ocupacion) + unidadesNecesarias(personas) <=
+    unidadesZona(zona)
+  );
 }
 
 /** Zonas con cupo para una fecha/hora/grupo, ya validadas contra la ocupación real. */
@@ -144,14 +115,5 @@ export async function horariosDisponibles(
 
   const ocupacion = await ocupacionDelDia(fecha);
 
-  return slots.filter((hora) =>
-    ZONAS.some((zona) => {
-      const necesarias = unidadesNecesarias(personas);
-      if (necesarias === null) return false;
-      const ocupadasEnZona = ocupacion
-        .filter((r) => r.zona_id === zona.id && seSolapan(r.hora, hora))
-        .reduce((sum, r) => sum + (unidadesNecesarias(r.personas) ?? 0), 0);
-      return ocupadasEnZona + necesarias <= capacidadZona(zona) / 4;
-    })
-  );
+  return slots.filter((hora) => ZONAS.some((zona) => zonaTieneCupo(zona, personas, hora, ocupacion)));
 }

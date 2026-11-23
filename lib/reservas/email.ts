@@ -242,3 +242,80 @@ export async function enviarCorreosReserva(reserva: ReservaParaCorreo) {
     if (r.status === "rejected") console.error("Error enviando correo de reserva:", r.reason);
   });
 }
+
+/** Avisa al personal que un cliente canceló su reserva desde la página. */
+export async function enviarAvisoCancelacionStaff(reserva: ReservaParaCorreo) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: STAFF_EMAIL,
+    subject: `Reserva cancelada por el cliente · ${reserva.nombre} · ${reserva.fecha} ${fmtTime12(reserva.hora)}`,
+    html: plantillaBase({
+      titulo: "Un cliente canceló su reserva",
+      subtitulo: "La cancelación se hizo desde la página. El cupo ya quedó libre.",
+      filasHtml: filasReserva(reserva),
+      notaFinal: "No tienes que hacer nada en el panel: la reserva ya figura como cancelada.",
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando aviso de cancelación al staff:", resultado.error);
+  }
+}
+
+/** Recordatorio al cliente el mismo día de su reserva. Devuelve true si se envió. */
+export async function enviarCorreoRecordatorio(reserva: ReservaParaCorreo): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !reserva.email) return false;
+
+  const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: reserva.email,
+    subject: `Hoy te esperamos en Sr. Brocheta · ${fmtTime12(reserva.hora)}`,
+    html: plantillaBase({
+      titulo: "¡Hoy es tu reserva!",
+      subtitulo: `Hola ${reserva.nombre}, te esperamos hoy a las ${fmtTime12(reserva.hora)} en la Sede Principal Dangond (Calle 16 # 19E-85, Valledupar).`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Recuerda que la mesa se mantiene por 15 minutos después de la hora acordada. Si no puedes asistir, avísanos por WhatsApp para liberar tu mesa.",
+      cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando recordatorio:", resultado.error);
+    return false;
+  }
+  return true;
+}
+
+/** Avisa al cliente que el restaurante cambió fecha, hora, zona o personas de su reserva. */
+export async function enviarCorreoReservaModificada(reserva: ReservaParaCorreo) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !reserva.email) return;
+
+  const whatsapp = `https://wa.me/${RESERVAS_CONFIG.whatsappNumber}`;
+  const resend = new Resend(apiKey);
+  const resultado = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: reserva.email,
+    subject: `Actualizamos tu reserva en Sr. Brocheta · ${reserva.codigo}`,
+    html: plantillaBase({
+      titulo: "Actualizamos tu reserva",
+      subtitulo: `Hola ${reserva.nombre}, estos son los datos actualizados de tu reserva.`,
+      filasHtml: filasReserva(reserva),
+      notaFinal:
+        "Si no solicitaste este cambio o algo no está bien, escríbenos por WhatsApp.",
+      cta: { texto: "Escribirnos por WhatsApp", url: whatsapp },
+    }),
+  });
+
+  if (resultado.error) {
+    console.error("Error enviando correo de reserva modificada:", resultado.error);
+  }
+}
