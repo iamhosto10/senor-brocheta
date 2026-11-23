@@ -1,6 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import {
+  Baby,
+  Gift,
+  PartyPopper,
+  Phone,
+  ShieldCheck,
+  Snowflake,
+} from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SectionHeading } from "@/components/section-heading";
 import { cn } from "cn";
@@ -8,236 +15,290 @@ import { cn } from "cn";
 const WHATSAPP_URL = "https://wa.me/573171361324";
 const MENU_URL = "https://vinny.vinapp.co/?company=srbrocheta";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
+const RAPPI_URL =
+  "https://www.rappi.com.co/valledupar/restaurantes/delivery/21039-senor-brocheta";
+const PEDIDOS_DANGOND_TEL = "tel:+573178853519";
+const PEDIDOS_DANGOND_DISPLAY = "317 885 3519";
 const PHONE_DISPLAY = "+57 317 136 1324";
 const EMAIL = "contacto@srbrocheta.com";
 
 const favoritos = [
   {
-    nombre: "La Salchipapa de Ana",
-    descripcion: "Nuestro plato insignia, el que nos hizo conocidos.",
-    precio: "$32.000",
-    imagen: "/images/platos/salchipapa.jpg",
+    nombre: "Salchipapa Master Pro",
+    src: "/images/sitio/platos/salchipapa-master-pro.jpg",
+    alt: "Salchipapa Master Pro de Señor Brocheta en Valledupar",
   },
   {
-    nombre: "Burger Sr.Broche",
-    descripcion: "Hamburguesa de la casa, receta propia Sr. Brocheta.",
-    precio: "$29.000",
-    imagen: "/images/platos/burger-sr-broche.jpg",
+    nombre: "Hamburguesa Valpa",
+    src: "/images/sitio/platos/hamburguesa-valpa.jpg",
+    alt: "Hamburguesa Valpa con papas fritas de Señor Brocheta",
   },
   {
-    nombre: "Chuzopan de la Casa",
-    descripcion: "Chuzo desgranado en pan, al estilo de la casa.",
-    precio: "$30.000",
-    imagen: "/images/platos/chuzopan.jpg",
+    nombre: "Arepa tipo picada",
+    src: "/images/sitio/platos/arepa-tipo-picada.jpg",
+    alt: "Arepa tipo picada de Señor Brocheta",
   },
   {
-    nombre: "Picada Sr. Brocheta Para Dos",
-    descripcion: "Para compartir: carnes, pollo y acompañantes.",
-    precio: "$50.000",
-    imagen: "/images/platos/picada-para-dos.jpg",
+    nombre: "Brocheta mixta",
+    src: "/images/sitio/platos/brocheta-mixta.jpg",
+    alt: "Brocheta mixta con chorizo y carnes de Señor Brocheta",
+  },
+  {
+    nombre: "Arepa Señor Brocheta",
+    src: "/images/sitio/platos/arepa-senor-brocheta.jpg",
+    alt: "Arepa rellena Señor Brocheta",
   },
 ];
 
-const sedes = [
+const destacadosEspacios = [
   {
-    nombre: "Sede Principal Dangond",
-    direccion: "Calle 16 # 19E-85, Valledupar",
-    mapsUrl: "https://maps.app.goo.gl/5K2epKUKThCmQAoz7",
+    icon: PartyPopper,
+    titulo: "Celebraciones y eventos",
+    texto:
+      "Espacios para cumpleaños, reuniones familiares, celebraciones y eventos de diferentes tamaños.",
   },
   {
-    nombre: "Sede Mayales",
-    direccion:
-      "Av. Salguero # Calle 31, Centro Comercial Mayales Etapa 1 – Local 34, Valledupar",
-    mapsUrl: "https://maps.app.goo.gl/ep36jVT1EgLCynveA",
+    icon: Gift,
+    titulo: "Reservas personalizadas",
+    texto:
+      "Reserva con decoración o sin decoración, según la ocasión y tus preferencias.",
   },
   {
-    nombre: "Sede Guatapurí",
-    direccion:
-      "Diagonal 10 N # 6N - 15, Centro Comercial Guatapurí, Local 2-035, Valledupar",
-    mapsUrl: "https://maps.app.goo.gl/AdnFh7SbFChKmpGz9",
+    icon: Snowflake,
+    titulo: "Comodidad para todos",
+    texto:
+      "Zonas climatizadas y espacios con ventilación para disfrutar de una experiencia agradable.",
+  },
+  {
+    icon: ShieldCheck,
+    titulo: "Un entorno tranquilo",
+    texto:
+      "Vigilancia privada y ambientes pensados para disfrutar con tranquilidad.",
+  },
+  {
+    icon: Baby,
+    titulo: "Pensado para la familia",
+    texto:
+      "Disponibilidad de sillas para bebés y espacios para compartir entre generaciones.",
+  },
+];
+
+const fotosEspacios = [
+  {
+    src: "/images/sitio/espacios/zona-1-y-2.jpg",
+    alt: "Zonas 1 y 2 de la sede Dangond de Señor Brocheta",
+  },
+  {
+    src: "/images/sitio/espacios/zona-3.jpg",
+    alt: "Zona 3 de la sede Dangond de Señor Brocheta",
+  },
+  {
+    src: "/images/sitio/espacios/zona-4.jpg",
+    alt: "Zona 4 climatizada de Señor Brocheta",
+  },
+  {
+    src: "/images/sitio/hero-zona-5.jpg",
+    alt: "Zona 5 climatizada con mural de Señor Brocheta",
   },
 ];
 
 const galeria = [
   {
-    src: "/images/reservas/zona1.jpg",
-    alt: "Salón principal de Sr. Brocheta",
-    href: INSTAGRAM_URL,
+    src: "/images/sitio/galeria/pechuga.jpg",
+    alt: "Pechuga Sr Brocheta con papas y salsas",
   },
   {
-    src: "/images/equipo-celebracion.jpg",
-    alt: "Equipo de Sr. Brocheta celebrando en el local",
-    href: "https://www.instagram.com/sr.brocheta/reel/DYVmrX8Ref-/",
+    src: "/images/sitio/galeria/brochetas.jpg",
+    alt: "Brochetas mixtas servidas en soporte vertical",
   },
   {
-    src: "/images/reservas/zona4.jpg",
-    alt: "Mural y aviso de Sr. Brocheta en el local",
-    href: INSTAGRAM_URL,
+    src: "/images/sitio/galeria/hamburguesa-papas.jpg",
+    alt: "Hamburguesa con papas fritas y gaseosa",
   },
   {
-    src: "/images/equipo-cocina.jpg",
-    alt: "Equipo de cocina de Sr. Brocheta preparando los pedidos",
-    href: "https://www.instagram.com/sr.brocheta/p/DY-3tGLkaiJ/",
+    src: "/images/sitio/galeria/mesa-completa.jpg",
+    alt: "Mesa completa con hamburguesas, brochetas y perros calientes",
   },
   {
-    src: "/images/reservas/zona2.jpg",
-    alt: "Zona amplia del restaurante",
-    href: INSTAGRAM_URL,
+    src: "/images/sitio/galeria/amigas.jpg",
+    alt: "Amigas disfrutando hamburguesas en Señor Brocheta",
   },
   {
-    src: "/images/bolsa-marca.jpg",
-    alt: "Pedido empacado con el logo de Sr. Brocheta",
-    href: INSTAGRAM_URL,
-  },
-];
-
-const zonasGaleria = [
-  {
-    src: "/images/reservas/zona1.jpg",
-    alt: "Salón principal de Sr. Brocheta",
+    src: "/images/sitio/galeria/pareja-aviso.jpg",
+    alt: "Pareja disfrutando sus platos frente al aviso dorado de Señor Brocheta",
   },
   {
-    src: "/images/reservas/zona3.jpg",
-    alt: "Entrada del local Sr. Brocheta",
+    src: "/images/sitio/galeria/pareja-hamburguesa.jpg",
+    alt: "Pareja compartiendo una hamburguesa en Señor Brocheta",
   },
   {
-    src: "/images/reservas/zona4.jpg",
-    alt: "Mural y aviso de Sr. Brocheta en el local",
+    src: "/images/sitio/galeria/aviso-dorado.jpg",
+    alt: "Aviso dorado de Señor Brocheta con flores amarillas",
   },
   {
-    src: "/images/reservas/zona5.jpg",
-    alt: "Aviso dorado de Sr. Brocheta",
-  },
-  {
-    src: "/images/reservas/decoraciones/medio-arco.jpg",
-    alt: "Decoración de celebración en Sr. Brocheta",
-  },
-  {
-    src: "/images/reservas/decoraciones/buquet.jpg",
-    alt: "Mesa decorada para celebración en Sr. Brocheta",
+    src: "/images/sitio/galeria/aviso-dorado-mesa.jpg",
+    alt: "Mesa y aviso dorado de Señor Brocheta en la sede Dangond",
   },
 ];
 
-const platosGaleria = [
+const reels = [
   {
-    src: "/images/platos/burger-sr-broche.jpg",
-    alt: "Burger Sr.Broche",
+    titulo: "Master Pro",
+    src: "/images/sitio/instagram/reel-1.jpg",
+    href: "https://www.instagram.com/reel/DRTAPe4kTQS/",
   },
   {
-    src: "/images/platos/chuzopan.jpg",
-    alt: "Chuzopán a la parrilla",
+    titulo: "Hey, ¿dónde estás?",
+    src: "/images/sitio/instagram/reel-2.jpg",
+    href: "https://www.instagram.com/reel/DcmoYZbxdjo/",
   },
   {
-    src: "/images/platos/triple-carne.jpeg",
-    alt: "Hamburguesa triple carne",
+    titulo: "Arepa tipo picada",
+    src: "/images/sitio/instagram/reel-3.jpg",
+    href: "https://www.instagram.com/reel/DNHKq7kIXNM/",
   },
   {
-    src: "/images/platos/chicken-criss.jpg",
-    alt: "Burger Chicken Criss",
+    titulo: "Equipo Señor Brocheta: nunca abandones ese sueño que en tu alma está",
+    src: "/images/sitio/instagram/reel-4.jpg",
+    href: "https://www.instagram.com/reel/DYVmrX8Ref-/",
   },
   {
-    src: "/images/platos/mazorca-desgranada.jpg",
-    alt: "Mazorca desgranada Sr.Brocheta",
+    titulo: "Experiencia gastronómica",
+    src: "/images/sitio/instagram/reel-5.jpg",
+    href: "https://www.instagram.com/reel/DL8fopvRtjk/",
   },
   {
-    src: "/images/platos/combo-bacon.jpeg",
-    alt: "Combo hamburguesa bacon y bebida",
+    titulo: "Compartir y disfrutar en Señor Brocheta",
+    src: "/images/sitio/instagram/reel-6.jpg",
+    href: "https://www.instagram.com/reel/DXM4kZAkYps/",
+  },
+];
+
+type Sede = {
+  nombre: string;
+  lugar?: string;
+  direccion: string;
+  horario: string;
+  foto: string;
+  fotoAlt: string;
+  mapsUrl: string;
+  pedido: { texto: string; href: string; externo: boolean };
+};
+
+const sedes: Sede[] = [
+  {
+    nombre: "Sede Dangond",
+    direccion: "Calle 16 #19E-85, Valledupar",
+    horario: "5:00 p. m. a 11:00 p. m.",
+    foto: "/images/sitio/sedes/dangond.jpg",
+    fotoAlt: "Fachada de la sede Dangond de Señor Brocheta en Valledupar",
+    mapsUrl: "https://g.page/r/CXChKCU8ImvsEAE",
+    pedido: {
+      texto: `Llamar para pedir · ${PEDIDOS_DANGOND_DISPLAY}`,
+      href: PEDIDOS_DANGOND_TEL,
+      externo: false,
+    },
+  },
+  {
+    nombre: "Sede Mayales Plaza",
+    lugar: "Centro Comercial Mayales · Etapa 1 · Local 34",
+    direccion: "Centro Comercial Mayales, Etapa 1, Local 34, Valledupar",
+    horario: "12:00 m. a 8:30 p. m.",
+    foto: "/images/sitio/sedes/mayales.jpg",
+    fotoAlt: "Punto de Señor Brocheta en el Centro Comercial Mayales Plaza",
+    mapsUrl: "https://g.page/r/CZvirAID3EGeEBM",
+    pedido: { texto: "Pedir por Rappi", href: RAPPI_URL, externo: true },
+  },
+  {
+    nombre: "Sede Guatapurí Plaza",
+    lugar: "Centro Comercial Guatapurí · Local 2035",
+    direccion: "Centro Comercial Guatapurí, Local 2035, Valledupar",
+    horario: "12:00 m. a 8:30 p. m.",
+    foto: "/images/sitio/sedes/guatapuri.jpg",
+    fotoAlt: "Punto de Señor Brocheta en el Centro Comercial Guatapurí Plaza",
+    mapsUrl: "https://g.page/r/CZTjwsaJ3nMLEBM",
+    pedido: { texto: "Pedir por Rappi", href: RAPPI_URL, externo: true },
   },
 ];
 
 const heroButton =
   "inline-flex h-12 items-center justify-center rounded-full px-8 text-sm font-bold tracking-wide transition-colors";
+const botonRojo = cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85");
+const botonBorde = cn(heroButton, "border-2 border-gold text-foreground hover:bg-gold/10");
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      className={className}
+      aria-hidden
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.33 4.92L2.05 22l5.3-1.39a9.9 9.9 0 0 0 4.69 1.19h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.44 17.51 2 12.04 2Zm5.81 14.02c-.24.68-1.41 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.89-1.25-4.78-4.15-4.92-4.34-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.59-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.33.02.52-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.17.29.75 1.24 1.62 2 1.11.99 2.04 1.3 2.34 1.44.29.14.46.12.63-.07.17-.19.73-.85.92-1.14.19-.29.38-.24.64-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.68-.17 1.35Z" />
+    </svg>
+  );
+}
 
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <SiteHeader whatsappUrl={WHATSAPP_URL} />
+      <SiteHeader />
 
       {/* Hero */}
-      <section id="inicio" className="relative flex min-h-[92vh] scroll-mt-16 items-center overflow-hidden">
+      <section
+        id="inicio"
+        className="relative flex min-h-[92vh] scroll-mt-16 items-center overflow-hidden"
+      >
         <div className="absolute inset-0">
           <Image
-            src="/images/reservas/zona1.jpg"
-            alt=""
+            src="/images/sitio/hero-zona-5.jpg"
+            alt="Zona 5 de Señor Brocheta con mural y aviso dorado"
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/75 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black" />
         </div>
         <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center gap-5 px-5 py-28 text-center">
           <Image
             src="/images/reservas/brand-logo.png"
-            alt="Sr. Brocheta"
+            alt="Señor Brocheta"
             width={320}
             height={170}
             priority
-            className="h-28 w-auto sm:h-36"
+            className="h-24 w-auto sm:h-32"
           />
-          <span className="text-xs font-semibold tracking-[0.3em] text-gold uppercase">
-            Valledupar · Comida urbana premium
-          </span>
-          <h1 className="font-display text-5xl leading-tight text-foreground sm:text-6xl">
-            El sabor que nos une
+          <h1 className="font-display text-5xl leading-tight text-foreground sm:text-7xl">
+            El mejor sabor se comparte.
           </h1>
-          <span className="h-[3px] w-16 rounded-full bg-primary" aria-hidden />
-          <p className="max-w-xl text-pretty text-foreground/80">
-            Resolvemos tu antojo al instante. Hamburguesas, salchipapas y
-            combos de autor, hechos para compartir en Valledupar.
+          <span className="h-[3px] w-16 rounded-full bg-gold" aria-hidden />
+          <p className="max-w-xl text-pretty text-lg text-foreground/85">
+            Las mejores salchipapas de Valledupar, calidad, buenos precios y una
+            atención que se disfruta. Ven con tu familia y amigos, nosotros
+            ponemos el sabor.
           </p>
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/reservas/nueva"
-              className={cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85")}
-            >
+          <p className="text-base font-bold text-gold">
+            ¡Haz de tu antojo tu próximo plan!
+          </p>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+            <Link href="/reservas/nueva" className={botonRojo}>
               Reservar mesa
             </Link>
-            <Link
-              href={WHATSAPP_URL}
-              target="_blank"
-              className={cn(
-                heroButton,
-                "border-2 border-gold text-foreground hover:bg-gold/10"
-              )}
-            >
-              Pedir por WhatsApp
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Bienvenida */}
-      <section className="border-y border-gold/15 bg-secondary/20">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading
-            eyebrow="Desde Valledupar"
-            title="Bienvenidos a Sr. Brocheta"
-            description="Nacimos de una receta de familia y un chuzo que no tardó en hacerse conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a diario y un mismo compromiso: comida urbana premium, servida rápido y sin perder el sabor de casa."
-          />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {zonasGaleria.map((img) => (
-              <div
-                key={img.src}
-                className="group relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href="/reservas/nueva"
-              className={cn(
-                heroButton,
-                "bg-primary text-primary-foreground hover:bg-primary/85"
-              )}
-            >
-              Reserva tu mesa
+            <Link href={MENU_URL} target="_blank" className={botonBorde}>
+              Ver el menú
             </Link>
           </div>
         </div>
@@ -247,207 +308,286 @@ export default function Home() {
       <section id="favoritos" className="scroll-mt-16">
         <div className="mx-auto w-full max-w-5xl px-5 py-20">
           <SectionHeading
-            eyebrow="Algunos"
-            title="Favoritos"
-            description="Una probadita de lo que nos hace premium. El menú completo tiene mucho más."
+            eyebrow="Para antojarte"
+            title="Los favoritos de la casa"
+            description="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
           />
-          <div className="mt-12 grid gap-x-10 gap-y-7 sm:grid-cols-2">
+          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {favoritos.map((plato) => (
-              <div
-                key={plato.nombre}
-                className="flex items-center gap-4 border-b border-gold/20 pb-4"
-              >
-                <div className="relative size-20 shrink-0 overflow-hidden rounded-md ring-1 ring-gold/20 sm:size-24">
+              <div key={plato.nombre} className="flex flex-col gap-3">
+                <div className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20">
                   <Image
-                    src={plato.imagen}
-                    alt={plato.nombre}
+                    src={plato.src}
+                    alt={plato.alt}
                     fill
+                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 30vw, 46vw"
                     className="object-cover"
                   />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="text-lg font-bold text-foreground">
-                      {plato.nombre}
-                    </h3>
-                    <span className="shrink-0 font-semibold text-white">
-                      {plato.precio}
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-sm text-foreground/70">
-                    {plato.descripcion}
-                  </p>
-                </div>
+                <h3 className="text-center text-base font-bold text-foreground">
+                  {plato.nombre}
+                </h3>
               </div>
             ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href="/reservas/nueva"
-              className={cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85")}
-            >
-              Reserva tu mesa
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Galería de platos */}
-      <section id="galeria" className="scroll-mt-16 border-y border-gold/15 bg-secondary/20">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading
-            eyebrow="Para antojarte"
-            title="Galería"
-            description="Una muestra de lo que sale de nuestra cocina. Pide el tuyo por WhatsApp o reserva tu mesa."
-          />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {platosGaleria.map((img) => (
-              <div
-                key={img.src}
-                className="group relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
             <Link
               href={MENU_URL}
               target="_blank"
-              className={cn(heroButton, "bg-primary text-primary-foreground hover:bg-primary/85")}
+              className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-gold/50 p-4 text-center transition-colors hover:border-gold hover:bg-gold/5"
             >
-              Ver el menú completo
+              <span className="text-base font-bold text-foreground">
+                Mira todo lo que tenemos
+              </span>
+              <span className="inline-flex h-10 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground">
+                Ver el menú completo
+              </span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Nosotros */}
-      <section id="nosotros" className="scroll-mt-16">
+      {/* Domicilios */}
+      <section
+        id="domicilios"
+        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
+      >
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-5 py-16 text-center">
+          <SectionHeading
+            eyebrow="Domicilios"
+            title="Pide sin salir de casa"
+            description="Los buenos momentos también llegan a tu puerta. Disfruta de tus favoritos sin salir de casa."
+          />
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link href={RAPPI_URL} target="_blank" className={botonRojo}>
+              Pedir por Rappi
+            </Link>
+            <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
+              <WhatsAppIcon className="mr-2 size-4" />
+              Pedir por WhatsApp
+            </Link>
+            <Link href={PEDIDOS_DANGOND_TEL} className={botonBorde}>
+              <Phone className="mr-2 size-4" aria-hidden />
+              Sede Dangond: {PEDIDOS_DANGOND_DISPLAY}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Espacios */}
+      <section id="espacios" className="scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
           <SectionHeading
-            eyebrow="Así somos"
-            title="Nosotros"
-            description="Un equipo que crece a diario, directo desde nuestras sedes en Valledupar. Toca cualquier foto para seguirnos en Instagram."
+            eyebrow="Sede Dangond"
+            title="Un lugar para compartir y celebrar"
+            description="En Señor Brocheta encuentras el espacio ideal para compartir con familia y amigos, celebrar cumpleaños, reuniones y ocasiones especiales. Nuestra sede Dangond cuenta con ambientes cómodos, zonas climatizadas y ventiladas, opciones de reserva con o sin decoración, sillas para bebés y vigilancia privada. Visítanos y haz de cada encuentro un momento especial."
           />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {galeria.map((img) => (
-              <Link
-                key={img.src}
-                href={img.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver en Instagram"
-                className="group relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {destacadosEspacios.map(({ icon: Icon, titulo, texto }) => (
+              <div
+                key={titulo}
+                className="flex flex-col items-center rounded-md border border-gold/20 p-5 text-center"
+              >
+                <Icon className="size-7 text-gold" aria-hidden />
+                <h3 className="mt-3 text-sm font-bold text-foreground">
+                  {titulo}
+                </h3>
+                <p className="mt-2 text-sm text-foreground/70">{texto}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {fotosEspacios.map((foto) => (
+              <div
+                key={foto.src}
+                className="relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
               >
                 <Image
-                  src={img.src}
-                  alt={img.alt}
+                  src={foto.src}
+                  alt={foto.alt}
                   fill
+                  sizes="(min-width: 1024px) 280px, 46vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col items-center gap-4 text-center">
+            <p className="text-lg font-bold text-foreground">
+              Tu próxima celebración comienza aquí. Reserva tu espacio.
+            </p>
+            <Link href="/reservas/nueva" className={botonRojo}>
+              Reservar mesa
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Galería */}
+      <section
+        id="galeria"
+        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
+      >
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SectionHeading eyebrow="Así se vive" title="Galería" />
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {galeria.map((foto) => (
+              <div
+                key={foto.src}
+                className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src={foto.src}
+                  alt={foto.alt}
+                  fill
+                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 30vw, 46vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Historia */}
+      <section id="historia" className="scroll-mt-16">
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-20 text-center">
+          <SectionHeading eyebrow="Desde Valledupar" title="Conoce nuestra historia" />
+          {/* Texto provisional: el cliente enviará la historia definitiva */}
+          <p className="mt-6 text-pretty text-foreground/80">
+            Nacimos de una receta de familia y un chuzo que no tardó en hacerse
+            conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
+            diario y un mismo compromiso: comida urbana premium, servida rápido
+            y sin perder el sabor de casa.
+          </p>
+        </div>
+      </section>
+
+      {/* Instagram */}
+      <section
+        id="instagram"
+        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
+      >
+        <div className="mx-auto w-full max-w-5xl px-5 py-20">
+          <SectionHeading
+            eyebrow="@sr.brocheta"
+            title="Síguenos en Instagram"
+            description="Toca cualquier video para verlo en nuestro perfil."
+          />
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {reels.map((reel) => (
+              <Link
+                key={reel.href}
+                href={reel.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ver en Instagram: ${reel.titulo}`}
+                className="group relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src={reel.src}
+                  alt={`Portada del video de Instagram: ${reel.titulo}`}
+                  fill
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 30vw, 46vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-all duration-300 group-hover:bg-background/50 group-hover:opacity-100">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    className="size-7 text-white"
-                    aria-hidden
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
-                  </svg>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/50 group-hover:opacity-100">
+                  <InstagramIcon className="size-8 text-white" />
                 </div>
               </Link>
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link
-              href={INSTAGRAM_URL}
-              target="_blank"
-              className={cn(
-                heroButton,
-                "border-2 border-gold text-foreground hover:bg-gold/10"
-              )}
-            >
-              Ver más en Instagram
+            <Link href={INSTAGRAM_URL} target="_blank" className={botonBorde}>
+              <InstagramIcon className="mr-2 size-4" />
+              Síguenos en Instagram
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Ubicación y horarios */}
-      <section id="ubicacion" className="scroll-mt-16">
+      {/* Sedes */}
+      <section id="sedes" className="scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading eyebrow="Visítanos" title="Ubicación y horarios" />
+          <SectionHeading eyebrow="Visítanos" title="Nuestras sedes" />
 
-          <div className="mx-auto mt-10 flex max-w-xl flex-col gap-3 sm:flex-row">
-            <div className="flex flex-1 items-center justify-between gap-3 rounded-md border border-gold/25 px-5 py-4">
-              <span className="text-sm text-foreground/70">Todos los días</span>
-              <span className="h-px flex-1 border-t border-dashed border-gold/40" aria-hidden />
-              <span className="text-sm font-semibold text-foreground">5:00 pm – 11:00 pm</span>
-            </div>
-          </div>
-          <p className="mt-2 text-center text-xs text-foreground/55">
-            Viernes, sábado, domingo y festivos: reservas en línea de 5:00 pm a 7:00 pm.
-          </p>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {sedes.map((sede) => (
-              <div
+              <article
                 key={sede.nombre}
-                className="group relative flex h-full flex-col rounded-md border border-gold/20 p-6 transition-colors hover:border-gold/50"
+                className="flex h-full flex-col overflow-hidden rounded-md border border-gold/20"
               >
-                <Link
-                  href={sede.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Ver ${sede.nombre} en Google Maps`}
-                  className="absolute inset-0 z-0 rounded-[inherit]"
-                />
-                <h3 className="pointer-events-none relative z-10 text-lg font-bold text-foreground">
-                  {sede.nombre}
-                </h3>
-                <span className="pointer-events-none relative z-10 mt-2 h-[2px] w-8 bg-primary" aria-hidden />
-                <p className="pointer-events-none relative z-10 mt-3 flex-1 text-sm text-foreground/70">
-                  {sede.direccion}
-                </p>
-                <Link
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  className={cn(
-                    buttonVariants({ variant: "secondary", size: "sm" }),
-                    "h-9 rounded-full px-4 font-bold",
-                    "relative z-10 mt-4 w-fit"
+                <div className="relative aspect-[4/5] w-full">
+                  <Image
+                    src={sede.foto}
+                    alt={sede.fotoAlt}
+                    fill
+                    sizes="(min-width: 768px) 380px, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="text-xl font-bold text-foreground">
+                    {sede.nombre}
+                  </h3>
+                  <span className="mt-2 h-[2px] w-8 bg-gold" aria-hidden />
+                  {sede.lugar && (
+                    <p className="mt-3 text-sm font-semibold text-gold">
+                      {sede.lugar}
+                    </p>
                   )}
-                >
-                  📲 {PHONE_DISPLAY}
-                </Link>
-              </div>
+                  <p className="mt-2 text-sm text-foreground/75">
+                    {sede.direccion}
+                  </p>
+                  <p className="mt-2 text-sm text-foreground/75">
+                    <span className="font-semibold text-foreground">Horario:</span>{" "}
+                    {sede.horario}
+                  </p>
+                  <div className="mt-5 flex flex-1 flex-col justify-end gap-3">
+                    <Link
+                      href={sede.pedido.href}
+                      target={sede.pedido.externo ? "_blank" : undefined}
+                      className={cn(botonRojo, "h-11 px-5")}
+                    >
+                      {sede.pedido.texto}
+                    </Link>
+                    <Link
+                      href={sede.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(botonBorde, "h-11 px-5")}
+                    >
+                      Ver en Google Maps
+                    </Link>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
+
+          <p className="mt-10 text-center text-lg text-foreground/85">
+            <span className="font-bold text-foreground">
+              Estamos cada vez más cerca de ti.
+            </span>{" "}
+            Visítanos en Mayales Plaza o Guatapurí y disfruta de tus favoritos de
+            Señor Brocheta.
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gold/20 bg-secondary/20">
+      <footer className="border-t border-gold/20 bg-secondary/40">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-5 px-5 py-14 text-center">
           <Image
             src="/images/reservas/brand-logo.png"
-            alt="Sr. Brocheta"
+            alt="Señor Brocheta"
             width={200}
             height={106}
             className="h-16 w-auto"
           />
           <p className="text-xs tracking-[0.2em] text-foreground/60 uppercase">
-            Comida Urbana Premium · Valledupar
+            Comida Urbana Premium · Hamburguesas, Salchipapas y Combos
           </p>
 
           <div className="flex items-center gap-4">
@@ -455,23 +595,17 @@ export default function Home() {
               href={WHATSAPP_URL}
               target="_blank"
               aria-label="WhatsApp"
-              className="flex size-9 items-center justify-center rounded-full border border-gold/30 text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+              className="flex size-9 items-center justify-center rounded-full border border-gold/30 text-foreground/80 transition-colors hover:border-gold hover:text-gold"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="size-4">
-                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.33 4.92L2.05 22l5.3-1.39a9.9 9.9 0 0 0 4.69 1.19h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.44 17.51 2 12.04 2Zm5.81 14.02c-.24.68-1.41 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.89-1.25-4.78-4.15-4.92-4.34-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.59-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.33.02.52-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.17.29.75 1.24 1.62 2 1.11.99 2.04 1.3 2.34 1.44.29.14.46.12.63-.07.17-.19.73-.85.92-1.14.19-.29.38-.24.64-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.68-.17 1.35Z" />
-              </svg>
+              <WhatsAppIcon className="size-4" />
             </Link>
             <Link
               href={INSTAGRAM_URL}
               target="_blank"
               aria-label="Instagram"
-              className="flex size-9 items-center justify-center rounded-full border border-gold/30 text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+              className="flex size-9 items-center justify-center rounded-full border border-gold/30 text-foreground/80 transition-colors hover:border-gold hover:text-gold"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="size-4">
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
-              </svg>
+              <InstagramIcon className="size-4" />
             </Link>
           </div>
 
@@ -480,22 +614,32 @@ export default function Home() {
           <div className="flex flex-col items-center gap-1.5 text-xs text-foreground/60">
             {sedes.map((sede) => (
               <p key={sede.nombre}>
-                {sede.nombre} · {sede.direccion}
+                <span className="font-semibold text-foreground/80">
+                  {sede.nombre}
+                </span>{" "}
+                · {sede.direccion} · {sede.horario}
               </p>
             ))}
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-foreground/60">
-            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-primary">
-              {PHONE_DISPLAY}
+            <Link href="/reservas/nueva" className="hover:text-gold">
+              Reservas
             </Link>
-            <Link href={`mailto:${EMAIL}`} className="hover:text-primary">
-              {EMAIL}
-            </Link>
-            <Link href={MENU_URL} target="_blank" className="hover:text-primary">
+            <Link href={MENU_URL} target="_blank" className="hover:text-gold">
               Menú completo
             </Link>
+            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
+              WhatsApp {PHONE_DISPLAY}
+            </Link>
+            <Link href={`mailto:${EMAIL}`} className="hover:text-gold">
+              {EMAIL}
+            </Link>
           </div>
+
+          <p className="text-xs text-foreground/40">
+            © {new Date().getFullYear()} Señor Brocheta S.A.S. · Valledupar
+          </p>
         </div>
       </footer>
     </div>

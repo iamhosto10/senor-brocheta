@@ -4,18 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "cn";
-import { buttonVariants } from "@/components/ui/button";
 
 const NAV_LINKS = [
   { href: "#inicio", label: "Inicio" },
-  { href: "#favoritos", label: "Menú" },
-  { href: "#galeria", label: "Galería" },
-  { href: "/reservas/nueva", label: "Reservas" },
-  { href: "#nosotros", label: "Nosotros" },
-  { href: "#ubicacion", label: "Ubicación" },
+  { href: "#favoritos", label: "Favoritos" },
+  { href: "#espacios", label: "Espacios" },
+  { href: "#sedes", label: "Sedes" },
+  { href: "#instagram", label: "Instagram" },
 ];
 
-export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
+const reservarButton =
+  "inline-flex h-9 items-center justify-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/85";
+
+export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +29,7 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
         >
           <Image
             src="/images/reservas/brand-logo.png"
-            alt="Sr. Brocheta"
+            alt="Señor Brocheta"
             width={132}
             height={70}
             className="h-10 w-auto"
@@ -41,7 +42,7 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-xs font-semibold tracking-[0.12em] text-foreground/80 uppercase transition-colors hover:text-primary"
+              className="text-xs font-semibold tracking-[0.12em] text-foreground/80 uppercase transition-colors hover:text-gold"
             >
               {link.label}
             </Link>
@@ -49,12 +50,8 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
         </nav>
 
         <div className="hidden md:block">
-          <Link
-            href={whatsappUrl}
-            target="_blank"
-            className={cn(buttonVariants({ variant: "default", size: "sm" }), "h-9 rounded-full px-5 text-sm font-bold")}
-          >
-            Pedir ahora
+          <Link href="/reservas/nueva" className={reservarButton}>
+            Reservar
           </Link>
         </div>
 
@@ -87,21 +84,17 @@ export function SiteHeader({ whatsappUrl }: { whatsappUrl: string }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="rounded-md px-2 py-2.5 text-sm font-semibold tracking-wide text-foreground/85 uppercase transition-colors hover:bg-secondary hover:text-primary"
+              className="rounded-md px-2 py-2.5 text-sm font-semibold tracking-wide text-foreground/85 uppercase transition-colors hover:bg-secondary hover:text-gold"
             >
               {link.label}
             </Link>
           ))}
           <Link
-            href={whatsappUrl}
-            target="_blank"
+            href="/reservas/nueva"
             onClick={() => setOpen(false)}
-            className={cn(
-              buttonVariants({ variant: "default", size: "sm" }),
-              "mt-2 h-10 w-full rounded-full text-sm font-bold"
-            )}
+            className={cn(reservarButton, "mt-2 h-10 w-full")}
           >
-            Pedir ahora
+            Reservar
           </Link>
         </nav>
       )}
