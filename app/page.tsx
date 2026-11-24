@@ -20,8 +20,6 @@ const WHATSAPP_URL = "https://wa.me/573171361324";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
 const RAPPI_URL =
   "https://www.rappi.com.co/valledupar/restaurantes/delivery/21039-senor-brocheta";
-const PEDIDOS_DANGOND_TEL = "tel:+573178853519";
-const PEDIDOS_DANGOND_DISPLAY = "317 885 3519";
 const PHONE_DISPLAY = "+57 317 136 1324";
 const EMAIL = "contacto@srbrocheta.com";
 
@@ -201,9 +199,9 @@ const sedes: Sede[] = [
     fotoAlt: "Fachada de la sede Dangond de Señor Brocheta en Valledupar",
     mapsUrl: "https://g.page/r/CXChKCU8ImvsEAE",
     pedido: {
-      texto: `Llamar para pedir · ${PEDIDOS_DANGOND_DISPLAY}`,
-      href: PEDIDOS_DANGOND_TEL,
-      externo: false,
+      texto: "Pedir por WhatsApp",
+      href: WHATSAPP_URL,
+      externo: true,
     },
   },
   {
@@ -251,7 +249,7 @@ const restauranteJsonLd = {
   url: SITE_URL,
   image: [`${SITE_URL}/images/og-image.jpg`, `${SITE_URL}/images/sitio/hero-zona-5.jpg`],
   logo: `${SITE_URL}/images/reservas/brand-logo.png`,
-  telephone: "+57 317 885 3519",
+  telephone: "+57 317 136 1324",
   servesCuisine: ["Comida rápida", "Salchipapas", "Hamburguesas", "Brochetas"],
   acceptsReservations: `${SITE_URL}/reservas/nueva`,
   sameAs: [INSTAGRAM_URL],
