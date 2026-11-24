@@ -14,6 +14,7 @@ import {
 } from "@/components/floating-contact";
 import { SiteHeader } from "@/components/site-header";
 import { SectionHeading } from "@/components/section-heading";
+import { RappiLink } from "@/components/rappi-link";
 import { cn } from "cn";
 
 const WHATSAPP_URL = "https://wa.me/573171361324";
@@ -396,9 +397,9 @@ export default function Home() {
             description="Los buenos momentos también llegan a tu puerta. Disfruta de tus favoritos sin salir de casa."
           />
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href={RAPPI_URL} target="_blank" className={botonRojo}>
+            <RappiLink href={RAPPI_URL} className={botonRojo}>
               Pedir por Rappi
-            </Link>
+            </RappiLink>
             <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
               <WhatsAppIcon className="mr-2 size-4" />
               Pedir por WhatsApp
@@ -580,13 +581,19 @@ export default function Home() {
                     {sede.horario}
                   </p>
                   <div className="mt-5 flex flex-1 flex-col justify-end gap-3">
-                    <Link
-                      href={sede.pedido.href}
-                      target={sede.pedido.externo ? "_blank" : undefined}
-                      className={cn(botonRojo, "h-11 px-5")}
-                    >
-                      {sede.pedido.texto}
-                    </Link>
+                    {sede.pedido.href === RAPPI_URL ? (
+                      <RappiLink href={RAPPI_URL} className={cn(botonRojo, "h-11 px-5")}>
+                        {sede.pedido.texto}
+                      </RappiLink>
+                    ) : (
+                      <Link
+                        href={sede.pedido.href}
+                        target={sede.pedido.externo ? "_blank" : undefined}
+                        className={cn(botonRojo, "h-11 px-5")}
+                      >
+                        {sede.pedido.texto}
+                      </Link>
+                    )}
                     <Link
                       href={sede.mapsUrl}
                       target="_blank"
