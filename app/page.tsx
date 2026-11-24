@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,6 +17,10 @@ import { SiteHeader } from "@/components/site-header";
 import { SectionHeading } from "@/components/section-heading";
 import { RappiLink } from "@/components/rappi-link";
 import { cn } from "cn";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const WHATSAPP_URL = "https://wa.me/573171361324";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
@@ -180,6 +185,7 @@ type Sede = {
   nombre: string;
   calle: string;
   horas?: { abre: string; cierra: string };
+  geo: { lat: number; lng: number };
   lugar?: string;
   direccion: string;
   horario: string;
@@ -192,6 +198,7 @@ type Sede = {
 const sedes: Sede[] = [
   {
     nombre: "Sede Dangond",
+    geo: { lat: 10.4662693, lng: -73.2624291 },
     calle: "Calle 16 #19E-85",
     horas: { abre: "17:00", cierra: "23:00" },
     direccion: "Calle 16 #19E-85, Valledupar",
@@ -207,6 +214,7 @@ const sedes: Sede[] = [
   },
   {
     nombre: "Sede Mayales Plaza",
+    geo: { lat: 10.4567717, lng: -73.240782 },
     calle: "Centro Comercial Mayales, Etapa 1, Local 34",
     lugar: "Centro Comercial Mayales · Etapa 1 · Local 34",
     direccion: "Centro Comercial Mayales, Etapa 1, Local 34, Valledupar",
@@ -218,6 +226,7 @@ const sedes: Sede[] = [
   },
   {
     nombre: "Sede Guatapurí Plaza",
+    geo: { lat: 10.473115, lng: -73.279848 },
     calle: "Centro Comercial Guatapurí, Local 2035",
     lugar: "Centro Comercial Guatapurí · Local 2035",
     direccion: "Centro Comercial Guatapurí, Local 2035, Valledupar",
@@ -261,6 +270,11 @@ const restauranteJsonLd = {
     url: SITE_URL,
     image: `${SITE_URL}${sede.foto}`,
     hasMap: sede.mapsUrl,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: sede.geo.lat,
+      longitude: sede.geo.lng,
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: sede.calle,
@@ -306,7 +320,8 @@ export default function Home() {
             src="/images/sitio/hero-zona-5.jpg"
             alt="Zona 5 de Señor Brocheta con mural y aviso dorado"
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="100vw"
             className="object-cover"
           />
@@ -318,7 +333,8 @@ export default function Home() {
             alt="Señor Brocheta"
             width={320}
             height={170}
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="h-24 w-auto sm:h-32"
           />
           <h1 className="font-display text-5xl leading-tight text-foreground sm:text-7xl">

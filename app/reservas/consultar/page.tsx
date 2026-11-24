@@ -3,7 +3,8 @@ import Link from "next/link";
 import { LookupForm } from "./lookup-form";
 
 export const metadata: Metadata = {
-  title: "Consultar mi reserva | Sr. Brocheta",
+  title: "Consultar mi reserva | Señor Brocheta",
+  robots: { index: false, follow: false },
 };
 
 export default function ConsultarReservaPage() {

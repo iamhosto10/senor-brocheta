@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Reservas | Sr. Brocheta",
-  description: "Reserva tu mesa en Sr. Brocheta, Valledupar.",
+  title: "Reservas | Señor Brocheta",
+  description: "Reserva tu mesa en Señor Brocheta, Sede Dangond, Valledupar.",
+  alternates: { canonical: "/reservas" },
 };
 
 export default function ReservasHomePage() {

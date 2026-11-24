@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { ReservaWizard } from "./reserva-wizard";
 
 export const metadata: Metadata = {
-  title: "Reservar mesa | Sr. Brocheta",
-  description: "Reserva tu mesa en Sr. Brocheta, Valledupar.",
+  title: "Reservar mesa | Señor Brocheta",
+  description:
+    "Reserva tu mesa en Señor Brocheta, Sede Dangond, Valledupar. Elige fecha, hora y zona, con o sin decoración.",
+  alternates: { canonical: "/reservas/nueva" },
 };
 
 export default function NuevaReservaPage() {
