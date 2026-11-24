@@ -52,14 +52,6 @@
   background-position: center, center, center top;
   background-repeat: no-repeat;
 }
-/* Panel interno: fondo liso para que las listas se lean sin distracciones. */
-.reservas-theme.rt-plain::before {
-  background-image: radial-gradient(
-    ellipse 80% 40% at 50% 0%,
-    rgba(222, 191, 100, 0.1) 0%,
-    rgba(222, 191, 100, 0) 70%
-  );
-}
 
 .reservas-theme h1,
 .reservas-theme h2,
