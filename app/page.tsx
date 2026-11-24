@@ -4,7 +4,6 @@ import {
   Baby,
   Gift,
   PartyPopper,
-  Phone,
   ShieldCheck,
   Snowflake,
 } from "lucide-react";
@@ -407,10 +406,6 @@ export default function Home() {
             <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
               <WhatsAppIcon className="mr-2 size-4" />
               Pedir por WhatsApp
-            </Link>
-            <Link href={PEDIDOS_DANGOND_TEL} className={botonBorde}>
-              <Phone className="mr-2 size-4" aria-hidden />
-              Sede Dangond: {PEDIDOS_DANGOND_DISPLAY}
             </Link>
           </div>
         </div>
