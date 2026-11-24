@@ -17,7 +17,6 @@ import { SectionHeading } from "@/components/section-heading";
 import { cn } from "cn";
 
 const WHATSAPP_URL = "https://wa.me/573171361324";
-const MENU_URL = "https://vinny.vinapp.co/?company=srbrocheta";
 const INSTAGRAM_URL = "https://www.instagram.com/sr.brocheta/";
 const RAPPI_URL =
   "https://www.rappi.com.co/valledupar/restaurantes/delivery/21039-senor-brocheta";
@@ -254,7 +253,6 @@ const restauranteJsonLd = {
   logo: `${SITE_URL}/images/reservas/brand-logo.png`,
   telephone: "+57 317 885 3519",
   servesCuisine: ["Comida rápida", "Salchipapas", "Hamburguesas", "Brochetas"],
-  menu: MENU_URL,
   acceptsReservations: `${SITE_URL}/reservas/nueva`,
   sameAs: [INSTAGRAM_URL],
   areaServed: { "@type": "City", name: "Valledupar" },
@@ -340,8 +338,8 @@ export default function Home() {
             <Link href="/reservas/nueva" className={botonRojo}>
               Reservar mesa
             </Link>
-            <Link href={MENU_URL} target="_blank" className={botonBorde}>
-              Ver el menú
+            <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
+              Pedir por WhatsApp
             </Link>
           </div>
         </div>
@@ -373,7 +371,7 @@ export default function Home() {
               </div>
             ))}
             <Link
-              href={MENU_URL}
+              href={WHATSAPP_URL}
               target="_blank"
               className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-gold/50 p-4 text-center transition-colors hover:border-gold hover:bg-gold/5"
             >
@@ -381,7 +379,7 @@ export default function Home() {
                 Mira todo lo que tenemos
               </span>
               <span className="inline-flex h-10 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground">
-                Ver el menú completo
+                Pedir por WhatsApp
               </span>
             </Link>
           </div>
@@ -665,8 +663,8 @@ export default function Home() {
             <Link href="/reservas/nueva" className="hover:text-gold">
               Reservas
             </Link>
-            <Link href={MENU_URL} target="_blank" className="hover:text-gold">
-              Menú completo
+            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
+              Pedir por WhatsApp
             </Link>
             <Link href={WHATSAPP_URL} target="_blank" className="hover:text-gold">
               WhatsApp {PHONE_DISPLAY}
