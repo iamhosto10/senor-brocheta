@@ -198,7 +198,7 @@ const sedes: Sede[] = [
     horario: "5:00 p. m. a 11:00 p. m.",
     foto: "/images/sitio/sedes/dangond.jpg",
     fotoAlt: "Fachada de la sede Dangond de Señor Brocheta en Valledupar",
-    mapsUrl: "https://g.page/r/CXChKCU8ImvsEAE",
+    mapsUrl: "https://www.google.com/maps?cid=17035747657175834992",
     pedido: {
       texto: "Pedir por WhatsApp",
       href: WHATSAPP_URL,
@@ -213,7 +213,7 @@ const sedes: Sede[] = [
     horario: "12:00 m. a 8:30 p. m.",
     foto: "/images/sitio/sedes/mayales.jpg",
     fotoAlt: "Punto de Señor Brocheta en el Centro Comercial Mayales Plaza",
-    mapsUrl: "https://g.page/r/CZvirAID3EGeEBM",
+    mapsUrl: "https://www.google.com/maps?cid=11403637636966703771",
     pedido: { texto: "Pedir por Rappi", href: RAPPI_URL, externo: true },
   },
   {
@@ -224,7 +224,7 @@ const sedes: Sede[] = [
     horario: "12:00 m. a 8:30 p. m.",
     foto: "/images/sitio/sedes/guatapuri.jpg",
     fotoAlt: "Punto de Señor Brocheta en el Centro Comercial Guatapurí Plaza",
-    mapsUrl: "https://g.page/r/CZTjwsaJ3nMLEBM",
+    mapsUrl: "https://www.google.com/maps?cid=825247840065479572",
     pedido: { texto: "Pedir por Rappi", href: RAPPI_URL, externo: true },
   },
 ];
