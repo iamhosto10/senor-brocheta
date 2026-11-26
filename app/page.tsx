@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Snowflake,
 } from "lucide-react";
+import { FavoritosCarousel } from "@/components/favoritos-carousel";
 import {
   FloatingContact,
   InstagramIcon,
@@ -368,34 +369,17 @@ export default function Home() {
             title="Los favoritos de la casa"
             description="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
           />
-          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {favoritos.map((plato) => (
-              <div key={plato.nombre} className="flex flex-col gap-3">
-                <div className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20">
-                  <Image
-                    src={plato.src}
-                    alt={plato.alt}
-                    fill
-                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 30vw, 46vw"
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-center text-base font-bold text-foreground">
-                  {plato.nombre}
-                </h3>
-              </div>
-            ))}
+          <FavoritosCarousel platos={favoritos} />
+          <div className="mt-8 flex flex-col items-center gap-3 text-center">
+            <span className="text-base font-bold text-foreground">
+              Mira todo lo que tenemos
+            </span>
             <Link
               href={WHATSAPP_URL}
               target="_blank"
-              className="group flex aspect-square flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-gold/50 p-4 text-center transition-colors hover:border-gold hover:bg-gold/5"
+              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/85"
             >
-              <span className="text-base font-bold text-foreground">
-                Mira todo lo que tenemos
-              </span>
-              <span className="inline-flex h-10 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground">
-                Pedir por WhatsApp
-              </span>
+              Pedir por WhatsApp
             </Link>
           </div>
         </div>
