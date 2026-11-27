@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "cn";
@@ -17,13 +17,40 @@ const reservarButton =
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  // En la portada el logo ya lo da la foto (el aviso dorado); el del menú
+  // aparece solo cuando la portada sale de pantalla, para no repetirlo.
+  const [pasoPortada, setPasoPortada] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setPasoPortada(window.scrollY > window.innerHeight * 0.75);
+    const raf = requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const solido = pasoPortada || open;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gold/20 bg-background/85 backdrop-blur-md">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500",
+        solido
+          ? "border-gold/20 bg-background/85 backdrop-blur-md"
+          : "border-transparent bg-transparent"
+      )}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-2.5">
         <Link
           href="#inicio"
-          className="flex items-center gap-2.5"
+          aria-label="Señor Brocheta, ir al inicio"
+          className={cn(
+            "flex items-center gap-2.5 transition-all duration-500",
+            solido ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+          )}
+          tabIndex={solido ? undefined : -1}
           onClick={() => setOpen(false)}
         >
           <Image

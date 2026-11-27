@@ -1,4 +1,5 @@
 import { cn } from "cn";
+import { RevealWords } from "@/components/reveal-observer";
 
 export function SectionHeading({
   eyebrow,
@@ -15,6 +16,7 @@ export function SectionHeading({
 }) {
   return (
     <div
+      data-reveal="heading"
       className={cn(
         "flex flex-col",
         align === "center" ? "items-center text-center" : "items-start text-left",
@@ -22,16 +24,21 @@ export function SectionHeading({
       )}
     >
       {eyebrow && (
-        <span className="text-xs font-semibold tracking-[0.25em] text-gold uppercase">
+        <span className="reveal-eyebrow text-xs font-semibold tracking-[0.25em] text-gold uppercase">
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl">
-        {title}
+      <h2
+        aria-label={title}
+        className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl"
+      >
+        <span aria-hidden>
+          <RevealWords text={title} delay={120} />
+        </span>
       </h2>
-      <span className="mt-4 h-[3px] w-14 rounded-full bg-gold" aria-hidden />
+      <span className="reveal-line mt-4 h-[3px] w-14 rounded-full bg-gold" aria-hidden />
       {description && (
-        <p className="mt-4 max-w-xl text-pretty text-foreground/75">
+        <p className="reveal-fade mt-4 max-w-xl text-pretty text-foreground/75">
           {description}
         </p>
       )}

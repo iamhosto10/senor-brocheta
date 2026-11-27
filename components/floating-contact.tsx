@@ -25,8 +25,29 @@ export function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
+/** Logo de Instagram a color: cuadro con el degradado oficial y la cámara en blanco. */
+function InstagramLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <defs>
+        <radialGradient id="ig-grad" cx="0.3" cy="1.07" r="1.3">
+          <stop offset="0" stopColor="#fdf497" />
+          <stop offset="0.1" stopColor="#fdf497" />
+          <stop offset="0.5" stopColor="#fd5949" />
+          <stop offset="0.68" stopColor="#d6249f" />
+          <stop offset="1" stopColor="#285aeb" />
+        </radialGradient>
+      </defs>
+      <rect x="1" y="1" width="22" height="22" rx="6.5" fill="url(#ig-grad)" />
+      <rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" strokeWidth="1.7" />
+      <circle cx="15.9" cy="8.1" r="0.95" fill="#fff" />
+    </svg>
+  );
+}
+
 const botonFlotante =
-  "flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/50 ring-2 ring-gold/70 transition-transform hover:scale-110 hover:bg-primary/90";
+  "relative flex size-14 items-center justify-center rounded-full bg-white shadow-lg shadow-black/40 transition-transform duration-300 hover:scale-110";
 
 export function FloatingContact({
   whatsappUrl,
@@ -36,7 +57,7 @@ export function FloatingContact({
   instagramUrl: string;
 }) {
   return (
-    <div className="fixed right-4 bottom-4 z-40 flex flex-col gap-3 sm:right-6 sm:bottom-6">
+    <div className="floating-contact fixed right-4 bottom-4 z-40 flex flex-col gap-3 sm:right-6 sm:bottom-6">
       <Link
         href={instagramUrl}
         target="_blank"
@@ -44,7 +65,7 @@ export function FloatingContact({
         aria-label="Síguenos en Instagram"
         className={botonFlotante}
       >
-        <InstagramIcon className="size-6" />
+        <InstagramLogo className="size-8" />
       </Link>
       <Link
         href={whatsappUrl}
@@ -53,7 +74,8 @@ export function FloatingContact({
         aria-label="Escríbenos por WhatsApp"
         className={botonFlotante}
       >
-        <WhatsAppIcon className="size-7" />
+        <span className="whatsapp-ping" aria-hidden />
+        <WhatsAppIcon className="relative size-9 text-[#25D366]" />
       </Link>
     </div>
   );

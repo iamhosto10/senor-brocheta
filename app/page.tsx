@@ -17,6 +17,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SectionHeading } from "@/components/section-heading";
 import { RappiLink } from "@/components/rappi-link";
+import { RevealObserver, RevealWords } from "@/components/reveal-observer";
 import { cn } from "cn";
 
 export const metadata: Metadata = {
@@ -149,6 +150,9 @@ const galeria = [
   },
 ];
 
+// Publicaciones fijas y elegidas a mano (quiénes somos, dónde estamos y comida
+// que provoca). No se cargan del perfil: para cambiarlas se reemplaza la portada
+// en public/images/sitio/instagram/ y su enlace aquí.
 const reels = [
   {
     titulo: "Master Pro",
@@ -309,14 +313,15 @@ export default function Home() {
         }}
       />
       <SiteHeader />
+      <RevealObserver />
       <FloatingContact whatsappUrl={WHATSAPP_URL} instagramUrl={INSTAGRAM_URL} />
 
-      {/* Hero */}
+      {/* Hero: primero entra la foto (el aviso dorado ya es el logo), luego el texto */}
       <section
         id="inicio"
-        className="relative flex min-h-[92vh] scroll-mt-16 items-center overflow-hidden"
+        className="hero-intro relative flex min-h-[100svh] scroll-mt-16 items-end overflow-hidden"
       >
-        <div className="absolute inset-0">
+        <div className="hero-media absolute inset-x-0 top-0 bottom-[34%] md:bottom-0">
           <Image
             src="/images/sitio/hero-zona-5.jpg"
             alt="Zona 5 de Señor Brocheta con mural y aviso dorado"
@@ -324,42 +329,73 @@ export default function Home() {
             loading="eager"
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-[64%_45%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-black" />
         </div>
-        <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center gap-5 px-5 py-28 text-center">
-          <Image
-            src="/images/reservas/brand-logo.png"
-            alt="Señor Brocheta"
-            width={320}
-            height={170}
-            loading="eager"
-            fetchPriority="high"
-            className="h-24 w-auto sm:h-32"
-          />
-          <h1 className="font-display text-5xl leading-tight text-foreground sm:text-7xl">
-            El mejor sabor se comparte.
-          </h1>
-          <span className="h-[3px] w-16 rounded-full bg-gold" aria-hidden />
-          <p className="max-w-xl text-pretty text-lg text-foreground/85">
-            Las mejores salchipapas de Valledupar, calidad, buenos precios y una
-            atención que se disfruta. Ven con tu familia y amigos, nosotros
-            ponemos el sabor.
-          </p>
-          <p className="text-base font-bold text-gold">
-            ¡Haz de tu antojo tu próximo plan!
-          </p>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/reservas/nueva" className={botonRojo}>
-              Reservar mesa
-            </Link>
-            <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
-              Pedir por WhatsApp
-            </Link>
+        <div className="hero-shade absolute inset-0" aria-hidden />
+        <div className="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-24 sm:pb-28">
+          <div className="flex max-w-2xl flex-col items-center gap-5 text-center md:items-start md:text-left">
+            <h1
+              aria-label="El mejor sabor se comparte."
+              className="font-display text-[2.6rem] leading-[1.05] sm:text-6xl md:text-7xl text-foreground drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+            >
+              <span aria-hidden>
+                <RevealWords text="El mejor sabor se comparte." delay={1500} step={110} />
+              </span>
+            </h1>
+            <span className="hero-line h-[3px] w-16 rounded-full bg-gold" aria-hidden />
+            <p className="hero-fade max-w-xl text-pretty text-lg text-foreground/90 [--d:2300ms]">
+              Las mejores salchipapas de Valledupar, calidad, buenos precios y una
+              atención que se disfruta. Ven con tu familia y amigos, nosotros
+              ponemos el sabor.
+            </p>
+            <p className="hero-fade text-base font-bold text-gold [--d:2500ms]">
+              ¡Haz de tu antojo tu próximo plan!
+            </p>
+            <div className="hero-fade mt-2 flex flex-wrap items-center justify-center gap-3 [--d:2700ms] md:justify-start">
+              <Link href="/reservas/nueva" className={botonRojo}>
+                Reservar mesa
+              </Link>
+              <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
+                Pedir por WhatsApp
+              </Link>
+            </div>
           </div>
         </div>
+        <a
+          href="#favoritos"
+          aria-label="Bajar a los favoritos"
+          className="hero-fade hero-scroll absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:block [--d:3200ms]"
+        >
+          <span />
+        </a>
       </section>
+
+      {/* Cinta en movimiento: rompe la cuadrícula entre la portada y el menú */}
+      <div className="marquee border-y border-gold/20 bg-primary py-3" aria-hidden>
+        <div className="marquee-track">
+          {[0, 1].map((copia) => (
+            <div key={copia} className="flex shrink-0 items-center">
+              {[
+                "Salchipapas",
+                "Hamburguesas",
+                "Brochetas",
+                "Arepas",
+                "Combos",
+                "Valledupar",
+              ].map((t) => (
+                <span
+                  key={t}
+                  className="flex items-center font-display text-2xl whitespace-nowrap text-primary-foreground sm:text-3xl"
+                >
+                  <span className="px-6">{t}</span>
+                  <span className="text-gold">✦</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Favoritos */}
       <section id="favoritos" className="scroll-mt-16">
@@ -370,7 +406,7 @@ export default function Home() {
             description="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
           />
           <FavoritosCarousel platos={favoritos} />
-          <div className="mt-8 flex flex-col items-center gap-3 text-center">
+          <div data-reveal="up" className="mt-8 flex flex-col items-center gap-3 text-center">
             <span className="text-base font-bold text-foreground">
               Mira todo lo que tenemos
             </span>
@@ -396,7 +432,7 @@ export default function Home() {
             title="Pide sin salir de casa"
             description="Los buenos momentos también llegan a tu puerta. Disfruta de tus favoritos sin salir de casa."
           />
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div data-reveal="up" className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <RappiLink href={RAPPI_URL} className={botonRojo}>
               Pedir por Rappi
             </RappiLink>
@@ -418,9 +454,11 @@ export default function Home() {
           />
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {destacadosEspacios.map(({ icon: Icon, titulo, texto }) => (
+            {destacadosEspacios.map(({ icon: Icon, titulo, texto }, i) => (
               <div
                 key={titulo}
+                data-reveal="up"
+                style={{ "--d": `${i * 90}ms` } as React.CSSProperties}
                 className="flex flex-col items-center rounded-md border border-gold/20 p-5 text-center"
               >
                 <Icon className="size-7 text-gold" aria-hidden />
@@ -433,9 +471,11 @@ export default function Home() {
           </div>
 
           <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            {fotosEspacios.map((foto) => (
+            {fotosEspacios.map((foto, i) => (
               <div
                 key={foto.src}
+                data-reveal="image"
+                style={{ "--d": `${i * 120}ms` } as React.CSSProperties}
                 className="relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
               >
                 <Image
@@ -449,7 +489,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-col items-center gap-4 text-center">
+          <div data-reveal="up" className="mt-10 flex flex-col items-center gap-4 text-center">
             <p className="text-lg font-bold text-foreground">
               Tu próxima celebración comienza aquí. Reserva tu espacio.
             </p>
@@ -468,9 +508,11 @@ export default function Home() {
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
           <SectionHeading eyebrow="Así se vive" title="Galería" />
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {galeria.map((foto) => (
+            {galeria.map((foto, i) => (
               <div
                 key={foto.src}
+                data-reveal="image"
+                style={{ "--d": `${(i % 3) * 120}ms` } as React.CSSProperties}
                 className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
               >
                 <Image
@@ -486,20 +528,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Historia */}
-      <section id="historia" className="scroll-mt-16">
-        <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-20 text-center">
-          <SectionHeading eyebrow="Desde Valledupar" title="Conoce nuestra historia" />
-          {/* Texto provisional: el cliente enviará la historia definitiva */}
-          <p className="mt-6 text-pretty text-foreground/80">
-            Nacimos de una receta de familia y un chuzo que no tardó en hacerse
-            conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
-            diario y un mismo compromiso: comida urbana premium, servida rápido
-            y sin perder el sabor de casa.
-          </p>
-        </div>
-      </section>
-
       {/* Instagram */}
       <section
         id="instagram"
@@ -512,9 +540,11 @@ export default function Home() {
             description="Toca cualquier video para verlo en nuestro perfil."
           />
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {reels.map((reel) => (
+            {reels.map((reel, i) => (
               <Link
                 key={reel.href}
+                data-reveal="image"
+                style={{ "--d": `${(i % 3) * 120}ms` } as React.CSSProperties}
                 href={reel.href}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -534,7 +564,7 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <div className="mt-10 text-center">
+          <div data-reveal="up" className="mt-10 text-center">
             <Link href={INSTAGRAM_URL} target="_blank" className={botonBorde}>
               <InstagramIcon className="mr-2 size-4" />
               Síguenos en Instagram
@@ -549,9 +579,11 @@ export default function Home() {
           <SectionHeading eyebrow="Visítanos" title="Nuestras sedes" />
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {sedes.map((sede) => (
+            {sedes.map((sede, i) => (
               <article
                 key={sede.nombre}
+                data-reveal="up"
+                style={{ "--d": `${i * 140}ms` } as React.CSSProperties}
                 className="flex h-full flex-col overflow-hidden rounded-md border border-gold/20"
               >
                 <div className="relative aspect-[4/5] w-full">
@@ -608,12 +640,26 @@ export default function Home() {
             ))}
           </div>
 
-          <p className="mt-10 text-center text-lg text-foreground/85">
+          <p data-reveal="up" className="mt-10 text-center text-lg text-foreground/85">
             <span className="font-bold text-foreground">
               Estamos cada vez más cerca de ti.
             </span>{" "}
             Visítanos en Mayales Plaza o Guatapurí y disfruta de tus favoritos de
             Señor Brocheta.
+          </p>
+        </div>
+      </section>
+
+      {/* Historia */}
+      <section id="historia" className="scroll-mt-16">
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-20 text-center">
+          <SectionHeading eyebrow="Desde Valledupar" title="Conoce nuestra historia" />
+          {/* Texto provisional: el cliente enviará la historia definitiva */}
+          <p data-reveal="up" className="mt-6 text-pretty text-foreground/80">
+            Nacimos de una receta de familia y un chuzo que no tardó en hacerse
+            conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
+            diario y un mismo compromiso: comida urbana premium, servida rápido
+            y sin perder el sabor de casa.
           </p>
         </div>
       </section>
