@@ -371,32 +371,6 @@ export default function Home() {
         </a>
       </section>
 
-      {/* Cinta en movimiento: rompe la cuadrícula entre la portada y el menú */}
-      <div className="marquee border-y border-gold/20 bg-primary py-3" aria-hidden>
-        <div className="marquee-track">
-          {[0, 1].map((copia) => (
-            <div key={copia} className="flex shrink-0 items-center">
-              {[
-                "Salchipapas",
-                "Hamburguesas",
-                "Brochetas",
-                "Arepas",
-                "Combos",
-                "Valledupar",
-              ].map((t) => (
-                <span
-                  key={t}
-                  className="flex items-center font-display text-2xl whitespace-nowrap text-primary-foreground sm:text-3xl"
-                >
-                  <span className="px-6">{t}</span>
-                  <span className="text-gold">✦</span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Favoritos */}
       <section id="favoritos" className="scroll-mt-16">
         <div className="mx-auto w-full max-w-5xl px-5 py-20">

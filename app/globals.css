@@ -233,11 +233,6 @@
   100% { opacity: 0; transform: translateY(14px); }
 }
 
-/* Cinta en movimiento */
-.marquee { overflow: hidden; }
-.marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
-@keyframes marquee { to { transform: translateX(-50%); } }
-
 /* Entradas al hacer scroll (activadas por RevealObserver). Solo se ocultan si hay JS. */
 @media (scripting: enabled) {
   [data-reveal="up"] {
@@ -296,7 +291,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-media img, .hero-shade, .hero-intro .reveal-word > span, .hero-fade, .hero-line,
-  .hero-scroll > span, .marquee-track, .whatsapp-ping, .floating-contact { animation: none !important; }
+  .hero-scroll > span, .whatsapp-ping, .floating-contact { animation: none !important; }
   [data-reveal], [data-reveal] img, [data-reveal] .reveal-word > span,
   [data-reveal] .reveal-eyebrow, [data-reveal] .reveal-fade, [data-reveal] .reveal-line {
     opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important;
