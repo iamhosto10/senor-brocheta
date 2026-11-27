@@ -59,11 +59,11 @@ export function FavoritosCarousel({ platos }: { platos: Plato[] }) {
       {/* Brillo dorado detrás del plato activo */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[42%] size-[70vw] max-h-[560px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/15 blur-3xl transition-opacity duration-700"
+        className="pointer-events-none absolute left-1/2 top-[42%] size-[70vw] max-h-[560px] max-w-[560px] lg:max-h-[760px] lg:max-w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/15 blur-3xl transition-opacity duration-700"
       />
 
       <div
-        className="relative mx-auto h-[min(118vw,640px)] w-full touch-pan-y overflow-hidden [perspective:1400px] sm:h-[620px]"
+        className="relative mx-auto h-[min(118vw,640px)] w-full touch-pan-y overflow-hidden [perspective:1400px] sm:h-[620px] lg:h-[820px]"
         onPointerDown={(e) => {
           drag.current = { x: e.clientX, moved: false };
           setPaused(true);
@@ -97,7 +97,7 @@ export function FavoritosCarousel({ platos }: { platos: Plato[] }) {
               aria-hidden={!isActive}
               onClick={() => !isActive && visible && setActive(i)}
               className={cn(
-                "absolute left-1/2 top-4 w-[78vw] max-w-[480px] cursor-pointer transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] will-change-transform sm:w-[440px]",
+                "absolute left-1/2 top-4 w-[78vw] max-w-[480px] cursor-pointer lg:max-w-[620px] transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] will-change-transform sm:w-[440px] lg:w-[620px]",
                 !visible && "pointer-events-none"
               )}
               style={{
@@ -119,7 +119,7 @@ export function FavoritosCarousel({ platos }: { platos: Plato[] }) {
                   src={plato.src}
                   alt={plato.alt}
                   fill
-                  sizes="(min-width: 640px) 480px, 80vw"
+                  sizes="(min-width: 1024px) 620px, (min-width: 640px) 480px, 80vw"
                   className={cn(
                     "object-cover transition-transform duration-[6000ms] ease-out",
                     isActive && !reduced ? "scale-110" : "scale-100"

@@ -336,11 +336,38 @@ export default function Home() {
 
       <Hero whatsappUrl={WHATSAPP_URL} />
 
-      {/* Capítulo 01: Historia */}
-      <section id="historia" className="fondo-reticula scroll-mt-16">
+      {/* Capítulo 01: Favoritos */}
+      <section id="favoritos" className="fondo-reticula scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
           <CapituloIntro
             numero="01"
+            etiqueta="Para antojarte"
+            titulo="Los favoritos de la casa."
+            texto="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
+          />
+          <FavoritosCarousel platos={favoritos} />
+          <div data-reveal="up" className="mt-8 flex flex-col items-center gap-3 text-center">
+            <span className="text-base font-bold text-foreground">
+              Mira todo lo que tenemos
+            </span>
+            <Link
+              href={WHATSAPP_URL}
+              target="_blank"
+              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/85"
+            >
+              Pedir por WhatsApp
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Interludio video="queso" frase="EL QUE PRUEBA, VUELVE" etiqueta="Sin miedo al queso" />
+
+      {/* Capítulo 02: Historia */}
+      <section id="historia" className="fondo-reticula scroll-mt-16">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+          <CapituloIntro
+            numero="02"
             etiqueta="Desde Valledupar"
             titulo="Nacimos de una receta de familia y un chuzo que no tardó en hacerse conocido en la ciudad."
             texto="Hoy somos tres sedes, un equipo que crece a diario y un mismo compromiso: comida urbana premium, servida rápido y sin perder el sabor de casa."
@@ -378,33 +405,6 @@ export default function Home() {
                 <FichaNumero valor={5} etiqueta="Zonas" detalle="Para reservar en la sede Dangond" delay={0.15} />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <Interludio video="queso" frase="EL QUE PRUEBA, VUELVE" etiqueta="Sin miedo al queso" />
-
-      {/* Capítulo 02: Favoritos */}
-      <section id="favoritos" className="fondo-reticula scroll-mt-16">
-        <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
-          <CapituloIntro
-            numero="02"
-            etiqueta="Para antojarte"
-            titulo="Los favoritos de la casa."
-            texto="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
-          />
-          <FavoritosCarousel platos={favoritos} />
-          <div data-reveal="up" className="mt-8 flex flex-col items-center gap-3 text-center">
-            <span className="text-base font-bold text-foreground">
-              Mira todo lo que tenemos
-            </span>
-            <Link
-              href={WHATSAPP_URL}
-              target="_blank"
-              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/85"
-            >
-              Pedir por WhatsApp
-            </Link>
           </div>
         </div>
       </section>

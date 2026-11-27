@@ -7,8 +7,8 @@ import { cn } from "cn";
 
 const CAPITULOS = [
   { href: "#inicio", numero: "00", label: "Inicio" },
-  { href: "#historia", numero: "01", label: "Nuestra historia" },
-  { href: "#favoritos", numero: "02", label: "Los favoritos" },
+  { href: "#favoritos", numero: "01", label: "Los favoritos" },
+  { href: "#historia", numero: "02", label: "Nuestra historia" },
   { href: "#asi-se-arma", numero: "03", label: "Así se arma" },
   { href: "#galeria", numero: "04", label: "Galería" },
   { href: "#espacios", numero: "05", label: "Espacios" },

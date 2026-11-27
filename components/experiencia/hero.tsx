@@ -92,7 +92,7 @@ export function Hero({ whatsappUrl }: { whatsappUrl: string }) {
       </div>
 
       <a
-        href="#historia"
+        href="#favoritos"
         className="hero-sub absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 whitespace-nowrap text-[10px] font-semibold tracking-[0.3em] text-white/80 uppercase"
       >
         Desliza para explorar
