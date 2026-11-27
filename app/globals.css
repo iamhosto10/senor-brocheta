@@ -342,24 +342,27 @@ html.sin-preloader .preloader { display: none; }
 @keyframes arma-paso { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .arma-paso { animation: arma-paso 0.5s var(--ease-out-expo) both; }
 
-/* Galería: sin animación es una cuadrícula; con animación es una escena fija */
+/* Galería: sin animación es una cuadrícula; con animación, una foto a la vez a pantalla completa */
 .gp-escena {
   position: relative; z-index: 10;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;
-  padding: 13rem 1.25rem 5rem; max-width: 72rem; margin: 0 auto;
+  padding: 16rem 1.25rem 5rem; max-width: 72rem; margin: 0 auto;
 }
 @media (min-width: 768px) { .gp-escena { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.gp-slide { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; }
+.gp-fondo-foto { display: none; }
+.gp-slide .gp-marco { top: 0; }
+.gp-fondo-foto img { filter: blur(40px) brightness(0.55) saturate(1.2); transform: scale(1.2); }
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .galeria-prof { height: 100svh; }
   .gp-escena { position: absolute; inset: 0; display: block; padding: 0; max-width: none; }
-  .gp-foto {
-    position: absolute; left: var(--x); top: var(--y); width: var(--w);
-    translate: -50% -50%; opacity: 0; will-change: transform, opacity, filter;
+  .gp-slide {
+    position: absolute; inset: 0; aspect-ratio: auto; border-radius: 0;
+    clip-path: inset(100% 0 0 0); will-change: clip-path;
   }
-  .gp-pie-estatico { display: none; }
-}
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (max-width: 767px) {
-  .gp-foto { width: 62vw; left: 50%; top: 50%; }
+  .gp-fondo-foto { display: block; }
+  .gp-slide .gp-marco { top: 4rem; }
+  .gp-foto-img { will-change: transform; }
 }
 
 /* Sin movimiento: las frases gigantes se leen completas */

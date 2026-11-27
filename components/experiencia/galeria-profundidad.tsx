@@ -3,26 +3,14 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap, prefiereMenosMovimiento } from "./gsap";
-import { VideoFondo } from "./video-fondo";
 
 export type FotoGaleria = { src: string; alt: string; pie: string };
 
-/** Posición (en % del ancho/alto) y ancho de cada foto en la escena. */
-const LUGARES = [
-  { x: 58, y: 50, w: "min(34vw, 420px)" },
-  { x: 30, y: 46, w: "min(24vw, 300px)" },
-  { x: 66, y: 44, w: "min(30vw, 380px)" },
-  { x: 38, y: 54, w: "min(32vw, 400px)" },
-  { x: 62, y: 52, w: "min(26vw, 330px)" },
-  { x: 34, y: 48, w: "min(30vw, 380px)" },
-  { x: 56, y: 46, w: "min(28vw, 360px)" },
-  { x: 44, y: 52, w: "min(34vw, 420px)" },
-];
-
 /**
- * Galería en profundidad: la sección queda fija sobre un video oscuro y las
- * fotos se acercan desde el fondo, pasan por el frente y se desvanecen, una
- * tras otra, con su pie de foto abajo.
+ * Galería: la sección queda fija y muestra una foto a la vez, del alto de la
+ * pantalla, sin recortarla (a los lados va la misma foto desenfocada). Cada
+ * foto nueva sube como una cortina sobre la anterior y entra con un zoom muy
+ * suave, para que la comida se vea grande y quieta, sin mareo.
  */
 export function GaleriaProfundidad({ fotos }: { fotos: FotoGaleria[] }) {
   const raiz = useRef<HTMLElement>(null);
@@ -31,80 +19,88 @@ export function GaleriaProfundidad({ fotos }: { fotos: FotoGaleria[] }) {
     if (prefiereMenosMovimiento()) return;
     const el = raiz.current!;
     const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray<HTMLElement>(".gp-foto");
-      const pies = gsap.utils.toArray<HTMLElement>(".gp-pie");
+      const slides = gsap.utils.toArray<HTMLElement>(".gp-slide");
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           start: "top top",
-          end: `+=${items.length * 65}%`,
+          end: () => `+=${window.innerHeight * (slides.length + 0.5)}`,
           pin: true,
           pinSpacing: true,
-          scrub: 0.6,
+          scrub: 0.8,
+          invalidateOnRefresh: true,
         },
         defaults: { ease: "none" },
       });
-      tl.fromTo(".gp-titulo", { opacity: 1, y: 0 }, { opacity: 0, y: -40, duration: 0.6 }, 0.2);
-      items.forEach((item, i) => {
-        const t = i * 0.55;
+
+      // Título de entrada
+      tl.fromTo(".gp-titulo", { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.35 }, 0.25);
+
+      slides.forEach((slide, i) => {
+        const inicio = 0.3 + i; // cada foto ocupa una pantalla de scroll
         tl.fromTo(
-          item,
-          { scale: 0.15, opacity: 0, filter: "blur(10px)" },
-          { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power1.out" },
-          t
+          slide,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power2.inOut" },
+          inicio
         )
-          .to(item, { scale: 2.4, opacity: 0, filter: "blur(6px)", duration: 0.7, ease: "power1.in" }, t + 0.75)
-          .fromTo(pies[i], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.25 }, t + 0.35)
-          .to(pies[i], { opacity: 0, y: -10, duration: 0.25 }, t + 0.95);
+          .fromTo(
+            slide.querySelector(".gp-foto-img"),
+            { scale: 1.12 },
+            { scale: 1, duration: 1, ease: "power1.out" },
+            inicio
+          )
+          .fromTo(
+            slide.querySelectorAll(".gp-texto > *"),
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, stagger: 0.05, ease: "power2.out" },
+            inicio + 0.25
+          );
       });
+      tl.to({}, { duration: 0.2 }); // un respiro con la última foto
     }, el);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="galeria"
-      ref={raiz}
-      className="galeria-prof relative overflow-hidden bg-black"
-      aria-label="Galería"
-    >
-      <div className="gp-fondo absolute inset-0">
-        <VideoFondo nombre="mesa" className="scale-110 blur-[3px] brightness-[0.35]" />
-      </div>
-
-      <div className="gp-titulo pointer-events-none absolute inset-x-0 top-28 z-20 text-center">
+    <section id="galeria" ref={raiz} className="galeria-prof relative overflow-hidden bg-black" aria-label="Galería">
+      <div className="gp-titulo pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center text-center">
         <p className="text-[11px] font-semibold tracking-[0.35em] text-gold uppercase">Capítulo 04</p>
-        <h2 className="mt-2 font-display text-6xl text-white sm:text-8xl">galeria</h2>
+        <h2 className="mt-2 font-display text-7xl text-white sm:text-9xl">galeria</h2>
+        <p className="mt-4 text-sm text-white/60">Desliza para ver cada plato</p>
       </div>
 
       <ul className="gp-escena">
-        {fotos.map((foto, i) => {
-          const l = LUGARES[i % LUGARES.length];
-          return (
-            <li
-              key={foto.src}
-              className="gp-foto"
-              style={{ "--x": `${l.x}%`, "--y": `${l.y}%`, "--w": l.w } as React.CSSProperties}
-            >
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm shadow-[0_30px_80px_rgba(0,0,0,0.6)] ring-1 ring-white/15">
-                <Image src={foto.src} alt={foto.alt} fill sizes="(min-width: 768px) 420px, 80vw" className="object-cover" />
-              </div>
-              <p className="gp-pie-estatico mt-2 text-center text-xs text-white/70">{foto.pie}</p>
-            </li>
-          );
-        })}
-      </ul>
+        {fotos.map((foto, i) => (
+          <li key={foto.src} className="gp-slide">
+            {/* Fondo: la misma foto desenfocada para llenar los lados */}
+            <div className="gp-fondo-foto absolute inset-0" aria-hidden>
+              <Image src={foto.src} alt="" fill sizes="100vw" className="object-cover" />
+            </div>
+            <div className="absolute inset-0 bg-black/35" aria-hidden />
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 h-5 text-center" aria-hidden>
-        {fotos.map((foto) => (
-          <span
-            key={foto.src}
-            className="gp-pie absolute inset-x-0 text-xs font-semibold tracking-[0.2em] text-white/85 uppercase opacity-0"
-          >
-            {foto.pie}
-          </span>
+            {/* La foto completa, del alto de la pantalla */}
+            <div className="gp-marco absolute inset-x-0 bottom-0">
+              <Image
+                src={foto.src}
+                alt={foto.alt}
+                fill
+                sizes="100vw"
+                className="gp-foto-img object-contain"
+              />
+            </div>
+
+            <div className="gp-texto absolute bottom-6 left-5 z-10 sm:bottom-10 sm:left-10">
+              <p className="text-[11px] font-bold tracking-[0.3em] text-gold tabular-nums">
+                {String(i + 1).padStart(2, "0")} / {String(fotos.length).padStart(2, "0")}
+              </p>
+              <p className="mt-1 max-w-[80vw] text-2xl font-extrabold text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] sm:text-4xl">
+                {foto.pie}
+              </p>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

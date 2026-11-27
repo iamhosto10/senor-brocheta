@@ -5,8 +5,8 @@
  *
  *  - "queso": papas fritas que barren la pantalla al entrar y al salir, y una
  *    lluvia de queso rallado y granos de maíz que cae con el scroll.
- *  - "salsa": una cortina de salsa que chorrea hacia abajo al entrar, gotas
- *    que caen y otra cortina que baja y cubre la pantalla al salir.
+ *  - "salsa": hilos de salsa de tomate y blanca que se dibujan en zigzag sobre
+ *    la pantalla con el scroll, y gotas que caen.
  */
 
 function semilla(s: number) {
@@ -141,50 +141,54 @@ export function LluviaQueso() {
   );
 }
 
-/* ───────── Cortina de salsa ───────── */
+/* ───────── Hilos de salsa ───────── */
 
-/** Borde inferior con chorreados: una curva por cada gota que cuelga. */
-function caminoChorreado(seed: number, base: number, largoMax: number) {
+/**
+ * Hilo ondulado de lado a lado, como el chorrito de salsa que se le echa al
+ * plato: una onda con amplitud y frecuencia que varían un poco.
+ */
+function caminoHilo(seed: number, y: number, amp: number, ciclos: number) {
   const rand = semilla(seed);
-  let x = 1000;
-  let d = `M0,0 H1000 V${base}`;
-  while (x > 0) {
-    const ancho = 22 + rand() * 46;
-    const hueco = 10 + rand() * 60;
-    const largo = 20 + rand() * largoMax;
-    const c = x - hueco - ancho / 2;
-    if (c - ancho / 2 < 0) break;
-    const b = base + (rand() * 14 - 7);
-    d += ` L${r2(c + ancho / 2)},${r2(b)}`;
-    d += ` C${r2(c + ancho / 2)},${r2(b + largo * 1.25)} ${r2(c - ancho / 2)},${r2(b + largo * 1.25)} ${r2(c - ancho / 2)},${r2(b)}`;
-    x = c - ancho / 2;
+  const fase = rand() * Math.PI * 2;
+  const pts: string[] = [];
+  for (let i = 0; i <= 120; i++) {
+    const t = i / 120;
+    const x = -40 + t * 1080;
+    const a = amp * (0.75 + 0.5 * Math.sin(t * 3 + fase));
+    const yy = y + Math.sin(t * ciclos * Math.PI * 2 + fase) * a + (rand() - 0.5) * 4;
+    pts.push(`${r2(x)},${r2(yy)}`);
   }
-  d += ` L0,${base} Z`;
-  return d;
+  return `M${pts.join(" L")}`;
 }
 
-const SALSA_ROJA = caminoChorreado(7, 640, 230);
-const SALSA_CREMA = caminoChorreado(21, 430, 170);
+const HILOS = [
+  { d: caminoHilo(5, 230, 55, 4.5), color: "#a3171b", brillo: "#e0583f", ancho: 18 },
+  { d: caminoHilo(12, 330, 45, 5.5), color: "#efd9a8", brillo: "#fffaf0", ancho: 13 },
+  { d: caminoHilo(19, 700, 60, 4), color: "#efd9a8", brillo: "#fffaf0", ancho: 14 },
+  { d: caminoHilo(27, 790, 50, 5), color: "#a3171b", brillo: "#e0583f", ancho: 18 },
+];
 
-export function CortinaSalsa({ clase }: { clase: string }) {
+/**
+ * Dos hilos de salsa (de tomate y blanca) que se van dibujando sobre la
+ * pantalla con el scroll. Cada trazo se anima con stroke-dashoffset.
+ */
+export function HilosSalsa() {
   return (
-    <div
+    <svg
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      className="ef-hilos pointer-events-none absolute inset-0 z-[15] h-full w-full"
       aria-hidden
-      className={`${clase} pointer-events-none absolute inset-x-0 top-0 z-20 h-full`}
-      style={clase.includes("salida") ? { visibility: "hidden" } : undefined}
     >
-      <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-        <path d={SALSA_ROJA} fill="#a3171b" />
-      </svg>
-      <svg
-        viewBox="0 0 1000 1000"
-        preserveAspectRatio="none"
-        className="ef-salsa-crema absolute inset-0 h-full w-full drop-shadow-[0_10px_18px_rgba(0,0,0,0.35)]"
-      >
-        <path d={SALSA_CREMA} fill="#f3dfb4" />
-        <path d={SALSA_CREMA} fill="none" stroke="#fff8e6" strokeWidth="4" opacity="0.6" transform="translate(0,-6)" />
-      </svg>
-    </div>
+      <g className="drop-shadow-[0_8px_14px_rgba(0,0,0,0.55)]">
+        {HILOS.map((h, i) => (
+          <g key={i}>
+            <path className="ef-hilo" d={h.d} pathLength={1} fill="none" stroke={h.color} strokeWidth={h.ancho} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+            <path className="ef-hilo" d={h.d} pathLength={1} fill="none" stroke={h.brillo} strokeWidth={h.ancho / 3.5} strokeLinecap="round" strokeLinejoin="round" opacity="0.75" vectorEffect="non-scaling-stroke" transform="translate(0,-3)" />
+          </g>
+        ))}
+      </g>
+    </svg>
   );
 }
 

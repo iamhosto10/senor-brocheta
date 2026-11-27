@@ -4,14 +4,14 @@ import { useEffect, useId, useRef } from "react";
 import { gsap, prefiereMenosMovimiento } from "./gsap";
 import { VideoFondo } from "./video-fondo";
 import { textoTriumph } from "@/lib/triumph";
-import { CapaPapas, CortinaSalsa, GotasSalsa, LluviaQueso } from "./efectos-comida";
+import { CapaPapas, GotasSalsa, HilosSalsa, LluviaQueso } from "./efectos-comida";
 
 /**
  * Interludio: la sección se queda fija con un video de fondo y una frase
  * gigante cruza la pantalla de lado a lado mientras el visitante hace scroll.
  * Los efectos de entrada y salida son de comida (ver efectos-comida.tsx):
  *  - "queso": papas fritas que barren la pantalla y lluvia de queso y maíz.
- *  - "salsa": cortina de salsa que chorrea, gotas que caen y otra cortina al salir.
+ *  - "salsa": hilos de salsa que se dibujan en zigzag y gotas que caen.
  */
 export function Interludio({
   id,
@@ -83,18 +83,14 @@ export function Interludio({
         barrer(".ef-papa-entrada", 0);
         barrer(".ef-papa-salida", 0.8);
       } else {
-        // La salsa que tapa la pantalla al llegar se escurre hacia abajo…
-        tl.fromTo(".ef-salsa-entrada", { y: 0, yPercent: 0 }, { yPercent: 115, duration: 0.2, ease: "power1.in" }, 0)
-          .fromTo(".ef-salsa-entrada .ef-salsa-crema", { y: 0, yPercent: 0 }, { yPercent: 22, duration: 0.2 }, 0)
-          // …y al final baja otra capa que chorrea desde arriba.
-          .fromTo(
-            ".ef-salsa-salida",
-            { y: 0, yPercent: -100, autoAlpha: 1 },
-            { yPercent: 0, duration: 0.16, ease: "power1.out" },
-            0.84
-          )
-          .fromTo(".ef-salsa-salida .ef-salsa-crema", { y: 0, yPercent: -25 }, { yPercent: 0, duration: 0.16 }, 0.84);
+        // Los hilos de salsa se dibujan al entrar y se terminan de ir al final
+        tl.fromTo(".ef-hilo", { strokeDasharray: "1 1", strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.3, stagger: 0.03, ease: "power1.out" }, 0)
+          .to(".ef-hilo", { strokeDashoffset: -1, duration: 0.22, stagger: 0.02, ease: "power1.in" }, 0.72);
       }
+
+      // Las migas y gotas se desvanecen antes de que la sección se vaya,
+      // para que ninguna quede cortada en el borde.
+      tl.to(".ef-miga", { opacity: 0, duration: 0.1 }, 0.88);
     }, el);
     return () => ctx.revert();
   }, [efecto]);
@@ -136,10 +132,7 @@ export function Interludio({
             <CapaPapas clase="ef-papa-salida" id={`${uid}s`} />
           </>
         ) : (
-          <>
-            <CortinaSalsa clase="ef-salsa-entrada" />
-            <CortinaSalsa clase="ef-salsa-salida" />
-          </>
+          <HilosSalsa />
         )}
       </div>
     </section>
