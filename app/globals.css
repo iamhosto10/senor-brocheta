@@ -297,3 +297,73 @@
     opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important;
   }
 }
+
+/* ───────── Experiencia (estilo editorial con scroll) ───────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Fondo negro con retícula dorada sutil (la versión oscura de la cuadrícula de referencia) */
+.fondo-reticula {
+  background-color: #000;
+  background-image:
+    linear-gradient(rgba(222, 191, 100, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(222, 191, 100, 0.05) 1px, transparent 1px);
+  background-size: 88px 88px;
+  background-position: center top;
+}
+
+/* Pantalla de carga: si ya se vio, ni se pinta; si falla el JS, se va sola */
+html.sin-preloader .preloader { display: none; }
+@keyframes preloader-seguro { to { opacity: 0; visibility: hidden; } }
+.preloader { animation: preloader-seguro 0.4s 6s forwards; }
+
+/* Letras del titular dentro de su máscara */
+.mascara-letra { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.mascara-letra > .letra { display: inline-block; }
+/* Antes de que termine la intro, la portada queda en espera (solo con JS) */
+@media (scripting: enabled) {
+  .hero-exp:not(.hero-listo) .hero-titulo .letra { transform: translateY(115%); }
+  .hero-exp:not(.hero-listo) .hero-sub { opacity: 0; }
+}
+.hero-linea::after {
+  content: ""; position: absolute; inset: 0; background: var(--color-gold);
+  transform: translateY(-100%); animation: hero-linea 2s 1s ease-in-out infinite;
+}
+@keyframes hero-linea { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+
+/* Menú a pantalla completa */
+.menu-total { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.8s var(--ease-out-expo); }
+.menu-total.menu-abierto { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+.menu-item { opacity: 0; transform: translateY(40px); transition: opacity 0.5s, transform 0.8s var(--ease-out-expo); }
+.menu-abierto .menu-item { opacity: 1; transform: none; transition-delay: calc(0.25s + var(--i) * 0.05s); }
+
+/* Así se arma: el paso actual entra en celular */
+@keyframes arma-paso { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.arma-paso { animation: arma-paso 0.5s var(--ease-out-expo) both; }
+
+/* Galería: sin animación es una cuadrícula; con animación es una escena fija */
+.gp-escena {
+  position: relative; z-index: 10;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;
+  padding: 13rem 1.25rem 5rem; max-width: 72rem; margin: 0 auto;
+}
+@media (min-width: 768px) { .gp-escena { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .galeria-prof { height: 100svh; }
+  .gp-escena { position: absolute; inset: 0; display: block; padding: 0; max-width: none; }
+  .gp-foto {
+    position: absolute; left: var(--x); top: var(--y); width: var(--w);
+    translate: -50% -50%; opacity: 0; will-change: transform, opacity, filter;
+  }
+  .gp-pie-estatico { display: none; }
+}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (max-width: 767px) {
+  .gp-foto { width: 62vw; left: 50%; top: 50%; }
+}
+
+/* Sin movimiento: las frases gigantes se leen completas */
+@media (prefers-reduced-motion: reduce) {
+  .int-frase { white-space: normal; font-size: 16vw; padding: 0 1.25rem; }
+  .interludio { height: auto; min-height: 100svh; }
+}

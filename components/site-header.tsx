@@ -1,130 +1,203 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "cn";
 
-const NAV_LINKS = [
-  { href: "#favoritos", label: "Favoritos" },
-  { href: "#espacios", label: "Espacios" },
-  { href: "#sedes", label: "Sedes" },
-  { href: "#instagram", label: "Instagram" },
+const CAPITULOS = [
+  { href: "#inicio", numero: "00", label: "Inicio" },
+  { href: "#historia", numero: "01", label: "Nuestra historia" },
+  { href: "#favoritos", numero: "02", label: "Los favoritos" },
+  { href: "#asi-se-arma", numero: "03", label: "Así se arma" },
+  { href: "#galeria", numero: "04", label: "Galería" },
+  { href: "#espacios", numero: "05", label: "Espacios" },
+  { href: "#sedes", numero: "06", label: "Sedes y domicilios" },
 ];
+
+/** Lleva a un capítulo después de cerrar el menú (el scroll estaba detenido). */
+function irA(href: string) {
+  setTimeout(() => {
+    const lenis = (window as { __lenis?: { scrollTo(t: string, o?: object): void } }).__lenis;
+    if (lenis) lenis.scrollTo(href);
+    else document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  }, 80);
+}
 
 const reservarButton =
   "inline-flex h-9 items-center justify-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/85";
 
+/**
+ * Encabezado fijo: logo, menú desplegable de capítulos (escritorio) y menú a
+ * pantalla completa (todas las pantallas). Se vuelve sólido al bajar.
+ */
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
-  // En la portada el logo ya lo da la foto (el aviso dorado); el del menú
-  // aparece solo cuando la portada sale de pantalla, para no repetirlo.
-  const [pasoPortada, setPasoPortada] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [capitulos, setCapitulos] = useState(false);
+  const [solido, setSolido] = useState(false);
+  const desplegable = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setPasoPortada(window.scrollY > window.innerHeight * 0.75);
-    const raf = requestAnimationFrame(onScroll);
+    const onScroll = () => setSolido(window.scrollY > 40);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const solido = pasoPortada || open;
+  useEffect(() => {
+    if (!capitulos) return;
+    const cerrar = (e: MouseEvent) => {
+      if (!desplegable.current?.contains(e.target as Node)) setCapitulos(false);
+    };
+    document.addEventListener("click", cerrar);
+    return () => document.removeEventListener("click", cerrar);
+  }, [capitulos]);
+
+  // Con el menú abierto se detiene el scroll de la página
+  useEffect(() => {
+    const lenis = (window as { __lenis?: { stop(): void; start(): void } }).__lenis;
+    if (menu) lenis?.stop();
+    else lenis?.start();
+    document.documentElement.style.overflow = menu ? "hidden" : "";
+    const esc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenu(false);
+    };
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
+  }, [menu]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500",
-        solido
-          ? "border-gold/20 bg-background/85 backdrop-blur-md"
-          : "border-transparent bg-transparent"
-      )}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-2.5">
-        <Link
-          href="#inicio"
-          aria-label="Señor Brocheta, ir al inicio"
-          className={cn(
-            "flex items-center gap-2.5 transition-all duration-500",
-            solido ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
-          )}
-          tabIndex={solido ? undefined : -1}
-          onClick={() => setOpen(false)}
-        >
-          <Image
-            src="/images/reservas/brand-logo.png"
-            alt="Señor Brocheta"
-            width={132}
-            height={70}
-            className="h-10 w-auto"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </Link>
-
-        <nav className="hidden items-center gap-7 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-xs font-semibold tracking-[0.12em] text-foreground/80 uppercase transition-colors hover:text-gold"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden md:block">
-          <Link href="/reservas/nueva" className={reservarButton}>
-            Reservar
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500",
+          solido && !menu
+            ? "border-b border-gold/15 bg-black/70 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
+        )}
+      >
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-3 sm:px-8">
+          <Link href="#inicio" aria-label="Señor Brocheta, ir al inicio" onClick={() => setMenu(false)}>
+            <Image
+              src="/images/reservas/brand-logo.png"
+              alt="Señor Brocheta"
+              width={132}
+              height={70}
+              className="h-10 w-auto"
+              loading="eager"
+            />
           </Link>
+
+          <div className="flex items-center gap-3 sm:gap-5">
+            <div ref={desplegable} className="relative hidden md:block">
+              <button
+                type="button"
+                aria-expanded={capitulos}
+                onClick={() => setCapitulos((v) => !v)}
+                className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.25em] text-white/85 uppercase transition-colors hover:text-gold"
+              >
+                Capítulos
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  className={cn("transition-transform", capitulos && "rotate-180")}
+                  aria-hidden
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <div
+                className={cn(
+                  "absolute top-full right-0 mt-4 w-64 origin-top-right border border-gold/25 bg-black/90 p-2 backdrop-blur-md transition-all duration-300",
+                  capitulos ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
+                )}
+              >
+                {CAPITULOS.map((c) => (
+                  <Link
+                    key={c.href}
+                    href={c.href}
+                    tabIndex={capitulos ? undefined : -1}
+                    onClick={() => setCapitulos(false)}
+                    className="flex items-baseline gap-3 px-3 py-2 text-sm text-white/80 transition-colors hover:bg-white/5 hover:text-gold"
+                  >
+                    <span className="text-[10px] font-bold text-gold tabular-nums">{c.numero}</span>
+                    {c.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <Link href="/reservas/nueva" className={cn(reservarButton, "hidden sm:inline-flex")}>
+              Reservar
+            </Link>
+
+            <button
+              type="button"
+              aria-label={menu ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menu}
+              onClick={() => setMenu((v) => !v)}
+              className="relative flex size-10 flex-col items-center justify-center gap-[7px]"
+            >
+              <span
+                className={cn(
+                  "h-[2px] w-7 bg-white transition-transform duration-500",
+                  menu && "translate-y-[4.5px] rotate-45"
+                )}
+              />
+              <span
+                className={cn(
+                  "h-[2px] w-7 bg-white transition-transform duration-500",
+                  menu && "-translate-y-[4.5px] -rotate-45"
+                )}
+              />
+            </button>
+          </div>
         </div>
+      </header>
 
-        <button
-          type="button"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="flex size-9 flex-col items-center justify-center gap-1.5 rounded-md border border-gold/30 md:hidden"
-        >
-          <span
-            className={cn(
-              "h-px w-5 bg-foreground transition-transform",
-              open && "translate-y-[3.5px] rotate-45"
-            )}
-          />
-          <span
-            className={cn(
-              "h-px w-5 bg-foreground transition-transform",
-              open && "-translate-y-[3.5px] -rotate-45"
-            )}
-          />
-        </button>
-      </div>
-
-      {open && (
-        <nav className="flex flex-col gap-1 border-t border-gold/20 bg-background px-5 py-4 md:hidden">
-          {NAV_LINKS.map((link) => (
+      {/* Menú a pantalla completa */}
+      <div
+        className={cn(
+          "menu-total fixed inset-0 z-[45] flex flex-col justify-center overflow-y-auto bg-primary px-6 pt-24 pb-10 sm:px-16",
+          menu ? "menu-abierto" : "pointer-events-none"
+        )}
+        aria-hidden={!menu}
+      >
+        <nav className="flex flex-col gap-1">
+          {CAPITULOS.map((c, i) => (
             <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="rounded-md px-2 py-2.5 text-sm font-semibold tracking-wide text-foreground/85 uppercase transition-colors hover:bg-secondary hover:text-gold"
+              key={c.href}
+              href={c.href}
+              tabIndex={menu ? undefined : -1}
+              onClick={(e) => {
+                e.preventDefault();
+                setMenu(false);
+                irA(c.href);
+              }}
+              style={{ "--i": i } as React.CSSProperties}
+              className="menu-item group flex items-baseline gap-4 text-white"
             >
-              {link.label}
+              <span className="w-8 text-xs font-bold text-black/50 tabular-nums">{c.numero}</span>
+              <span className="text-3xl font-extrabold tracking-tight uppercase transition-colors group-hover:text-gold sm:text-6xl">
+                {c.label}
+              </span>
             </Link>
           ))}
-          <Link
-            href="/reservas/nueva"
-            onClick={() => setOpen(false)}
-            className={cn(reservarButton, "mt-2 h-10 w-full")}
-          >
-            Reservar
-          </Link>
         </nav>
-      )}
-    </header>
+        <Link
+          href="/reservas/nueva"
+          tabIndex={menu ? undefined : -1}
+          onClick={() => setMenu(false)}
+          style={{ "--i": CAPITULOS.length } as React.CSSProperties}
+          className="menu-item mt-10 inline-flex h-12 w-fit items-center rounded-full bg-black px-8 text-sm font-bold text-white transition-colors hover:bg-black/80"
+        >
+          Reservar mesa
+        </Link>
+      </div>
+    </>
   );
 }

@@ -15,9 +15,21 @@ import {
   WhatsAppIcon,
 } from "@/components/floating-contact";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/experiencia/smooth-scroll";
+import { Preloader } from "@/components/experiencia/preloader";
+import { Hero } from "@/components/experiencia/hero";
+import { Interludio } from "@/components/experiencia/interludio";
+import { AsiSeArma } from "@/components/experiencia/asi-se-arma";
+import {
+  GaleriaProfundidad,
+  type FotoGaleria,
+} from "@/components/experiencia/galeria-profundidad";
+import { CapituloIntro } from "@/components/experiencia/capitulo";
+import { FichaNumero } from "@/components/experiencia/ficha-numero";
+import { VideoFondo } from "@/components/experiencia/video-fondo";
 import { SectionHeading } from "@/components/section-heading";
 import { RappiLink } from "@/components/rappi-link";
-import { RevealObserver, RevealWords } from "@/components/reveal-observer";
+import { RevealObserver } from "@/components/reveal-observer";
 import { cn } from "cn";
 
 export const metadata: Metadata = {
@@ -111,42 +123,46 @@ const fotosEspacios = [
   },
 ];
 
-const galeria = [
+const galeria: FotoGaleria[] = [
   {
-    src: "/images/sitio/galeria/pechuga.jpg",
-    alt: "Pechuga Sr Brocheta con papas y salsas",
+    src: "/images/sitio/nuevas/hamburguesa-doble.jpg",
+    alt: "Hamburguesa doble con tocineta y queso de Señor Brocheta",
+    pie: "Doble carne, doble antojo",
   },
   {
-    src: "/images/sitio/galeria/brochetas.jpg",
-    alt: "Brochetas mixtas servidas en soporte vertical",
+    src: "/images/sitio/nuevas/salchipapa-cerca.jpg",
+    alt: "Salchipapa con queso, maíz y salsas vista de cerca",
+    pie: "Cada capa cuenta",
   },
   {
-    src: "/images/sitio/galeria/hamburguesa-papas.jpg",
+    src: "/images/sitio/nuevas/perro-tocineta.jpg",
+    alt: "Perro caliente con tocineta y queso gratinado",
+    pie: "Tocineta encima, siempre",
+  },
+  {
+    src: "/images/sitio/nuevas/tres-hamburguesas.jpg",
+    alt: "Tres hamburguesas de Señor Brocheta servidas en tablas",
+    pie: "Una para cada quien",
+  },
+  {
+    src: "/images/sitio/nuevas/hamburguesa-coca.jpg",
     alt: "Hamburguesa con papas fritas y gaseosa",
+    pie: "El combo de siempre",
   },
   {
-    src: "/images/sitio/galeria/mesa-completa.jpg",
-    alt: "Mesa completa con hamburguesas, brochetas y perros calientes",
+    src: "/images/sitio/nuevas/perro-papas.jpg",
+    alt: "Perro caliente con papas en la mesa",
+    pie: "Para compartir (o no)",
   },
   {
     src: "/images/sitio/galeria/amigas.jpg",
     alt: "Amigas disfrutando hamburguesas en Señor Brocheta",
+    pie: "Los planes se hacen aquí",
   },
   {
-    src: "/images/sitio/galeria/pareja-aviso.jpg",
-    alt: "Pareja disfrutando sus platos frente al aviso dorado de Señor Brocheta",
-  },
-  {
-    src: "/images/sitio/galeria/pareja-hamburguesa.jpg",
-    alt: "Pareja compartiendo una hamburguesa en Señor Brocheta",
-  },
-  {
-    src: "/images/sitio/galeria/aviso-dorado.jpg",
-    alt: "Aviso dorado de Señor Brocheta con flores amarillas",
-  },
-  {
-    src: "/images/sitio/galeria/aviso-dorado-mesa.jpg",
-    alt: "Mesa y aviso dorado de Señor Brocheta en la sede Dangond",
+    src: "/images/sitio/nuevas/hamburguesa-queso.jpg",
+    alt: "Hamburguesa con queso fundido recién servida",
+    pie: "Recién salida de la plancha",
   },
 ];
 
@@ -305,79 +321,77 @@ const botonBorde = cn(heroButton, "border-2 border-gold text-foreground hover:bg
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
+    <div className="experiencia flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(restauranteJsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <Preloader />
+      <SmoothScroll />
       <SiteHeader />
       <RevealObserver />
       <FloatingContact whatsappUrl={WHATSAPP_URL} instagramUrl={INSTAGRAM_URL} />
 
-      {/* Hero: primero entra la foto (el aviso dorado ya es el logo), luego el texto */}
-      <section
-        id="inicio"
-        className="hero-intro relative flex min-h-[100svh] scroll-mt-16 items-end overflow-hidden"
-      >
-        <div className="hero-media absolute inset-x-0 top-0 bottom-[34%] md:bottom-0">
-          <Image
-            src="/images/sitio/hero-zona-5.jpg"
-            alt="Zona 5 de Señor Brocheta con mural y aviso dorado"
-            fill
-            loading="eager"
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover object-[64%_45%]"
+      <Hero whatsappUrl={WHATSAPP_URL} />
+
+      {/* Capítulo 01: Historia */}
+      <section id="historia" className="fondo-reticula scroll-mt-16">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+          <CapituloIntro
+            numero="01"
+            etiqueta="Desde Valledupar"
+            titulo="Nacimos de una receta de familia y un chuzo que no tardó en hacerse conocido en la ciudad."
+            texto="Hoy somos tres sedes, un equipo que crece a diario y un mismo compromiso: comida urbana premium, servida rápido y sin perder el sabor de casa."
           />
-        </div>
-        <div className="hero-shade absolute inset-0" aria-hidden />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-24 sm:pb-28">
-          <div className="flex max-w-2xl flex-col items-center gap-5 text-center md:items-start md:text-left">
-            <h1
-              aria-label="El mejor sabor se comparte."
-              className="font-display text-[2.6rem] leading-[1.05] sm:text-6xl md:text-7xl text-foreground drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+
+          <div className="mt-14 grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:gap-6">
+            <div
+              data-reveal="image"
+              className="relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
             >
-              <span aria-hidden>
-                <RevealWords text="El mejor sabor se comparte." delay={1500} step={110} />
-              </span>
-            </h1>
-            <span className="hero-line h-[3px] w-16 rounded-full bg-gold" aria-hidden />
-            <p className="hero-fade max-w-xl text-pretty text-lg text-foreground/90 [--d:2300ms]">
-              Las mejores salchipapas de Valledupar, calidad, buenos precios y una
-              atención que se disfruta. Ven con tu familia y amigos, nosotros
-              ponemos el sabor.
-            </p>
-            <p className="hero-fade text-base font-bold text-gold [--d:2500ms]">
-              ¡Haz de tu antojo tu próximo plan!
-            </p>
-            <div className="hero-fade mt-2 flex flex-wrap items-center justify-center gap-3 [--d:2700ms] md:justify-start">
-              <Link href="/reservas/nueva" className={botonRojo}>
-                Reservar mesa
-              </Link>
-              <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
-                Pedir por WhatsApp
-              </Link>
+              <Image
+                src="/images/sitio/nuevas/chica-logo.jpg"
+                alt="Clienta disfrutando un perro caliente frente al aviso dorado de Señor Brocheta"
+                fill
+                sizes="(min-width: 768px) 560px, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <div
+                data-reveal="image"
+                style={{ "--d": "150ms" } as React.CSSProperties}
+                className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src="/images/sitio/nuevas/mesa-arriba.jpg"
+                  alt="Mesa llena de platos de Señor Brocheta vista desde arriba"
+                  fill
+                  sizes="(min-width: 768px) 480px, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <FichaNumero valor={3} etiqueta="Sedes" detalle="Dangond, Mayales y Guatapurí" />
+                <FichaNumero valor={5} etiqueta="Zonas" detalle="Para reservar en la sede Dangond" delay={0.15} />
+              </div>
             </div>
           </div>
         </div>
-        <a
-          href="#favoritos"
-          aria-label="Bajar a los favoritos"
-          className="hero-fade hero-scroll absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:block [--d:3200ms]"
-        >
-          <span />
-        </a>
       </section>
 
-      {/* Favoritos */}
-      <section id="favoritos" className="scroll-mt-16">
-        <div className="mx-auto w-full max-w-5xl px-5 py-20">
-          <SectionHeading
-            eyebrow="Para antojarte"
-            title="Los favoritos de la casa"
-            description="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
+      <Interludio video="queso" frase="EL QUE PRUEBA, VUELVE" etiqueta="Sin miedo al queso" />
+
+      {/* Capítulo 02: Favoritos */}
+      <section id="favoritos" className="fondo-reticula scroll-mt-16">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+          <CapituloIntro
+            numero="02"
+            etiqueta="Para antojarte"
+            titulo="Los favoritos de la casa."
+            texto="Los que siempre provocan. Los que se recomiendan. Los que tienes que probar."
           />
           <FavoritosCarousel platos={favoritos} />
           <div data-reveal="up" className="mt-8 flex flex-col items-center gap-3 text-center">
@@ -395,37 +409,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Domicilios */}
-      <section
-        id="domicilios"
-        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
-      >
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-5 py-16 text-center">
-          <SectionHeading
-            eyebrow="Domicilios"
-            title="Pide sin salir de casa"
-            description="Los buenos momentos también llegan a tu puerta. Disfruta de tus favoritos sin salir de casa."
-          />
-          <div data-reveal="up" className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <RappiLink href={RAPPI_URL} className={botonRojo}>
-              Pedir por Rappi
-            </RappiLink>
-            <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
-              <WhatsAppIcon className="mr-2 size-4" />
-              Pedir por WhatsApp
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Capítulo 03: Así se arma */}
+      <AsiSeArma />
+
+      <Interludio video="salsa" frase="NO ES SOLO COMIDA, ES UN PLAN" etiqueta="La salsa al final" />
+
+      {/* Capítulo 04: Galería */}
+      <GaleriaProfundidad fotos={galeria} />
 
       {/* Espacios */}
-      <section id="espacios" className="scroll-mt-16">
+      <section id="espacios" className="fondo-reticula scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading
-            eyebrow="Sede Dangond"
-            title="Un lugar para compartir y celebrar"
-            description="En Señor Brocheta encuentras el espacio ideal para compartir con familia y amigos, celebrar cumpleaños, reuniones y ocasiones especiales. Nuestra sede Dangond cuenta con ambientes cómodos, zonas climatizadas y ventiladas, opciones de reserva con o sin decoración, sillas para bebés y vigilancia privada. Visítanos y haz de cada encuentro un momento especial."
+          <CapituloIntro
+            numero="05"
+            etiqueta="Sede Dangond"
+            titulo="Un lugar para compartir y celebrar."
+            texto="En Señor Brocheta encuentras el espacio ideal para compartir con familia y amigos, celebrar cumpleaños, reuniones y ocasiones especiales. Nuestra sede Dangond cuenta con ambientes cómodos, zonas climatizadas y ventiladas, opciones de reserva con o sin decoración, sillas para bebés y vigilancia privada."
           />
+
+          {/* Es un plan: video de gente disfrutando */}
+          <div
+            data-reveal="image"
+            className="relative mt-12 aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20 sm:aspect-[21/9]"
+          >
+            <VideoFondo nombre="gente" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" aria-hidden />
+            <p className="absolute bottom-6 left-6 font-display text-5xl leading-none text-white sm:bottom-8 sm:left-8 sm:text-7xl">
+              ES UN PLAN
+            </p>
+          </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {destacadosEspacios.map(({ icon: Icon, titulo, texto }, i) => (
@@ -474,83 +486,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Galería */}
-      <section
-        id="galeria"
-        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
-      >
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading eyebrow="Así se vive" title="Galería" />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {galeria.map((foto, i) => (
-              <div
-                key={foto.src}
-                data-reveal="image"
-                style={{ "--d": `${(i % 3) * 120}ms` } as React.CSSProperties}
-                className="relative aspect-square overflow-hidden rounded-md ring-1 ring-gold/20"
-              >
-                <Image
-                  src={foto.src}
-                  alt={foto.alt}
-                  fill
-                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 30vw, 46vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Instagram */}
-      <section
-        id="instagram"
-        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
-      >
-        <div className="mx-auto w-full max-w-5xl px-5 py-20">
-          <SectionHeading
-            eyebrow="@sr.brocheta"
-            title="Síguenos en Instagram"
-            description="Toca cualquier video para verlo en nuestro perfil."
-          />
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {reels.map((reel, i) => (
-              <Link
-                key={reel.href}
-                data-reveal="image"
-                style={{ "--d": `${(i % 3) * 120}ms` } as React.CSSProperties}
-                href={reel.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Ver en Instagram: ${reel.titulo}`}
-                className="group relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
-              >
-                <Image
-                  src={reel.src}
-                  alt={`Portada del video de Instagram: ${reel.titulo}`}
-                  fill
-                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 30vw, 46vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/50 group-hover:opacity-100">
-                  <InstagramIcon className="size-8 text-white" />
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div data-reveal="up" className="mt-10 text-center">
-            <Link href={INSTAGRAM_URL} target="_blank" className={botonBorde}>
-              <InstagramIcon className="mr-2 size-4" />
-              Síguenos en Instagram
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Sedes */}
-      <section id="sedes" className="scroll-mt-16">
+      <section id="sedes" className="fondo-reticula scroll-mt-16">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading eyebrow="Visítanos" title="Nuestras sedes" />
+          <CapituloIntro
+            numero="06"
+            etiqueta="Visítanos"
+            titulo="Tres sedes en Valledupar, y tus favoritos también a domicilio."
+          />
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {sedes.map((sede, i) => (
@@ -624,17 +567,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Historia */}
-      <section id="historia" className="scroll-mt-16">
-        <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-5 py-20 text-center">
-          <SectionHeading eyebrow="Desde Valledupar" title="Conoce nuestra historia" />
-          {/* Texto provisional: el cliente enviará la historia definitiva */}
-          <p data-reveal="up" className="mt-6 text-pretty text-foreground/80">
-            Nacimos de una receta de familia y un chuzo que no tardó en hacerse
-            conocido en la ciudad. Hoy somos tres sedes, un equipo que crece a
-            diario y un mismo compromiso: comida urbana premium, servida rápido
-            y sin perder el sabor de casa.
-          </p>
+      {/* Domicilios */}
+      <section
+        id="domicilios"
+        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
+      >
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-5 py-16 text-center">
+          <SectionHeading
+            eyebrow="Domicilios"
+            title="Pide sin salir de casa"
+            description="Los buenos momentos también llegan a tu puerta. Disfruta de tus favoritos sin salir de casa."
+          />
+          <div data-reveal="up" className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <RappiLink href={RAPPI_URL} className={botonRojo}>
+              Pedir por Rappi
+            </RappiLink>
+            <Link href={WHATSAPP_URL} target="_blank" className={botonBorde}>
+              <WhatsAppIcon className="mr-2 size-4" />
+              Pedir por WhatsApp
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Instagram */}
+      <section
+        id="instagram"
+        className="scroll-mt-16 border-y border-gold/15 bg-secondary/40"
+      >
+        <div className="mx-auto w-full max-w-5xl px-5 py-20">
+          <SectionHeading
+            eyebrow="@sr.brocheta"
+            title="Síguenos en Instagram"
+            description="Toca cualquier video para verlo en nuestro perfil."
+          />
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {reels.map((reel, i) => (
+              <Link
+                key={reel.href}
+                data-reveal="image"
+                style={{ "--d": `${(i % 3) * 120}ms` } as React.CSSProperties}
+                href={reel.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ver en Instagram: ${reel.titulo}`}
+                className="group relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
+              >
+                <Image
+                  src={reel.src}
+                  alt={`Portada del video de Instagram: ${reel.titulo}`}
+                  fill
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 30vw, 46vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/50 group-hover:opacity-100">
+                  <InstagramIcon className="size-8 text-white" />
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div data-reveal="up" className="mt-10 text-center">
+            <Link href={INSTAGRAM_URL} target="_blank" className={botonBorde}>
+              <InstagramIcon className="mr-2 size-4" />
+              Síguenos en Instagram
+            </Link>
+          </div>
         </div>
       </section>
 
