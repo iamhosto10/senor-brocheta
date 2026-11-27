@@ -27,6 +27,10 @@ import {
 import { CapituloIntro } from "@/components/experiencia/capitulo";
 import { FichaNumero } from "@/components/experiencia/ficha-numero";
 import { VideoFondo } from "@/components/experiencia/video-fondo";
+import {
+  FotosAmpliables,
+  type FotoAmpliable,
+} from "@/components/experiencia/fotos-ampliables";
 import { SectionHeading } from "@/components/section-heading";
 import { RappiLink } from "@/components/rappi-link";
 import { RevealObserver } from "@/components/reveal-observer";
@@ -104,22 +108,26 @@ const destacadosEspacios = [
   },
 ];
 
-const fotosEspacios = [
+const fotosEspacios: FotoAmpliable[] = [
   {
     src: "/images/sitio/espacios/zona-1-y-2.jpg",
     alt: "Zonas 1 y 2 de la sede Dangond de Señor Brocheta",
+    titulo: "Zonas 1 y 2",
   },
   {
     src: "/images/sitio/espacios/zona-3.jpg",
     alt: "Zona 3 de la sede Dangond de Señor Brocheta",
+    titulo: "Zona 3",
   },
   {
     src: "/images/sitio/espacios/zona-4.jpg",
     alt: "Zona 4 climatizada de Señor Brocheta",
+    titulo: "Zona 4 · Climatizada",
   },
   {
     src: "/images/sitio/hero-zona-5.jpg",
     alt: "Zona 5 climatizada con mural de Señor Brocheta",
+    titulo: "Zona 5 · Climatizada",
   },
 ];
 
@@ -456,24 +464,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            {fotosEspacios.map((foto, i) => (
-              <div
-                key={foto.src}
-                data-reveal="image"
-                style={{ "--d": `${i * 120}ms` } as React.CSSProperties}
-                className="relative aspect-[4/5] overflow-hidden rounded-md ring-1 ring-gold/20"
-              >
-                <Image
-                  src={foto.src}
-                  alt={foto.alt}
-                  fill
-                  sizes="(min-width: 1024px) 280px, 46vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          <FotosAmpliables fotos={fotosEspacios} />
 
           <div data-reveal="up" className="mt-10 flex flex-col items-center gap-4 text-center">
             <p className="text-lg font-bold text-foreground">
