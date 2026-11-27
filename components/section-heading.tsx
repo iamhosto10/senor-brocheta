@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { oracion } from "@/lib/oracion";
+import { textoTriumph } from "@/lib/triumph";
 import { RevealWords } from "@/components/reveal-observer";
 
 export function SectionHeading({
@@ -30,11 +30,11 @@ export function SectionHeading({
         </span>
       )}
       <h2
-        aria-label={oracion(title)}
+        aria-label={title}
         className="mt-2 font-display text-4xl leading-tight text-foreground sm:text-5xl"
       >
         <span aria-hidden>
-          <RevealWords text={oracion(title)} delay={120} />
+          <RevealWords text={textoTriumph(title)} delay={120} />
         </span>
       </h2>
       <span className="reveal-line mt-4 h-[3px] w-14 rounded-full bg-gold" aria-hidden />

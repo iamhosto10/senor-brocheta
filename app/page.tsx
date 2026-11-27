@@ -443,7 +443,7 @@ export default function Home() {
             <VideoFondo nombre="gente" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" aria-hidden />
             <p className="absolute bottom-6 left-6 font-display text-5xl leading-none text-white sm:bottom-8 sm:left-8 sm:text-7xl">
-              Es un plan
+              es un plan
             </p>
           </div>
 

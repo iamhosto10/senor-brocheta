@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import { gsap, prefiereMenosMovimiento } from "./gsap";
 import { VideoFondo } from "./video-fondo";
+import { textoTriumph } from "@/lib/triumph";
 import { CapaPapas, CortinaSalsa, GotasSalsa, LluviaQueso } from "./efectos-comida";
 
 /**
@@ -124,7 +125,7 @@ export function Interludio({
 
       <div className="absolute inset-0 z-[16] flex items-center">
         <p className="int-frase font-display leading-none whitespace-nowrap text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-[30vw] md:text-[19vw]">
-          {frase}
+          {textoTriumph(frase)}
         </p>
       </div>
 
