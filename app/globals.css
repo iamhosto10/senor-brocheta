@@ -364,6 +364,7 @@ html.sin-preloader .preloader { display: none; }
 
 /* Sin movimiento: las frases gigantes se leen completas */
 @media (prefers-reduced-motion: reduce) {
+  .ef-comida, .interludio .ef-miga { display: none; }
   .int-frase { white-space: normal; font-size: 16vw; padding: 0 1.25rem; }
   .interludio { height: auto; min-height: 100svh; }
 }

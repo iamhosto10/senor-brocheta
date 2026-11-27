@@ -1,35 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { gsap, prefiereMenosMovimiento } from "./gsap";
 import { VideoFondo } from "./video-fondo";
-
-/** Cortinillas: paralelogramos rojos y dorados que barren la pantalla. */
-const CORTINAS = [
-  { top: "4%", h: "22%", w: "46vw", color: "bg-primary" },
-  { top: "22%", h: "10%", w: "30vw", color: "bg-gold" },
-  { top: "38%", h: "26%", w: "58vw", color: "bg-primary" },
-  { top: "66%", h: "8%", w: "24vw", color: "bg-white" },
-  { top: "76%", h: "20%", w: "42vw", color: "bg-primary" },
-];
+import { CapaPapas, CortinaSalsa, GotasSalsa, LluviaQueso } from "./efectos-comida";
 
 /**
  * Interludio: la sección se queda fija con un video de fondo y una frase
  * gigante cruza la pantalla de lado a lado mientras el visitante hace scroll.
- * Al entrar y al salir pasan las cortinillas.
+ * Los efectos de entrada y salida son de comida (ver efectos-comida.tsx):
+ *  - "queso": papas fritas que barren la pantalla y lluvia de queso y maíz.
+ *  - "salsa": cortina de salsa que chorrea, gotas que caen y otra cortina al salir.
  */
 export function Interludio({
   id,
   video,
   frase,
   etiqueta,
+  efecto,
 }: {
   id?: string;
   video: string;
   frase: string;
   etiqueta?: string;
+  efecto: "queso" | "salsa";
 }) {
   const raiz = useRef<HTMLElement>(null);
+  const uid = useId().replace(/:/g, "");
 
   useEffect(() => {
     if (prefiereMenosMovimiento()) return;
@@ -51,23 +48,55 @@ export function Interludio({
         defaults: { ease: "none" },
       });
 
-      tl.fromTo(
-        ".int-cortina",
-        { x: () => window.innerWidth * 1.05, skewX: -18 },
-        { x: () => -window.innerWidth * 1.6, duration: 0.22, stagger: 0.015 },
-        0
-      )
-        .fromTo(".int-video", { scale: 1.2 }, { scale: 1, duration: 1 }, 0)
-        .fromTo(texto, { x: () => window.innerWidth }, { x: () => -texto.scrollWidth, duration: 0.86 }, 0.08)
-        .fromTo(
-          ".int-cortina-salida",
-          { x: () => window.innerWidth * 1.05, skewX: -18 },
-          { x: () => -window.innerWidth * 0.1, duration: 0.14, stagger: 0.012 },
-          0.86
+      tl.fromTo(".int-video", { scale: 1.2 }, { scale: 1, duration: 1 }, 0).fromTo(
+        texto,
+        { x: () => window.innerWidth },
+        { x: () => -texto.scrollWidth, duration: 0.86 },
+        0.08
+      );
+
+      // Migas de queso / gotas de salsa: caen durante todo el recorrido, cada
+      // una a su velocidad (las más rápidas parecen más cerca: paralaje).
+      gsap.utils.toArray<HTMLElement>(".ef-miga").forEach((m) => {
+        const vel = Number(m.dataset.vel) || 1;
+        const giro = Number(m.dataset.giro) || 0;
+        tl.fromTo(
+          m,
+          { y: 0, rotate: 0 },
+          { y: () => window.innerHeight * 1.6 * vel, rotate: giro, duration: 1 },
+          0
         );
+      });
+
+      if (efecto === "queso") {
+        const barrer = (sel: string, inicio: number) =>
+          gsap.utils.toArray<HTMLElement>(sel).forEach((p, i) => {
+            const giro = Number(p.dataset.giro) || 0;
+            tl.fromTo(
+              p,
+              { x: () => window.innerWidth * 1.15, rotate: giro },
+              { x: () => -window.innerWidth * 1.7, rotate: giro * -1.6, duration: 0.2 },
+              inicio + i * 0.012
+            );
+          });
+        barrer(".ef-papa-entrada", 0);
+        barrer(".ef-papa-salida", 0.8);
+      } else {
+        // La salsa que tapa la pantalla al llegar se escurre hacia abajo…
+        tl.fromTo(".ef-salsa-entrada", { y: 0, yPercent: 0 }, { yPercent: 115, duration: 0.2, ease: "power1.in" }, 0)
+          .fromTo(".ef-salsa-entrada .ef-salsa-crema", { y: 0, yPercent: 0 }, { yPercent: 22, duration: 0.2 }, 0)
+          // …y al final baja otra capa que chorrea desde arriba.
+          .fromTo(
+            ".ef-salsa-salida",
+            { y: 0, yPercent: -100, autoAlpha: 1 },
+            { yPercent: 0, duration: 0.16, ease: "power1.out" },
+            0.84
+          )
+          .fromTo(".ef-salsa-salida .ef-salsa-crema", { y: 0, yPercent: -25 }, { yPercent: 0, duration: 0.16 }, 0.84);
+      }
     }, el);
     return () => ctx.revert();
-  }, []);
+  }, [efecto]);
 
   return (
     <section
@@ -91,34 +120,27 @@ export function Interludio({
         </p>
       )}
 
-      <div className="absolute inset-0 z-10 flex items-center">
+      {efecto === "queso" ? <LluviaQueso /> : <GotasSalsa />}
+
+      <div className="absolute inset-0 z-[16] flex items-center">
         <p className="int-frase font-display leading-none whitespace-nowrap text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-[30vw] md:text-[19vw]">
           {frase}
         </p>
       </div>
 
-      {CORTINAS.map((c, i) => (
-        <span
-          key={`e${i}`}
-          aria-hidden
-          className={`int-cortina pointer-events-none absolute left-0 z-20 ${c.color}`}
-          style={{ top: c.top, height: c.h, width: c.w, transform: "translateX(110vw) skewX(-18deg)" }}
-        />
-      ))}
-      {CORTINAS.map((c, i) => (
-        <span
-          key={`s${i}`}
-          aria-hidden
-          className={`int-cortina-salida pointer-events-none absolute z-20 ${c.color}`}
-          style={{
-            top: c.top,
-            height: c.h,
-            width: c.w,
-            left: `${(i * 13) % 50}vw`,
-            transform: "translateX(110vw) skewX(-18deg)",
-          }}
-        />
-      ))}
+      <div className="ef-comida">
+        {efecto === "queso" ? (
+          <>
+            <CapaPapas clase="ef-papa-entrada" id={`${uid}e`} />
+            <CapaPapas clase="ef-papa-salida" id={`${uid}s`} />
+          </>
+        ) : (
+          <>
+            <CortinaSalsa clase="ef-salsa-entrada" />
+            <CortinaSalsa clase="ef-salsa-salida" />
+          </>
+        )}
+      </div>
     </section>
   );
 }

@@ -369,7 +369,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Interludio video="queso" frase="El que prueba, vuelve" etiqueta="Sin miedo al queso" />
+      <Interludio video="queso" frase="El que prueba, vuelve" etiqueta="Sin miedo al queso" efecto="queso" />
 
       {/* Capítulo 02: Historia */}
       <section id="historia" className="fondo-reticula scroll-mt-16">
@@ -420,7 +420,7 @@ export default function Home() {
       {/* Capítulo 03: Así se arma */}
       <AsiSeArma />
 
-      <Interludio video="salsa" frase="No es solo comida, es un plan" etiqueta="La salsa al final" />
+      <Interludio video="salsa" frase="No es solo comida, es un plan" etiqueta="La salsa al final" efecto="salsa" />
 
       {/* Capítulo 04: Galería */}
       <GaleriaProfundidad fotos={galeria} />
