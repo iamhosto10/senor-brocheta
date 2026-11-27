@@ -68,7 +68,7 @@ export function Hero({ whatsappUrl }: { whatsappUrl: string }) {
           aria-label="El mejor sabor se comparte"
           className="hero-titulo font-display leading-[1.02] md:leading-[0.88] text-white drop-shadow-[0_8px_40px_rgba(0,0,0,0.55)]"
         >
-          <Letras texto="El mejor sabor" className="block text-[16vw] md:text-[13vw]" />
+          <Letras texto="el mejor sabor" className="block text-[16vw] md:text-[13vw]" />
           <Letras texto="se comparte" className="block text-[16vw] text-gold md:text-[13vw]" />
         </h1>
         <p className="hero-sub mt-6 max-w-xl text-pretty text-base text-white/85 sm:text-lg">
