@@ -74,7 +74,7 @@ export function GaleriaProfundidad({ fotos }: { fotos: FotoGaleria[] }) {
 
       <div className="gp-titulo pointer-events-none absolute inset-x-0 top-28 z-20 text-center">
         <p className="text-[11px] font-semibold tracking-[0.35em] text-gold uppercase">Capítulo 04</p>
-        <h2 className="mt-2 font-display text-6xl text-white sm:text-8xl">GALERIA</h2>
+        <h2 className="mt-2 font-display text-6xl text-white sm:text-8xl">Galeria</h2>
       </div>
 
       <ul className="gp-escena">

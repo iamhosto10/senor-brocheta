@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { cn } from "cn";
+import { oracion } from "@/lib/oracion";
 
 type Plato = { nombre: string; src: string; alt: string };
 
@@ -166,7 +167,7 @@ export function FavoritosCarousel({ platos }: { platos: Plato[] }) {
           key={active}
           className="favoritos-title font-display text-3xl text-foreground sm:text-4xl"
         >
-          {platos[active].nombre}
+          {oracion(platos[active].nombre)}
         </h3>
       </div>
 
